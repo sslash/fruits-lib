@@ -232,7 +232,7 @@ export function fetch (routeId) {
             actions.CREATE_ROUTE_FETCH_SUCCESS,
             actions.CREATE_ROUTE_FETCH_FAIL
         ],
-        promise: ({req}) => req.get(`/routes/${routeId}`),
+        promise: ({req}) => req.get(`/routes/${routeId}?edit=true`),
         meta: {routeId}
     };
 }
