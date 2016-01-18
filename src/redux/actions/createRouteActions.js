@@ -53,9 +53,8 @@ export function updateRoute (routeId, data) {
 // sortorder only if webapp
 export function addVerticeToRoute (routeId, vertice, sortorder) {
 
-    if (!Iterable.isIterable(vertice)) {
-        vertice = Vertice.createMapper(vertice, sortorder);
-    };
+    const _vertice = Iterable.isIterable(vertice) ?
+        vertice : Vertice.createMapper(vertice, sortorder);
 
     const promises = [
 
@@ -65,16 +64,16 @@ export function addVerticeToRoute (routeId, vertice, sortorder) {
 			promise: function promise(_ref3) {
 				var req = _ref3.req;
 
-				return req.post('/routes/' + routeId + '/vertices', vertice.toJSON());
+				return req.post('/routes/' + routeId + '/vertices', _vertice.toJSON());
 			},
-			meta: vertice.set('editMode', true)
+			meta: _vertice.set('editMode', true)
 		}
 	];
 
-    const _sortorder = vertice.get('sortorder') || sortorder;
+    const _sortorder = _vertice.get('sortorder') || sortorder;
 
 	// POLL SPICES
-	if (vertice.getIn(['venue', 'name']) || vertice.getIn(['venue', 'geometry'])) {
+	if (_vertice.getIn(['venue', 'name']) || _vertice.getIn(['venue', 'geometry'])) {
 	    promises.push({
 	        types: [actions.CREATE_ROUTE_VERTICE_SPICES_FETCH, actions.CREATE_ROUTE_VERTICE_SPICES_FETCH_SUCCESS,
                 actions.CREATE_ROUTE_VERTICE_SPICES_FETCH_FAIL],

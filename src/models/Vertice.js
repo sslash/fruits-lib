@@ -32,6 +32,7 @@ const VerticeRecord = Record({
 });
 
 export default class Vertice extends VerticeRecord {
+
     static createMapper (vertice, sortorder) {
 
         const venue = Venue.mapFromGoogleResult(vertice.venue);

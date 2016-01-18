@@ -60,6 +60,10 @@ export default class Route extends RouteRecord {
         return routeState.setIn(['route', 'vertices'], updater(verts, index));
     }
 
+    getNextSortorder () {
+        return this.get('vertices').size + 1;
+    }
+
     // used in routeDetail/create reducers
     static updateVertice (routeState, vertice) {
 
