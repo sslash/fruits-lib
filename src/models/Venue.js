@@ -4,11 +4,15 @@ import _isFunc from 'lodash/lang/isFunction';
 const VenueRecord = Record({
     id: '',
     name: null,
-    place_id: null,
     address: null,
     geometry: null,
     spices: Map(),
     website: null,
+
+    // external references
+    place_id: null, // google
+    foursquareId: null,
+    yelpId: null,
 
     // old. must remove me. TODO
     venueSocial: null
