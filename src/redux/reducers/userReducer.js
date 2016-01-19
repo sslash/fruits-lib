@@ -58,7 +58,7 @@ export default function reducer (state = initialState, action = {}) {
                 user: null,
                 token: null,
                 authError: action.error ?
-                    action.error.message : action.payload.errorMessage
+                    action.error.errorMessage : action.payload.errorMessage
             });
 
         case types.SIGNUP:
