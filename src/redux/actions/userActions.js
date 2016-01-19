@@ -82,6 +82,17 @@ export function addNewRouteToUser (route) {
     };
 }
 
+export function updateProfile(userId, data) {
+    return {
+        types: [
+            types.USER_UPDATE_PROFILE,
+            types.USER_UPDATE_PROFILE_SUCCESS,
+            types.USER_UPDATE_PROFILE_FAIL
+        ],
+        promise: ({req}) => userService.updateProfile(userId, data, req)
+    };
+}
+
 export function uploadProfilePicture (fileOrPath) {
 
     return {
