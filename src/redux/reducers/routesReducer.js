@@ -1,5 +1,5 @@
 import * as actions from '../constants/actionTypes';
-import {Map} from 'immutable';
+import {Map, fromJS, Iterable} from 'immutable';
 import Route from '../../models/Route';
 import routesListFixture from './routesListFixture';
 
@@ -28,7 +28,7 @@ function routes (state = initialRoutesState, action) {
             });
 
         case actions.RECEIVE_ROUTES:
-        
+
             return state.merge({
                 isFetching: false,
                 didInvalidate: false,
@@ -54,6 +54,10 @@ const initialState = Map({
 });
 
 export default function reducer (state = initialState, action) {
+
+    if (!Iterable.isIterable(state)) {
+        state = initialState.merge(fromJS(state));
+    }
 
     switch (action.type) {
         case actions.INVALIDATE_BUCKET:
@@ -83,8 +87,6 @@ export default function reducer (state = initialState, action) {
         // when data comes from the server, we need to make it
         // an immutable object
         // TODO dont do it this way!!
-        case '@@INIT':
-            return initialState.merge(state);
         default:
             return state;
     }

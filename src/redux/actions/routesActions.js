@@ -3,21 +3,6 @@
 import * as types from '../constants/actionTypes';
 
 
-export function selectBucket (bucket) {
-    return {
-        type: types.SELECT_BUCKET,
-        bucket
-    };
-}
-
-// TODO: finishe me
-export function invalidateBucket (bucket) {
-    return {
-        type: types.INVALIDATE_BUCKET,
-        bucket
-    };
-}
-
 export function requestRoutes (bucketName, bucketId, city) {
 
     const params = {};
@@ -50,4 +35,30 @@ export function fetchRoutesIfNeeded (routes, bucketName, bucketId, city) {
     if (shouldFetchRoutes(routes, bucketName)) {
         return requestRoutes(bucketName, bucketId, city);
     }
+}
+
+export function fetchCityBuckets (existingBuckets) {
+    if (existingBuckets.size) { return; }
+
+    return {
+        types: [types.FETCH_CITY_BUCKETS, types.FETCH_CITY_BUCKETS_SUCCESS, types.FETCH_CITY_BUCKETS_FAIL],
+        promise: ({ req }) => {
+            return req.get('/buckets', { params: { city: 'Oslo' } });
+        },
+    };
+}
+
+export function selectBucket (bucket) {
+    return {
+        type: types.SELECT_BUCKET,
+        bucket
+    };
+}
+
+// TODO: finishe me
+export function invalidateBucket (bucket) {
+    return {
+        type: types.INVALIDATE_BUCKET,
+        bucket
+    };
 }

@@ -1,17 +1,19 @@
 import * as actions from '../constants/actionTypes';
-import {Map, List, Iterable} from 'immutable';
+import {Map, List, Iterable, fromJS} from 'immutable';
 
 const initialState = Map({
     selected: 'all',
     buckets: List(),
-    city: 'Oslo'
+    city: 'Oslo',
+    isFetching: false,
+    error: null
 });
 
 export default function reducer (state = initialState, action) {
     // rehydrated state
     if (!Iterable.isIterable(state)) {
         state = initialState.merge(state);
-    };
+    }
 
     switch (action.type) {
 
@@ -27,6 +29,27 @@ export default function reducer (state = initialState, action) {
         case actions.SELECT_BUCKET_CHANGE:
 
             return state.set('selected', action.bucket);
+
+        case actions.FETCH_CITY_BUCKETS:
+            return state.set('isFetching', true);
+
+        case actions.FETCH_CITY_BUCKETS_SUCCESS:
+
+
+
+            return state
+                .set('buckets', (action.payload._embedded &&
+                        action.payload._embedded.bucket) ?
+                            List(action.payload._embedded.bucket.map(b => fromJS(b))) : List())
+
+                .set('isFetching', false)
+                .set('error', false);
+
+        case actions.FETCH_CITY_BUCKETS_FAIL:
+
+            return state
+                .set('isFetching', false)
+                .set('error', action.error);
 
         default:
             return state;
