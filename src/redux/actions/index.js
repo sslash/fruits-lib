@@ -8,6 +8,7 @@ import * as navbar from './navbarActions';
 import * as vertice from './verticeActions';
 import * as routeDetail from './routeDetailActions';
 import * as inspiration from './inspirationActions';
+import * as conversation from './conversationActions';
 
 export const actions = Object.assign({}, {
     user,
@@ -19,5 +20,6 @@ export const actions = Object.assign({}, {
     flashMessages,
     navbar,
     routeDetail,
-    inspiration
+    inspiration,
+    conversation
 });
