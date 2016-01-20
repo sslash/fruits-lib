@@ -28,8 +28,6 @@ export function createConversation (data) {
 
 export function postMessage (data) {
     const url = `/messages/${data.conversationId}/messages`;
-    // localhost:8000/api/v1/messages/599/messages
-    console.log(url, data, 'sao da')
     return {
         types: [
             actions.POST_MESSAGE,
