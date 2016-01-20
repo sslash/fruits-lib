@@ -24,7 +24,8 @@ export default class Conversation extends ConversationRecord {
         messages.forEach((message) => {
             if (message.message) {
                 const {position, image} = this.findImageAndPosition(message);
-                message = image ? {text: message.message, date: new Date(message.created), position, image} : {text: message.message, date: new Date(message.created), position};
+                message = {text: message.message, date: new Date(message.created), position};
+                if(image) message.image = image;
                 newMessages = newMessages.push(new Message(message));
             }
         });
