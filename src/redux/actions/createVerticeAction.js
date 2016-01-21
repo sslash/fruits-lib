@@ -103,7 +103,7 @@ export function getVerticeSpices (name, geometry) {
             actions.VERTICE_SPICES_GET_SUCCESS,
             actions.VERTICE_SPICES_GET_FAIL
         ],
-        promise: ({req}) => req.get(`/venues/getSpicesByGEOandName`, {name, lat: geometry.lat, lng: geometry.lng})
+        promise: ({req}) => req.get(`/venues/getSpicesByGEOandName`, {params: {name, lat: geometry.lat, lng: geometry.lng}})
     };
 }
 
