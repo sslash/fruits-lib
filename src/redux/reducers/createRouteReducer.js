@@ -21,7 +21,8 @@ const initialState = Map({
     finito: false,
 
     donePressed: false,
-    pendingDoneActions: List()
+    pendingDoneActions: List(),
+    renderMapCounter: 0
 });
 
 
@@ -49,6 +50,7 @@ export default function reducer (state = initialState, action = {}) {
             return state
                 .set('route', Route.mapper(action.payload))
                 .set('isFetching', false)
+                .set('renderMapCounter', state.get('renderMapCounter') + 1)
                 .set('error', false);
 
         case types.CREATE_ROUTE_FETCH_FAIL:
@@ -123,11 +125,12 @@ export default function reducer (state = initialState, action = {}) {
 
         case types.ADD_VERTICE_TO_ROUTE:
             const vert = action.meta;
+            const pendingActions = state.get('pendingDoneActions')
+                .push(types.ADD_VERTICE_TO_ROUTE);
 
             const newState = state
                 .updateIn(['route', 'vertices'], v => v.push(vert))
-                .set('pendingDoneActions',
-                    state.get('pendingDoneActions').push(types.ADD_VERTICE_TO_ROUTE))
+                .set('pendingDoneActions', pendingActions);
 
             if (vert.get('city') && vert.getIn(['city', 'long_name'])) {
                 return newState.setIn(['route', 'city'],
@@ -142,8 +145,8 @@ export default function reducer (state = initialState, action = {}) {
             // action.payload.venue.venueSocial
             const vertData = Object.assign({}, action.payload);
             return Route.updateVertice(state, vertData)
-                .set('pendingDoneActions',
-                    state.get('pendingDoneActions').pop())
+                .set('pendingDoneActions', state.get('pendingDoneActions').pop())
+                .set('renderMapCounter', state.get('renderMapCounter') + 1);
 
         case types.CREATE_ROUTE_VERTICE_DELETE:
 
@@ -156,7 +159,9 @@ export default function reducer (state = initialState, action = {}) {
             // delete vertice
             const verts = state.getIn(['route', 'vertices']).delete(index);
 
-            return state.setIn(['route', 'vertices'], verts);
+            return state
+                .setIn(['route', 'vertices'], verts)
+                .set('renderMapCounter', state.get('renderMapCounter') + 1);
 
         case types.ADD_VERTICE_TO_ROUTE_FAIL:
             // TODO: reverse the vertice
@@ -210,7 +215,9 @@ export default function reducer (state = initialState, action = {}) {
                 .set('sortorder', sortorder + 1);
             });
 
-            return state.set('route', route.set('vertices', List(relocatedVertices)));
+            return state
+                .set('route', route.set('vertices', List(relocatedVertices)))
+                .set('renderMapCounter', state.get('renderMapCounter') + 1);
 
         case types.ROUTE_FINISH:
             return state.set('donePressed', true);
