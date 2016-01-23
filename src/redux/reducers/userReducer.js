@@ -11,6 +11,7 @@ const UserAuth = Record({
     token: null,
     authError: null,
     signupError: null,
+    isSaving: false,
 
     // users routes
     // TODO: do a list here instead
@@ -123,6 +124,15 @@ export default function reducer (state = initialState, action = {}) {
 
         case types.USER_UPLOAD_PROFILE_PICTURE_SUCCESS:
             return state.setIn(['user', 'image'], action.payload.image);
+
+        case types.USER_UPDATE_PROFILE:
+            return state.set('isSaving', true);
+
+        case types.USER_UPDATE_PROFILE_FAIL:
+            return state.set('isSaving', false);
+
+        case types.USER_UPDATE_PROFILE_SUCCESS:
+            return state.set('user', Map(action.payload)).set('isSaving', false);
 
         default:
             return state;
