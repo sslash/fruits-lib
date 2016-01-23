@@ -132,10 +132,7 @@ export default function reducer (state = initialState, action = {}) {
             return state.set('isSaving', false);
 
         case types.USER_UPDATE_PROFILE_SUCCESS:
-            const updateUser = state.get('user').merge(action.payload);
-            const updatedUser = state.set('user', updateUser);
-            const updateSavingState = state.set('isSaving', false);
-            return updateSavingState;
+            return state.set('user', Map(action.payload)).set('isSaving', false);
 
         default:
             return state;

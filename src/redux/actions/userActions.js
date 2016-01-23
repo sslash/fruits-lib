@@ -89,7 +89,7 @@ export function updateProfile(userId, data) {
             types.USER_UPDATE_PROFILE_SUCCESS,
             types.USER_UPDATE_PROFILE_FAIL
         ],
-        promise: ({req}) => userService.updateProfile(userId, data, req)
+        promise: ({req}) => req.put(`/users/${userId}`, {data})
     };
 }
 
