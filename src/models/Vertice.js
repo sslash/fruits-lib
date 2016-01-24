@@ -22,6 +22,7 @@ const VerticeRecord = Record({
     sortorder: 1,
     _links: {},
     photos: List(),
+    fsTip: null,
     capturedPhoto: '',
     location: {},
     fsTip: null,
