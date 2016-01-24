@@ -6,3 +6,4 @@ export routesReducer from './routesReducer';
 export selectedBucketReducer from './selectedBucketReducer';
 export userReducer from './userReducer';
 export routeDetail from './routeDetailReducer';
+export notificationsReducer from './notificationsReducer';
