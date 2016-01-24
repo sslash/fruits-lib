@@ -7,7 +7,7 @@ const initialRoutesState = Map({
     isFetching: false,
     didInvalidate: false,
     items: [],
-    // items: routesListFixture.map(Route.mapper), //<-- for debugging
+    // items: routesListFixture.map(Route.mapper), // <-- for debugging
 
     // only concerns one route. TODO move into a single route
     directionsMatrix: null,
