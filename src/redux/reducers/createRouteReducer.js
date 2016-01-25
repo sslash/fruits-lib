@@ -47,6 +47,9 @@ export default function reducer (state = initialState, action = {}) {
 
         case types.CREATE_ROUTE_FETCH_SUCCESS:
 
+            // we only want bucket ids
+            action.payload.buckets = action.payload.buckets.map(b => b.id);
+
             return state
                 .set('route', Route.mapper(action.payload))
                 .set('isFetching', false)
@@ -69,6 +72,8 @@ export default function reducer (state = initialState, action = {}) {
             return state.set('errors', action.errors);
 
         case types.CREATE_ROUTE_TOGGLE_BUCKET:
+        case types.CREATE_ROUTE_BUCKET_ADD:
+        case types.CREATE_ROUTE_BUCKET_DEL:
 
             if (_routeHasBucket(state, action.bucket.id)) {
                 const index = state.getIn(['route', 'buckets']).indexOf(action.bucket.id);
@@ -77,6 +82,7 @@ export default function reducer (state = initialState, action = {}) {
             } else {
                 return state.updateIn(['route', 'buckets'], buckets => buckets.push(action.bucket.id));
             }
+
 
         case types.POST_ROUTE:
             return state.merge({

@@ -18,8 +18,33 @@ export function setTitle (text) {
     return { type: actions.CREATE_ROUTE_SET_TITLE, text };
 }
 
+// only used in mobile app
 export function toggleBucket (bucket) {
     return { type: actions.CREATE_ROUTE_TOGGLE_BUCKET, bucket };
+}
+
+export function addBucket (routeId, bucketId) {
+    return {
+        types: [
+            actions.CREATE_ROUTE_BUCKET_ADD,
+            actions.CREATE_ROUTE_BUCKET_ADD_SUCCESS,
+            actions.CREATE_ROUTE_BUCKET_ADD_FAIL
+        ],
+        promise: ({req}) => req.put(`/routes/${routeId}/buckets/${bucketId}`),
+        bucket: {id: bucketId}
+    };
+}
+
+export function deleteBucket (routeId, bucketId) {
+    return {
+        types: [
+            actions.CREATE_ROUTE_BUCKET_DEL,
+            actions.CREATE_ROUTE_BUCKET_DEL_SUCCESS,
+            actions.CREATE_ROUTE_BUCKET_DEL_FAIL
+        ],
+        promise: ({req}) => req.delete(`/routes/${routeId}/buckets/${bucketId}`),
+        bucket: {id: bucketId}
+    };
 }
 
 export function setRouteErrors (errors) {
