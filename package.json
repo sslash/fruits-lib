@@ -1,7 +1,6 @@
 {
     "name": "fruits-lib",
-    "version": "1.0.0",
-    "description": "##TODO:",
+    "version": "2.0.1",
     "main": "lib/fruits-lib.js",
     "scripts": {
         "test": "mocha --compilers js:babel-register --reporter spec src/**/*-test.js",
