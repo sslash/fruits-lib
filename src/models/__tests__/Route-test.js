@@ -7,7 +7,7 @@ describe('Routes', () => {
 
     it('Should get the vertices Geo-Location', () => {
         const NewRoute = Route.mapper(routeFixture);
-        const lngLat = NewRoute.getGeoLocation()[0];
+        const lngLat = NewRoute.mapVerticesGeolocations()[0];
         const lng = lngLat[0];
         expect(lng).to.equal(60.15495120000001);
     });

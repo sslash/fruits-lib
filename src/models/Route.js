@@ -65,16 +65,14 @@ export default class Route extends RouteRecord {
         return this.get('vertices').size + 1;
     }
 
-    getGeoLocation() {
-        const geo = [];
-        this.get('vertices').map(v => {
+    mapVerticesGeolocations() {
+        return this.get('vertices').map(v => {
             const loc = v.getIn(['venue', 'geometry']);
             if (!loc) {
                 throw new Error('Venue did not have location');
             }
-            geo.push([loc.lat, loc.lng]);
+            return [loc.lat, loc.lng];
         });
-        return geo;
     }
 
     // used in routeDetail/create reducers
