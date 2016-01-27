@@ -65,6 +65,18 @@ export default class Route extends RouteRecord {
         return this.get('vertices').size + 1;
     }
 
+    getGeoLocation() {
+        const geo = [];
+        this.get('vertices').map(v => {
+            const loc = v.getIn(['venue', 'geometry']);
+            if (!loc) {
+                throw new Error('Venue did not have location');
+            }
+            geo.push([loc.lat, loc.lng]);
+        });
+        return geo;
+    }
+
     // used in routeDetail/create reducers
     static updateVertice (routeState, vertice) {
 
@@ -72,14 +84,14 @@ export default class Route extends RouteRecord {
             return verts.update(index, (vert) => {
                 if (!vertice.venue) {
                     return vert
-                        .mergeDeep(vertice);
+                    .mergeDeep(vertice);
                 }
 
                 // explicitly copy the things we want,
                 // delete the rest
                 // but dont let venue override id in case it doesnt exist
                 const venueId = vertice.venue.id ||
-                                vert.getIn(['venue', 'id']);
+                vert.getIn(['venue', 'id']);
 
                 const venueSocial = vertice.venue.venueSocial;
                 delete vertice.venue;
@@ -87,9 +99,9 @@ export default class Route extends RouteRecord {
                 // TODO: might wanna do address and stuff here..
                 try {
                     return vert
-                        .mergeDeep(vertice)
-                        .setIn(['venue', 'id'], venueId)
-                        .setIn(['venue', 'venueSocial'], venueSocial);
+                    .mergeDeep(vertice)
+                    .setIn(['venue', 'id'], venueId)
+                    .setIn(['venue', 'venueSocial'], venueSocial);
                 } catch (err) {
                     console.log('Failed to update vertice, illegal update values ', err);
                     return vert;
@@ -110,9 +122,9 @@ export default class Route extends RouteRecord {
         return Route.doUpdate(routeState, vertice, (verts, index) => {
             return verts.update(index, (vert) => {
                 return vert.update('photos', photos =>
-                    photos.delete(
-                        photos.findIndex(p => p.url === vertice.photo.url))
-                    );
+                photos.delete(
+                    photos.findIndex(p => p.url === vertice.photo.url))
+                );
             });
         });
     };
