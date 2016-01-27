@@ -182,7 +182,7 @@ export function addPhotoToVertice (routeId, verticeId, filename) {
     };
 }
 
-export function addSpicesPhoto (routeId, verticeId, url, source) {
+export function addSpicesPhoto (routeId, verticeId, url, source, externalLink, username) {
 
     return {
         types: [
@@ -192,7 +192,9 @@ export function addSpicesPhoto (routeId, verticeId, url, source) {
         ],
         promise: ({req}) => req.put(`/routes/${routeId}/vertices/${verticeId}/photo`, {
             externalImage: url,
-            photoSource: source
+            photoSource: source,
+            externalLink,
+            username
         }),
         meta: {id: verticeId, photo: {url, source}}
     };
