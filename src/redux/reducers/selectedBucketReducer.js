@@ -35,13 +35,13 @@ export default function reducer (state = initialState, action) {
 
         case actions.FETCH_CITY_BUCKETS_SUCCESS:
 
-
+            const buckets = (action.payload._embedded &&
+                    action.payload._embedded.bucket) ?
+                        List(action.payload._embedded.bucket.map(b => fromJS(b))) : List();
 
             return state
-                .set('buckets', (action.payload._embedded &&
-                        action.payload._embedded.bucket) ?
-                            List(action.payload._embedded.bucket.map(b => fromJS(b))) : List())
-
+                .set('buckets', buckets)
+                .set('selected', buckets.get(0))
                 .set('isFetching', false)
                 .set('error', false);
 

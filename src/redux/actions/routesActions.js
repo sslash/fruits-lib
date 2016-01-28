@@ -37,13 +37,13 @@ export function fetchRoutesIfNeeded (routes, bucketName, bucketId, city) {
     }
 }
 
-export function fetchCityBuckets (existingBuckets) {
+export function fetchCityBuckets (existingBuckets, city = 'Oslo') {
     if (existingBuckets.size) { return; }
 
     return {
         types: [types.FETCH_CITY_BUCKETS, types.FETCH_CITY_BUCKETS_SUCCESS, types.FETCH_CITY_BUCKETS_FAIL],
         promise: ({ req }) => {
-            return req.get('/buckets', { params: { city: 'Oslo' } });
+            return req.get('/buckets', { params: { city } });
         },
     };
 }
