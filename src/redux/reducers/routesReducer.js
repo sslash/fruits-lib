@@ -68,6 +68,9 @@ export default function reducer (state = initialState, action) {
                 [action.meta.bucketName]: routes(state.get(action.meta.bucket), action)
             });
 
+        // when setting new city categories
+        case actions.ROUTES_CLEAR:
+            return initialState;
         // case actions.FETCH_DIRECTIONS_MATRIX:
         //     return state.set('directionsMatrix', {
         //         fetchingDirections: true

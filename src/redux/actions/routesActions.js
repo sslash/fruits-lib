@@ -37,8 +37,12 @@ export function fetchRoutesIfNeeded (routes, bucketName, bucketId, city) {
     }
 }
 
-export function fetchCityBuckets (existingBuckets, city = 'Oslo') {
-    if (existingBuckets.size) { return; }
+// mobile: export function fetchCityBuckets (existingBuckets, city = 'Oslo') {
+
+export function fetchCityBuckets (dispatch, city = 'Oslo') {
+    // if (existingBuckets.size) { return; } <-- mobile
+
+    dispatch({type: types.ROUTES_CLEAR});
 
     return {
         types: [types.FETCH_CITY_BUCKETS, types.FETCH_CITY_BUCKETS_SUCCESS, types.FETCH_CITY_BUCKETS_FAIL],
