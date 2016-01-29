@@ -43,7 +43,7 @@ export default function reducer (state = initialState, action) {
                 .set('buckets', buckets)
                 .set('selected', buckets.get(0))
                 .set('isFetching', false)
-                .set('error', false);
+                .set('error', null);
 
         case actions.FETCH_CITY_BUCKETS_FAIL:
 

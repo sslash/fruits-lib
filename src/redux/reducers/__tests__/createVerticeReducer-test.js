@@ -6,7 +6,7 @@ import venueFixture from './venueFixture';
 
 describe('create route reducer', () => {
 
-    it('should handle VENUE_UPDATE', () => {
+    it('should handle FETCH_CITY_BUCKETS_SUCCESS', () => {
 
         const beforeState = reducer(undefined, {
             type: types.VERTICE_UPDATE_META,
