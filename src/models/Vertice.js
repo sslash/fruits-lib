@@ -4,6 +4,8 @@ import getDefaultCardImg from '../fruitslib/getDefaultCardImg';
 
 
 function extractCity (venue) {
+    if (!venue.address_components) { return; }
+
     const res = venue.address_components.filter(a =>
         a.types.indexOf('postal_town') >= 0 || a.types.indexOf('locality') >= 0);
 

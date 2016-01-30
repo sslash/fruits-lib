@@ -91,7 +91,7 @@ export default class Venue extends VenueRecord {
         if (venue.formatted_address) {
             venue.address = venue.formatted_address;
 
-        } else {
+        } else if (venue.address_components) {
             let address = '';
             if (venue.address_components) {
                 address = [
