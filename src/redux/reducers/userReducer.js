@@ -76,7 +76,7 @@ export default function reducer (state = initialState, action = {}) {
                 signupError: null
             });
         case types.SIGNUP_FAIL:
-            return state.set('signupError', action.error);
+            return state.set('signupError', action.error).set('loggingIn', false);
 
         case types.LOGOUT:
             return initialState;
