@@ -12,9 +12,12 @@ export default function reducer (state = initialState, action) {
 
     if (!Iterable.isIterable(state)) {
         state = initialState;
-    };
+    }
 
     switch (action.type) {
+        case actions.INSPIRATION_CLEAR:
+            return initialState;
+
         case actions.INSPIRATION_FETCH:
             return state.set('isFetching', true);
 
