@@ -1,6 +1,10 @@
 import * as actions from '../constants/actionTypes';
 
 
+export function clear () {
+    return { type: actions.INSPIRATION_CLEAR };
+}
+
 export function fetch (params) {
     return {
         types: [

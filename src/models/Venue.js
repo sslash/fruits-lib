@@ -105,4 +105,48 @@ export default class Venue extends VenueRecord {
 
         return new Venue(venue);
     }
+
+    static foursquareToVenue (venue) {
+        let thumb; let photos;
+        if (venue.getIn(['venue', 'photos', 'count'])) {
+            const imgBase = venue.getIn(['venue', 'photos', 'groups', 0, 'items', 0]);
+            thumb = `${imgBase.get('prefix')}300x300${imgBase.get('suffix')}`;
+            // used for storing on Vertice
+            photos = [`${imgBase.get('prefix')}500x500${imgBase.get('suffix')}`];
+        }
+        return {
+            photo: thumb,
+            name: venue.getIn(['venue', 'name']),
+            rating: venue.getIn(['venue', 'rating']),
+            ratingBase: '10',
+            geometry: {
+                location: {
+                    lat: venue.getIn(['venue', 'location', 'lat']),
+                    lng: venue.getIn(['venue', 'location', 'lng'])
+                }
+            },
+            address: venue.getIn(['venue', 'location', 'formattedAddress']).join(', '),
+            city: venue.getIn(['venue', 'location', 'city']),
+            photos,
+            foursquareId: venue.getIn(['venue', 'id'])
+        };
+    }
+
+    static yelpToVenue (venue) {
+        return {
+            photo: venue.get('image_url'),
+            name: venue.get('name'),
+            rating: venue.get('rating'),
+            ratingBase: '5',
+            geometry: {
+                location: {
+                    lat: venue.getIn(['location', 'coordinate', 'latitude']),
+                    lng: venue.getIn(['location', 'coordinate', 'longitude'])
+                }
+            },
+            address: venue.getIn(['location', 'display_address']).join(', '),
+            city: venue.getIn(['location', 'city']),
+            yelpId: venue.get('id')
+        };
+    }
 }
