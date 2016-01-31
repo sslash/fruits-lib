@@ -83,7 +83,6 @@ export default function reducer (state = initialState, action = {}) {
                 return state.updateIn(['route', 'buckets'], buckets => buckets.push(action.bucket.id));
             }
 
-
         case types.POST_ROUTE:
             return state.merge({
                 postingRoute: true,
@@ -123,6 +122,16 @@ export default function reducer (state = initialState, action = {}) {
                     fetched: true,
                     items: action.payload._embedded.bucket
                 });
+
+        case types.CREATE_ROUTE_BUCKET_ADD_CUSTOM_SUCCESS:
+            const bucket = action.payload;
+            const items = [...state.get('buckets').items, bucket];
+            return state.set('buckets', {
+                 items,
+                 fetched: true
+             })
+             .updateIn(['route', 'buckets'], buckets => buckets.push(bucket.id));
+
 
         case types.CREATE_ROUTE_VERTICE_SPICES_FETCH_SUCCESS:
             return Route.updateVertice(state, {
