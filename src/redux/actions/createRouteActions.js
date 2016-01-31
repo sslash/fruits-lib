@@ -23,6 +23,17 @@ export function toggleBucket (bucket) {
     return { type: actions.CREATE_ROUTE_TOGGLE_BUCKET, bucket };
 }
 
+export function addCustomBucket (routeId, bucketName) {
+    return {
+        types: [
+            actions.CREATE_ROUTE_BUCKET_ADD_CUSTOM,
+            actions.CREATE_ROUTE_BUCKET_ADD_CUSTOM_SUCCESS,
+            actions.CREATE_ROUTE_BUCKET_ADD_CUSTOM_FAIL
+        ],
+        promise: ({req}) => req.post(`/routes/${routeId}/buckets/createCustom`, {bucketName}),
+    };
+}
+
 export function addBucket (routeId, bucketId) {
     return {
         types: [

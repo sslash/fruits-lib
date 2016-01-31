@@ -2,7 +2,9 @@ import {expect} from 'chai';
 import reducer from '../createRouteReducer';
 import * as types from '../../constants/actionTypes';
 import Vertice from '../../../models/Vertice';
-import verticeFixture from './verticeFixture';
+import verticeFxt from './verticeFixture';
+import fetchBucketsFxt from '../../../../test/fixtures/FETCH_BUCKETS_SUCCESS';
+import createRouteBucketSuccesFxt from '../../../../test/fixtures/CREATE_ROUTE_BUCKET_ADD_CUSTOM_SUCCESS';
 import {List} from 'immutable';
 
 describe('create route reducer', () => {
@@ -28,14 +30,14 @@ describe('create route reducer', () => {
 
         const afterState = reducer(beforeState, {
             type: types.ADD_VERTICE_TO_ROUTE_SUCCESS,
-            payload: verticeFixture
+            payload: verticeFxt
         });
 
         const vert = afterState.getIn(['route', 'vertices']).get(0).toJSON();
-        expect(vert.id).to.equal(verticeFixture.id);
-        expect(vert.sortorder).to.equal(verticeFixture.sortorder);
-        expect(vert.description).to.equal(verticeFixture.description);
-        expect(vert.title).to.equal(verticeFixture.title);
+        expect(vert.id).to.equal(verticeFxt.id);
+        expect(vert.sortorder).to.equal(verticeFxt.sortorder);
+        expect(vert.description).to.equal(verticeFxt.description);
+        expect(vert.title).to.equal(verticeFxt.title);
     });
 
     it('should handle VERTICE_REORDER', () => {
@@ -102,6 +104,24 @@ describe('create route reducer', () => {
         expect(v31.get('sortorder')).to.equal(3);
         expect(v32.get('sortorder')).to.equal(2);
         expect(v33.get('sortorder')).to.equal(1);
+    });
 
+    it('should handle CREATE_ROUTE_BUCKET_ADD_CUSTOM_SUCCESS', () => {
+        const beforeState = reducer(null, {
+            type: types.FETCH_BUCKETS_SUCCESS,
+            payload: fetchBucketsFxt
+        });
+
+        expect(beforeState.get('buckets').items.length).to.equal(24);
+
+        const afterState = reducer(beforeState, {
+            type: types.CREATE_ROUTE_BUCKET_ADD_CUSTOM_SUCCESS,
+            payload: createRouteBucketSuccesFxt
+        });
+
+        expect(afterState.get('buckets').items.length).to.equal(25);
+        expect(afterState.get('buckets').items[24].name).to.equal(createRouteBucketSuccesFxt.name);
+        expect(afterState.getIn(['route', 'buckets']).size).to.equal(1);
+        expect(afterState.getIn(['route', 'buckets', '0'])).to.equal(createRouteBucketSuccesFxt.id);
     });
 });
