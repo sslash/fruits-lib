@@ -9,6 +9,7 @@ import * as vertice from './verticeActions';
 import * as routeDetail from './routeDetailActions';
 import * as inspiration from './inspirationActions';
 import * as notifications from './notificationsActions';
+import * as city from './cityActions';
 
 export const actions = Object.assign({}, {
     user,
@@ -21,5 +22,6 @@ export const actions = Object.assign({}, {
     navbar,
     routeDetail,
     inspiration,
-    notifications
+    notifications,
+    city
 });
