@@ -5,7 +5,7 @@ let API_KEY;
 
 export default class GooglePlacesAPIClient {
 
-    constructor(args = {}) {
+    constructor (args = {}) {
         API_KEY = args.GOOGLE_API_KEY || process.env.GOOGLE_API_KEY;
         if (!API_KEY) {
             throw new Error('Google API key must be set');

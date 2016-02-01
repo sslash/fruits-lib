@@ -119,12 +119,10 @@ export default class Venue extends VenueRecord {
             name: venue.getIn(['venue', 'name']),
             rating: venue.getIn(['venue', 'rating']),
             ratingBase: '10',
-            geometry: {
-                location: {
-                    lat: venue.getIn(['venue', 'location', 'lat']),
-                    lng: venue.getIn(['venue', 'location', 'lng'])
-                }
-            },
+            geometry: Venue.mapSpicesGeo(
+                venue.getIn(['venue', 'location', 'lat']),
+                venue.getIn(['venue', 'location', 'lng'])
+            ),
             address: venue.getIn(['venue', 'location', 'formattedAddress']).join(', '),
             city: venue.getIn(['venue', 'location', 'city']),
             photos,
@@ -138,15 +136,19 @@ export default class Venue extends VenueRecord {
             name: venue.get('name'),
             rating: venue.get('rating'),
             ratingBase: '5',
-            geometry: {
-                location: {
-                    lat: venue.getIn(['location', 'coordinate', 'latitude']),
-                    lng: venue.getIn(['location', 'coordinate', 'longitude'])
-                }
-            },
+            geometry: Venue.mapSpicesGeo(
+                venue.getIn(['location', 'coordinate', 'latitude']),
+                venue.getIn(['location', 'coordinate', 'longitude'])
+            ),
             address: venue.getIn(['location', 'display_address']).join(', '),
             city: venue.getIn(['location', 'city']),
             yelpId: venue.get('id')
         };
+    }
+
+    static mapSpicesGeo (lat, lng) {
+        return {
+            location: { lat, lng }
+        }
     }
 }
