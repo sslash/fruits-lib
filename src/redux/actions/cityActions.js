@@ -7,6 +7,6 @@ export function fetch () {
             actions.CITIES_FETCH_SUCCESS,
             actions.CITIES_FETCH_FAIL
         ],
-        promise: ({ req }) => req.get('/city')
+        promise: ({ req }) => req.get('/cities')
     };
 }
