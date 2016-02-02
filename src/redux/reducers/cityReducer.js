@@ -11,11 +11,11 @@ const initialState = Map({
 export default function reducer (state = initialState, action) {
 
     switch (action.type) {
-        case types.CITY_FETCH:
+        case types.CITIES_FETCH:
             return state.set('isFetching', true).set('isError', false);
-        case types.CITY_FETCH_SUCCESS:
-            return state.set('isFetching', false).set('isError', false).set('cities', new List(City.mapper(action.payload)));
-        case types.CITY_FETCH_FAIL:
+        case types.CITIES_FETCH_SUCCESS:
+            return state.set('isFetching', false).set('isError', false).set('cities', new List(City.multiMapper(action.payload)));
+        case types.CITIES_FETCH_FAIL:
             return state.set('isFetching', false).set('isError', true);
         default :
         return state;

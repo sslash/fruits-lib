@@ -8,7 +8,7 @@ const CityRecord = Record({
 });
 
 export default class City extends CityRecord {
-    static mapper (cities) {
+    static multiMapper (cities) {
         return cities.map(city => new City(city));
     }
 }
