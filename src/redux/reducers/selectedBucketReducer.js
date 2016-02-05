@@ -20,6 +20,9 @@ export default function reducer (state = initialState, action) {
         case actions.SELECT_BUCKET:
             return state.set('selected', action.bucket);
 
+        case actions.BUCKETS_CLEAR:
+            return initialState;
+
         case actions.SELECTED_BUCKET_BOOTSTRAP:
 
             return initialState

@@ -1,11 +1,14 @@
 // TODO: finishe me: http://rackt.github.io/redux/docs/advanced/ExampleRedditAPI.html
-
+import {fromJS, Iterable} from 'immutable';
 import * as types from '../constants/actionTypes';
 
 
-export function requestRoutes (bucketName, bucketId, city) {
+export function requestRoutes (bucketName, bucketId, city, offset) {
 
-    const params = {};
+    console.log(`requestRoutes: `, bucketName, bucketId, city, offset);
+    const params = {
+        offset
+    };
 
     // TODO: remove this ugly hack
     if (bucketId && bucketName !== 'all') { params.category = bucketId; }
@@ -16,25 +19,46 @@ export function requestRoutes (bucketName, bucketId, city) {
         promise: ({req}) => {
             return req.get('/routes', {params});
         },
-        meta: {bucketName: bucketName}
+        meta: {
+            bucketName,
+            offset
+        }
     };
 }
 
-export function shouldFetchRoutes (routes, bucket) {
-    const routesByBucket = routes[bucket];
+export function shouldFetchRoutes (routes, bucket, offset) {
+    const routesByBucket = routes.get(bucket);
     if (!routesByBucket) {
         return true;
     } else if (routesByBucket.isFetching) {
         return false;
+    } else if (offset > routesByBucket.get('offset')) {
+        return true;
     } else {
         return routesByBucket.didInvalidate;
     }
 }
 
-export function fetchRoutesIfNeeded (routes, bucketName, bucketId, city) {
-    if (shouldFetchRoutes(routes, bucketName)) {
-        return requestRoutes(bucketName, bucketId, city);
+/**
+* @param {object} bucket either a bucket (Map),
+* or a bucketName (string)
+*/
+export function fetchRoutesIfNeeded (routes, bucket, bucketId, city, offset = 0) {
+
+    const bucketName = Iterable.isIterable(bucket) ?
+        bucket.get('name') : bucket;
+
+    if (shouldFetchRoutes(routes, bucketName, offset)) {
+        return requestRoutes(bucketName, bucketId, city, offset);
+    } else {
+        return { type: types.NO_OP };
     }
+}
+
+export function clearRoutes (dispatch) {
+    dispatch({ type: types.BUCKETS_CLEAR });
+
+    return { type: types.ROUTES_CLEAR };
 }
 
 export function fetchCityBuckets (dispatch, city = 'Oslo', resetRoutes = true) {
@@ -50,9 +74,12 @@ export function fetchCityBuckets (dispatch, city = 'Oslo', resetRoutes = true) {
 }
 
 export function selectBucket (bucket) {
+    const _bucket = Iterable.isIterable(bucket) ?
+        bucket : fromJS(bucket);
+
     return {
         type: types.SELECT_BUCKET,
-        bucket
+        bucket: _bucket
     };
 }
 
