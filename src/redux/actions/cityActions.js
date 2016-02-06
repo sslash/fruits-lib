@@ -10,3 +10,7 @@ export function fetch () {
         promise: ({ req }) => req.get('/cities')
     };
 }
+
+export function selectCity (city) {
+    return { type: actions.CITY_SELECT, city };
+}
