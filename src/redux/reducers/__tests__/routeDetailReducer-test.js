@@ -12,7 +12,7 @@ describe('route detail reducer', () => {
             type: types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL,
         });
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirections'])).to.equal(false);
-        expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsFailed'])).to.equal(true);
+        expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsError'])).to.equal(true);
     });
 
     it('should handle VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS', () => {
@@ -28,7 +28,7 @@ describe('route detail reducer', () => {
         const newDirections = afterState.getIn(['directionsMatrix', 'directionsResult', 'data']).get(0).getIn(['routes', '0', 'legs']).get(0).toJS();
         expect(oldDirections.distance.value).to.not.equal(newDirections.distance.value)
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirections'])).to.equal(false);
-        expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsFailed'])).to.equal(false);
+        expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsError'])).to.equal(false);
 
     });
 
@@ -38,6 +38,6 @@ describe('route detail reducer', () => {
         });
 
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirections'])).to.equal(true);
-        expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsFailed'])).to.equal(false);
+        expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsError'])).to.equal(false);
     });
 });

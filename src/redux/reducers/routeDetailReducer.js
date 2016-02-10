@@ -53,7 +53,7 @@ export default function reducer (state = initialState, action) {
         case types.FETCH_DIRECTIONS_MATRIX:
             return state.set('directionsMatrix', fromJS({
                 fetchingDirections: true,
-                fetchingDirectionsFailed: false
+                fetchingDirectionsError: false
             }));
 
         case types.FETCH_DIRECTIONS_MATRIX_SUCCESS:
@@ -64,7 +64,7 @@ export default function reducer (state = initialState, action) {
         case types.FETCH_DIRECTIONS_MATRIX_FAIL:
             return state.set('directionsMatrix', fromJS({
                 fetchingDirections: false,
-                fetchingDirectionsFailed: true
+                fetchingDirectionsError: true
             }));
 
         case types.ROUTE_DETAIL_VERTICE_SPICES_FETCH_SUCCESS:
@@ -76,18 +76,17 @@ export default function reducer (state = initialState, action) {
             return state.set('route', action.route);
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH:
-        return state.setIn(['directionsMatrix', 'fetchingDirections'], true).setIn(['directionsMatrix', 'fetchingDirectionsFailed'], false);
+        return state.setIn(['directionsMatrix', 'fetchingDirections'], true).setIn(['directionsMatrix', 'fetchingDirectionsError'], false);
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS:
-            debugger;
             return state.set('directionsMatrix', fromJS({
                 fetchingDirections: false,
-                fetchingDirectionsFailed: false,
+                fetchingDirectionsError: false,
             })).setIn(['directionsMatrix', 'directionsResult', 'data'], mapNewDirections(action.payload, state.getIn(['directionsMatrix', 'directionsResult', 'data'])))
 
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL:
-            return state.setIn(['directionsMatrix', 'fetchingDirections'], false).setIn(['directionsMatrix', 'fetchingDirectionsFailed'], true);
+            return state.setIn(['directionsMatrix', 'fetchingDirections'], false).setIn(['directionsMatrix', 'fetchingDirectionsError'], true);
 
         default:
             return state;

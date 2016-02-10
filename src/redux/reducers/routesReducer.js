@@ -84,7 +84,7 @@ export default function reducer (state = initialState, action) {
         // case actions.FETCH_DIRECTIONS_MATRIX_FAILURE:
         //     return state.set('directionsMatrix', {
         //         fetchingDirections: false,
-        //         fetchingDirectionsFailed: true
+        //         fetchingDirectionsError: true
         //     });
 
         // when data comes from the server, we need to make it
