@@ -42,15 +42,16 @@ export function fetchDistanceMatrix (routeId, travelmode) {
     };
 }
 
-export function fetchDistanceMatrixBetweenVenues (routeId, travelmode, venueIds) {
-
+export function fetchDistanceMatrixBetweenVenues (directionsResult, travelmode, index, routeId) {
+    let venueIds = [];
+    venueIds.push({googleId: directionsResult.get('data').get(index).get('geocoded_waypoints').get(0).get('place_id')});
+    venueIds.push({googleId: directionsResult.get('data').get(index).get('geocoded_waypoints').get(1).get('place_id')});
     return {
         types: [
             types.VENUES_DIRECTIONS_MATRIX_FETCH,
             types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS,
             types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL
         ],
-
         promise: ({req}) => req.get(`/routes/${routeId}/directionsMatrix`, {params: { travelmode, venueIds }})
     };
 }

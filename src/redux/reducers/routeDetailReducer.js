@@ -28,7 +28,7 @@ export default function reducer (state = initialState, action) {
 
         case types.TRAVELMODE_CHANGED:
             return state.set('travelmode', action.travelmode)
-            
+
         case types.ROUTE_DETAIL_FETCH_SUCCESS:
 
             return initialState
@@ -79,12 +79,12 @@ export default function reducer (state = initialState, action) {
         return state.setIn(['directionsMatrix', 'fetchingDirections'], true).setIn(['directionsMatrix', 'fetchingDirectionsFailed'], false);
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS:
+            debugger;
             return state.set('directionsMatrix', fromJS({
                 fetchingDirections: false,
                 fetchingDirectionsFailed: false,
-                directionsResult: mapNewDirections(action.payload, state.getIn(['directionsMatrix','directionsResult']))
+            })).setIn(['directionsMatrix', 'directionsResult', 'data'], mapNewDirections(action.payload, state.getIn(['directionsMatrix', 'directionsResult', 'data'])))
 
-            }));
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL:
             return state.setIn(['directionsMatrix', 'fetchingDirections'], false).setIn(['directionsMatrix', 'fetchingDirectionsFailed'], true);
@@ -96,13 +96,13 @@ export default function reducer (state = initialState, action) {
 
 
 function mapNewDirections(newDirections, oldDirections) {
-    return Map(oldDirections.get('data').map((route) => {
+    return oldDirections.map((route) => {
         if(isRoute(route) && _isEqual(route.get('geocoded_waypoints').toJS(), newDirections.data[0].geocoded_waypoints)) {
-            return newDirections;
+            return fromJS(newDirections.data[0]);
         } else {
             return route;
         }
-    }));
+    });
 }
 
 function isRoute(route) {
