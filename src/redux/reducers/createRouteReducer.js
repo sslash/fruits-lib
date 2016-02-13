@@ -147,12 +147,7 @@ export default function reducer (state = initialState, action = {}) {
                 .updateIn(['route', 'vertices'], v => v.push(vert))
                 .set('pendingDoneActions', pendingActions);
 
-            if (vert.get('city') && vert.getIn(['city', 'long_name'])) {
-                return newState.setIn(['route', 'city'],
-                    vert.getIn(['city', 'long_name']).toLowerCase());
-            } else {
-                return newState;
-            }
+            return newState;
 
         case types.ADD_VERTICE_TO_ROUTE_SUCCESS:
 
