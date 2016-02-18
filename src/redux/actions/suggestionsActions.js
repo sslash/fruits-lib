@@ -24,7 +24,7 @@ export function fetchDetail (params) {
             actions.SUGGESTIONS_DETAIL_FETCH_SUCCESS,
             actions.SUGGESTIONS_DETAIL_FETCH_FAIL
         ],
-        promise: ({req}) => req.get(`/venues/venueTipsDetail`, { params }),
+        promise: ({req}) => req.get(`/venues/getSpicesByGEOandName`, { params }),
         meta: params
     };
 }
