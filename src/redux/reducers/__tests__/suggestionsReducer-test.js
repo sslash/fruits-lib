@@ -2,8 +2,7 @@ import {expect} from 'chai';
 import {List} from 'immutable';
 import reducer from '../suggestionsReducer';
 import * as types from '../../constants/actionTypes';
-import foursquareFixure from './foursquareFixture';
-import instagramFixture from './instagramFixture';
+import selectedVenue from './selectedVenueFixture';
 
 describe('suggestion reducer', () => {
 
@@ -21,14 +20,13 @@ describe('suggestion reducer', () => {
     it('should handle images when SUGGESTIONS_DETAIL_FETCH_SUCCESS:', () => {
         const afterState = reducer(undefined, {
             type: types.SUGGESTIONS_DETAIL_FETCH_SUCCESS,
-            payload: {instagram: instagramFixture, foursquare: foursquareFixure}
+            payload: selectedVenue
         });
-        expect(afterState.getIn(['current', 'item', 'images']).size).to.equal(21);
+        expect(afterState.getIn(['current', 'item', 'images']).size).to.equal(26);
         expect(afterState.getIn(['current', 'item', 'images', 0, 'source'])).to.equal('foursquare');
         expect(afterState.getIn(['current', 'item', 'reviews']).size).to.equal(5);
-        expect(afterState.getIn(['current', 'item', 'ratings', 'foursquare'])).to.equal(9.5);
-        expect(afterState.getIn(['current', 'item', 'meta', 'foursquare', 'price'])).to.equal('$');
-        expect(afterState.getIn(['current', 'item', 'meta', 'foursquare', 'hoursStatus'])).to.equal('Open until 1:00 AM');
+        expect(afterState.getIn(['current', 'item', 'ratings', 'foursquare'])).to.equal(9.2);
+        expect(afterState.getIn(['current', 'item', 'meta', 'foursquare', 'hoursStatus'])).to.equal('Closed until 6:00 PM');
     });
 
 });
