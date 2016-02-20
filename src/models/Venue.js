@@ -1,4 +1,4 @@
-import {Record, Map} from 'immutable';
+import {Record, Map, List} from 'immutable';
 import _isFunc from 'lodash/lang/isFunction';
 
 const VenueRecord = Record({
@@ -15,7 +15,12 @@ const VenueRecord = Record({
     yelpId: null,
 
     // old. must remove me. TODO
-    venueSocial: null
+    venueSocial: null,
+
+    // new school
+    images: List(),
+    reviews: List(),
+    ratings: List()
 });
 
 export default class Venue extends VenueRecord {

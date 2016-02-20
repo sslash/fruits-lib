@@ -13,14 +13,19 @@ function current (state = initialCurrentState, action) {
     switch (action.type) {
 
         case actions.SUGGESTIONS_DETAIL_FETCH:
-            return state.set('isFetching', true);
+            return state
+                .set('isFetching', true)
+                .set('item', action.suggestion);
 
         case actions.SUGGESTIONS_DETAIL_FETCH_SUCCESS:
-            return state.set('isFetching', false)
-                .set('item', fromJS(action.payload));
-                
+            const item = state.get('item').mergeDeep(fromJS(action.payload));
+            return state
+                .set('isFetching', false)
+                .set('item', item);
+
         case actions.SUGGESTIONS_DETAIL_FETCH_FAIL:
-            return state.set('isFetching', false)
+            return state
+                .set('isFetching', false)
                 .set('error', action.error);
 
         default:
@@ -47,7 +52,9 @@ export default function reducer (state = initialState, action) {
             return initialState;
 
         case actions.SUGGESTIONS_FETCH:
-            return state.set('isFetching', true);
+            return state
+                .set('isFetching', true)
+                .set('current', undefined);
 
         case actions.SUGGESTIONS_FETCH_SUCCESS:
 
