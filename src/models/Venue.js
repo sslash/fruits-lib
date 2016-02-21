@@ -111,10 +111,6 @@ export default class Venue extends VenueRecord {
         return new Venue(venue);
     }
 
-    static foursquareDetailToVenue (venue) {
-
-    }
-
     static foursquareToVenue (venue) {
         let thumb; let photos;
         if (venue.getIn(['venue', 'photos', 'count'])) {
