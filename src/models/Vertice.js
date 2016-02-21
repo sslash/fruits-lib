@@ -67,7 +67,7 @@ export default class Vertice extends VerticeRecord {
             venue: venue,
             title: data.name,
             city: data.city,
-            photos: data.photos,
+            photos: List(data.photos),
             sortorder: data.sortorder
         });
     }
