@@ -7,7 +7,7 @@ import * as user from './userActions';
 import * as navbar from './navbarActions';
 import * as vertice from './verticeActions';
 import * as routeDetail from './routeDetailActions';
-import * as inspiration from './inspirationActions';
+import * as suggestions from './suggestionsActions';
 import * as notifications from './notificationsActions';
 import * as city from './cityActions';
 
@@ -21,7 +21,7 @@ export const actions = Object.assign({}, {
     flashMessages,
     navbar,
     routeDetail,
-    inspiration,
+    suggestions,
     notifications,
     city
 });
