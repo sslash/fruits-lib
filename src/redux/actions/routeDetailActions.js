@@ -44,8 +44,8 @@ export function fetchDistanceMatrix (routeId, travelmode) {
 
 export function fetchDistanceMatrixBetweenVenues (directionsResult, travelmode, index, routeId) {
     let venueIds = [];
-    venueIds.push({googleId: directionsResult.get('data').get(index).get('geocoded_waypoints').get(0).get('place_id')});
-    venueIds.push({googleId: directionsResult.get('data').get(index).get('geocoded_waypoints').get(1).get('place_id')});
+    venueIds.push({googleId: directionsResult.getIn(['data', index, 'geocoded_waypoints', 0, 'place_id'])});
+    venueIds.push({googleId: directionsResult.getIn(['data', index, 'geocoded_waypoints', 1, 'place_id'])});
     return {
         types: [
             types.VENUES_DIRECTIONS_MATRIX_FETCH,

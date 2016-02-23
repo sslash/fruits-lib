@@ -1,7 +1,7 @@
 import * as actions from '../constants/actionTypes';
 import {Map, fromJS, Iterable} from 'immutable';
 import Route from '../../models/Route';
-import routesListFixture from './routesListFixture';
+// import routesListFixture from './routesListFixture';
 
 const initialRoutesState = Map({
     isFetching: false,
@@ -11,7 +11,10 @@ const initialRoutesState = Map({
 
     // only concerns one route. TODO move into a single route
     directionsMatrix: null,
-    error: null
+    error: null,
+
+    // pageing
+    offset: 0
 });
 
 function routes (state = initialRoutesState, action) {
@@ -24,7 +27,9 @@ function routes (state = initialRoutesState, action) {
         case actions.REQUEST_ROUTES:
             return state.merge({
                 isFetching: true,
-                didInvalidate: false
+                didInvalidate: false,
+                offset: action.meta.offset,
+                items: state.get('items')
             });
 
         case actions.RECEIVE_ROUTES:
@@ -32,7 +37,7 @@ function routes (state = initialRoutesState, action) {
             return state.merge({
                 isFetching: false,
                 didInvalidate: false,
-                items: action.payload._embedded.routes.map(Route.mapper),
+                items: state.get('items').concat(action.payload._embedded.routes.map(Route.mapper)),
                 lastUpdated: new Date()
             });
 
@@ -65,7 +70,7 @@ export default function reducer (state = initialState, action) {
         case actions.REQUEST_ROUTES:
         case actions.RECEIVE_ROUTES_FAILED:
             return state.merge({
-                [action.meta.bucketName]: routes(state.get(action.meta.bucket), action)
+                [action.meta.bucketName]: routes(state.get(action.meta.bucketName), action)
             });
 
         // when setting new city categories

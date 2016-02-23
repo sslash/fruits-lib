@@ -59,4 +59,16 @@ export default class Vertice extends VerticeRecord {
             .set('photos', new List(vertice.photos))
             .set('venue', new Venue(vertice.venue));
     }
+
+    static oldToNewMapper (data) {
+
+        const venue = new Venue(data);
+        return new Vertice({
+            venue: venue,
+            title: data.name,
+            city: data.city,
+            photos: data.photos ? List(data.photos.filter(photo => !!photo)) : List(),
+            sortorder: data.sortorder
+        });
+    }
 }
