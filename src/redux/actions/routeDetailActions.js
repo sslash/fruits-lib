@@ -26,14 +26,33 @@ export function fetch (routeId) {
     };
 }
 
-export function fetchDistanceMatrix (routeId) {
+export function changeTravelMode (travelmode) {
+    return {type: types.TRAVELMODE_CHANGED, travelmode};
+}
+
+export function fetchDistanceMatrix (routeId, travelmode) {
     return {
         types: [
             types.FETCH_DIRECTIONS_MATRIX,
             types.FETCH_DIRECTIONS_MATRIX_SUCCESS,
             types.FETCH_DIRECTIONS_MATRIX_FAIL
         ],
-        promise: ({req}) => req.get(`/routes/${routeId}/directionsMatrix`)
+
+        promise: ({req}) => req.get(`/routes/${routeId}/directionsMatrix`, {params: { travelmode }})
+    };
+}
+
+export function fetchDistanceMatrixBetweenVenues (directionsResult, travelmode, index, routeId) {
+    let venueIds = [];
+    venueIds.push({googleId: directionsResult.getIn(['data', index, 'geocoded_waypoints', 0, 'place_id'])});
+    venueIds.push({googleId: directionsResult.getIn(['data', index, 'geocoded_waypoints', 1, 'place_id'])});
+    return {
+        types: [
+            types.VENUES_DIRECTIONS_MATRIX_FETCH,
+            types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS,
+            types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL
+        ],
+        promise: ({req}) => req.get(`/routes/${routeId}/directionsMatrix`, {params: { travelmode, venueIds }})
     };
 }
 
