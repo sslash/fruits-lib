@@ -9,3 +9,4 @@ export routeDetail from './routeDetailReducer';
 export suggestions from './suggestionsReducer';
 export notificationsReducer from './notificationsReducer';
 export cityReducer from './cityReducer';
+export bookmarksReducer from './bookmarksReducer';
