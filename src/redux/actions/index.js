@@ -10,6 +10,7 @@ import * as routeDetail from './routeDetailActions';
 import * as suggestions from './suggestionsActions';
 import * as notifications from './notificationsActions';
 import * as city from './cityActions';
+import * as bookmarks from './bookmarksActions';
 
 export const actions = Object.assign({}, {
     user,
@@ -23,5 +24,6 @@ export const actions = Object.assign({}, {
     routeDetail,
     suggestions,
     notifications,
-    city
+    city,
+    bookmarks
 });

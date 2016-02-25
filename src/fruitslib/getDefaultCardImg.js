@@ -10,6 +10,4 @@ const len = images.length;
 
 export default function getDefaultCardImg() {
     return 'http://www.routes.guide/img/defaultimg3.png';
-    const i = Math.floor(Math.random() * len);
-    return images[i];
 }
