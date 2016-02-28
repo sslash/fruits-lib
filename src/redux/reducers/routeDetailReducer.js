@@ -82,7 +82,7 @@ export default function reducer (state = initialState, action) {
             return state.set('directionsMatrix', fromJS({
                 fetchingDirections: false,
                 fetchingDirectionsError: false,
-            })).setIn(['directionsMatrix', 'directionsResult', 'data'], mapNewDirections(action.payload, state.getIn(['directionsMatrix', 'directionsResult', 'data'])))
+            })).setIn(['directionsMatrix', 'directionsResult', 'data'], updateIndex(action.payload, state.getIn(['directionsMatrix', 'directionsResult', 'data']), action.index));
 
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL:
@@ -93,25 +93,6 @@ export default function reducer (state = initialState, action) {
     }
 }
 
-
-function mapNewDirections(newDirections, oldDirections) {
-    return oldDirections.map((route) => {
-        if(isRoute(route) && _isEqual(route.get('geocoded_waypoints').toJS(), newDirections.data[0].geocoded_waypoints)) {
-            return fromJS(newDirections.data[0]);
-        } else {
-            return route;
-        }
-    });
-}
-
-function isRoute(route) {
-    if(route) {
-        if(route.isEmpty()) {
-            return false;
-        }else {
-            return true;
-        }
-    }else {
-        return false
-    }
+function updateIndex (newData, oldData, index) {
+    return oldData.set(index, fromJS(newData.data[0]));
 }

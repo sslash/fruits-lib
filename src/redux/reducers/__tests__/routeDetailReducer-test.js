@@ -22,11 +22,18 @@ describe('route detail reducer', () => {
         });
         const afterState = reducer(beforeState, {
             type: types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS,
+            index: 0,
             payload: venueDirectionsResultFixture
         });
+
         const oldDirections = beforeState.getIn(['directionsMatrix', 'directionsResult', 'data']).get(0).getIn(['routes', '0', 'legs']).get(0).toJS();
         const newDirections = afterState.getIn(['directionsMatrix', 'directionsResult', 'data']).get(0).getIn(['routes', '0', 'legs']).get(0).toJS();
-        expect(oldDirections.distance.value).to.not.equal(newDirections.distance.value)
+        const oldLength = beforeState.getIn(['directionsMatrix', 'directionsResult', 'data']).size;
+        const newLength = afterState.getIn(['directionsMatrix', 'directionsResult', 'data']).size;
+
+        expect(oldDirections.distance.value).to.not.equal(newDirections.distance.value);
+        expect(newLength).to.equal(oldLength);
+
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirections'])).to.equal(false);
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsError'])).to.equal(false);
 
