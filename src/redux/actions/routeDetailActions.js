@@ -42,18 +42,20 @@ export function fetchDistanceMatrix (routeId, travelmode) {
     };
 }
 
-export function fetchDistanceMatrixBetweenVenues (directionsResult, travelmode, index, routeId) {
-    let venueIds = [];
-    venueIds.push({googleId: directionsResult.getIn(['data', index, 'geocoded_waypoints', 0, 'place_id'])});
-    venueIds.push({googleId: directionsResult.getIn(['data', index, 'geocoded_waypoints', 1, 'place_id'])});
-    return {
-        types: [
-            types.VENUES_DIRECTIONS_MATRIX_FETCH,
-            types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS,
-            types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL
-        ],
-        promise: ({req}) => req.get(`/routes/${routeId}/directionsMatrix`, {params: { travelmode, venueIds }})
-    };
+export function fetchDistanceMatrixBetweenVenues (geoFirstSpot, geoSecondSpot, travelmode, routeId, index) {
+    if(checkGEO(geoFirstSpot) && checkGEO(geoSecondSpot)) {
+        const lat = [geoFirstSpot.lat, geoSecondSpot.lat];
+        const lng = [geoFirstSpot.lng, geoSecondSpot.lng];
+        return {
+            types: [
+                types.VENUES_DIRECTIONS_MATRIX_FETCH,
+                types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS,
+                types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL
+            ],
+            promise: ({req}) => req.get(`/routes/${routeId}/directionsMatrix`, {params: { travelmode, lat, lng }}),
+            index
+        };
+    }
 }
 
 // copied from createRoute
@@ -73,4 +75,14 @@ export function fetchSpicesForVertice (venueId, sortorder) {
 // over to route detail store
 export function bootstrapRoute (route) {
     return {type: types.ROUTE_DETAIL_BOOTSTRAP, route};
+}
+
+function checkGEO (geo) {
+    //todo fix error handling, give user feedback
+    if(geo.lat && geo.lng) {
+        return true;
+    } else {
+        return false;
+    }
+
 }
