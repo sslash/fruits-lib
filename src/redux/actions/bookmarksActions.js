@@ -24,7 +24,6 @@ export function getBookmarkedRoutesIds (userId) {
         promise: ({req}) => req.get(`/users/${userId}/bookmarks?ids=true`)
     };
 }
-
 export function postBookmark (userId, bookmark) {
     return {
         types: [
