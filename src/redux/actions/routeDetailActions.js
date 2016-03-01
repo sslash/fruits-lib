@@ -38,24 +38,40 @@ export function fetchDistanceMatrix (routeId, travelmode) {
             types.FETCH_DIRECTIONS_MATRIX_FAIL
         ],
 
-        promise: ({req}) => req.get(`/routes/${routeId}/directionsMatrix`, {params: { travelmode }})
+        promise: ({req}) => req.post(`/routes/${routeId}/directionsMatrix`, { travelmode })
     };
 }
 
-export function fetchDistanceMatrixBetweenVenues (geoFirstSpot, geoSecondSpot, travelmode, routeId, index) {
-    if(checkGEO(geoFirstSpot) && checkGEO(geoSecondSpot)) {
-        const lat = [geoFirstSpot.lat, geoSecondSpot.lat];
-        const lng = [geoFirstSpot.lng, geoSecondSpot.lng];
-        return {
-            types: [
-                types.VENUES_DIRECTIONS_MATRIX_FETCH,
-                types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS,
-                types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL
-            ],
-            promise: ({req}) => req.get(`/routes/${routeId}/directionsMatrix`, {params: { travelmode, lat, lng }}),
-            index
-        };
+export function fetchDistanceMatrixBetweenVenues (firstSpot, secondSpot, travelmode, routeId, index) {
+    const venues = determineGeoType([firstSpot, secondSpot]);
+    const params = {
+        travelmode,
+        venues
+    };
+    return {
+        types: [
+            types.VENUES_DIRECTIONS_MATRIX_FETCH,
+            types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS,
+            types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL
+        ],
+        promise: ({req}) => req.post(`/routes/${routeId}/directionsMatrix`, {travelmode, venues}),
+        index
+    };
+}
+
+// pick either google_id or (lat and lng) when fetching travelmode and distance between two venues
+export function determineGeoType(venues) {
+    return venues.map(venue => {
+        const geo = venue.get('geometry') || {};
+        if (venue.get('place_id')) {
+            return {googleId: venue.get('place_id')}
+        } else if (geo.lat && geo.lng) {
+            return {lat: geo.lat, lng: geo.lng};
+        } else {
+            throw new Error({message: 'error determineGeoType(), none of the data provided is legit'});
+        }
     }
+);
 }
 
 // copied from createRoute
@@ -75,14 +91,4 @@ export function fetchSpicesForVertice (venueId, sortorder) {
 // over to route detail store
 export function bootstrapRoute (route) {
     return {type: types.ROUTE_DETAIL_BOOTSTRAP, route};
-}
-
-function checkGEO (geo) {
-    //todo fix error handling, give user feedback
-    if(geo.lat && geo.lng) {
-        return true;
-    } else {
-        return false;
-    }
-
 }
