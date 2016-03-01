@@ -11,6 +11,7 @@ const VenueRecord = Record({
 
     // external references
     place_id: null, // google
+    googleId: null, // google id (backend)
     foursquareId: null,
     yelpId: null,
 
@@ -71,6 +72,15 @@ export default class Venue extends VenueRecord {
 
     static getFoursquareImage (foursquareImage) {
         return {uri:`${foursquareImage.get('prefix')}306x306${foursquareImage.get('suffix')}`};
+    }
+
+    static mapper (venue) {
+        const created = new Venue(venue);
+        if (venue.googleId) {
+            return created.set('place_id', venue.googleId);
+        } else {
+            return created;
+        }
     }
 
     static mapFromGoogleResult (venue) {
