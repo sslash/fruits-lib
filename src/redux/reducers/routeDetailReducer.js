@@ -79,10 +79,15 @@ export default function reducer (state = initialState, action) {
         return state.setIn(['directionsMatrix', 'fetchingDirections'], true).setIn(['directionsMatrix', 'fetchingDirectionsError'], false);
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS:
-            return state.set('directionsMatrix', fromJS({
-                fetchingDirections: false,
-                fetchingDirectionsError: false,
-            })).setIn(['directionsMatrix', 'directionsResult', 'data'], updateIndex(action.payload, state.getIn(['directionsMatrix', 'directionsResult', 'data']), action.index));
+            if (action.payload.data && action.payload.data.length) {
+                return state.set('directionsMatrix', fromJS({
+                    fetchingDirections: false,
+                    fetchingDirectionsError: false,
+                })).setIn(['directionsMatrix', 'directionsResult', 'data'],
+                    updateIndex(action.payload, state.getIn(['directionsMatrix', 'directionsResult', 'data']), action.index));
+            } else {
+                return state;
+            }
 
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL:

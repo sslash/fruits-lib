@@ -1,6 +1,6 @@
 import * as types from '../constants/actionTypes';
 import Route from '../../models/Route';
-import {Map, List} from 'immutable';
+import {Map, List, fromJS} from 'immutable';
 
 const initialState = Map({
     isFetching: false,
@@ -18,6 +18,9 @@ function removeBookmark (state, routeId) {
 }
 
 export default function reducer (state = initialState, action) {
+    if (!Map.isMap(state)) {
+        state = fromJS(state);
+    }
 
     switch (action.type) {
         case types.BOOKMARKS_POST:

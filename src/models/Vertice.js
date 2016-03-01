@@ -57,7 +57,7 @@ export default class Vertice extends VerticeRecord {
     static mapper (vertice) {
         return new VerticeRecord(vertice)
             .set('photos', new List(vertice.photos))
-            .set('venue', new Venue(vertice.venue));
+            .set('venue', Venue.mapper(vertice.venue));
     }
 
     static oldToNewMapper (data) {
