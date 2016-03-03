@@ -57,6 +57,15 @@ export function updateVenue (venue, dispatch) {
     });
 }
 
+export function searchPlaces ({ query, location, request, types }) {
+    const params = {
+        query,
+        location,
+        types
+    };
+    return request.get('/routes/placeSearch', { params });
+}
+
 export function updateDescription (text) {
     return { type: actions.UPDATE_DESCRIPTION, text };
 }

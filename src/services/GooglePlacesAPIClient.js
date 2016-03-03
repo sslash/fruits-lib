@@ -21,7 +21,7 @@ export default class GooglePlacesAPIClient {
         const data = {
             input: query,
             key: API_KEY,
-            location: location
+            location
         };
         return this.request.getExt(baseAutocompleteUrl, data);
     }
