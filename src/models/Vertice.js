@@ -27,7 +27,6 @@ const VerticeRecord = Record({
     fsTip: null,
     capturedPhoto: '',
     location: {},
-    fsTip: null,
 
     // if currently editing this vertice
     editMode: false,
