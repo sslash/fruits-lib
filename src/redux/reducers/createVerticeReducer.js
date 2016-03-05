@@ -39,15 +39,7 @@ export default function reducer (state = initialState, action = {}) {
             return picturePicked(state, action.index, action.spice);
 
         case types.VERTICE_SPICES_GET_SUCCESS:
-            if (!action.payload.length) {
-                console.warn('Failed to get spices');
-                return state.set('errorType', types.VERTICE_SPICES_GET_FAIL);
-            }
-            const foursquareVenue = fromJS(action.payload[0].foursquare_venue);
-            const instagramVenue = fromJS(action.payload[0].instagram_venue ?
-                    action.payload[0].instagram_venue.data : {});
-
-            return state.setIn(['vertice', 'venue', 'spices'], Map({instagramVenue, foursquareVenue}));
+            return state.setIn(['vertice', 'venue'], fromJS(action.payload));
 
         case types.VERTICE_SPICES_SET_PHOTOS:
             const foursquareImages = state.getIn(['vertice', 'venue']).getFoursquareImages();
