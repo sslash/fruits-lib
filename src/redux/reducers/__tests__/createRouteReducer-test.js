@@ -124,4 +124,32 @@ describe('create route reducer', () => {
         expect(afterState.getIn(['route', 'buckets']).size).to.equal(1);
         expect(afterState.getIn(['route', 'buckets', '0'])).to.equal(createRouteBucketSuccesFxt.id);
     });
+
+    it('should handle VERTICE_UPDATE_TAGS', () => {
+        const title = "IT WORKS";
+        const tags = ['foo', 'bar', '1337'];
+
+        const beforeState = reducer(undefined, {
+            type: types.ADD_VERTICE_TO_ROUTE,
+            meta: new Vertice().set('title', title)
+        });
+
+        const afterState = reducer(beforeState, {
+            type: types.ADD_VERTICE_TO_ROUTE_SUCCESS,
+            payload: verticeFxt
+        });
+
+
+        const afterTagAddedState = reducer(beforeState, {
+            type: types.VERTICE_UPDATE_TAGS,
+            payload: { id: 942 , tags }
+        });
+        const verticeTags = afterTagAddedState.getIn(['route', 'vertices', 0, 'tags']);
+        expect(verticeTags.get(0)).to.equal(tags[0])
+        expect(verticeTags.get(2)).to.equal(tags[2])
+        expect(verticeTags.size).to.equal(tags.length)
+
+
+    });
+
 });
