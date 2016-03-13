@@ -33,13 +33,15 @@ export function pollSpices (req, routeId, spicePollId, sortorder, retries) {
 
             req.get(url)
             .then((res) => {
-                clearInterval(pollInterval);
-                resolve({
-                    venue: {
-                        venueSocial: res
-                    },
-                    sortorder: sortorder
-                });
+                if (res) {
+                    clearInterval(pollInterval);
+                    resolve({
+                        venue: {
+                            venueSocial: res
+                        },
+                        sortorder
+                    });
+                }
             })
             .catch();
         }, 1000);

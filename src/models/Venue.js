@@ -132,6 +132,7 @@ export default class Venue extends VenueRecord {
         return {
             photo: thumb,
             name: venue.getIn(['venue', 'name']),
+            description: venue.getIn(['venue', 'name']),
             rating: venue.getIn(['venue', 'rating']),
             ratingBase: '10',
             geometry: Venue.mapSpicesGeo(
@@ -149,6 +150,7 @@ export default class Venue extends VenueRecord {
         return {
             photo: venue.get('image_url'),
             name: venue.get('name'),
+            description: venue.get('name'),
             rating: venue.get('rating'),
             ratingBase: '5',
             geometry: Venue.mapSpicesGeo(

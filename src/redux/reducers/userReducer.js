@@ -33,7 +33,7 @@ export default function reducer (state = initialState, action = {}) {
 
     if (!Iterable.isIterable(state)) {
         state = initialState.set('user', Map(state.user));
-    };
+    }
 
     switch (action.type) {
         case types.LOGIN:

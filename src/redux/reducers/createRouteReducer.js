@@ -22,7 +22,9 @@ const initialState = Map({
 
     donePressed: false,
     pendingDoneActions: List(),
-    renderMapCounter: 0
+    renderMapCounter: 0,
+
+    fetchingSpices: false
 });
 
 
@@ -133,10 +135,19 @@ export default function reducer (state = initialState, action = {}) {
              .updateIn(['route', 'buckets'], buckets => buckets.push(bucket.id));
 
 
+        case types.CREATE_ROUTE_VERTICE_SPICES_FETCH:
+            return state.set('fetchingSpices', true);
+
         case types.CREATE_ROUTE_VERTICE_SPICES_FETCH_SUCCESS:
             return Route.updateVertice(state, {
                 ...action.payload
-            });
+            })
+            .set('fetchingSpices', false);
+
+        case types.CREATE_ROUTE_VERTICE_SPICES_FETCH_FAIL:
+            return state
+                .set('fetchingSpices', false)
+                .set('errors', 'Failed to fetch spices');
 
         case types.ADD_VERTICE_TO_ROUTE:
             const vert = action.meta;

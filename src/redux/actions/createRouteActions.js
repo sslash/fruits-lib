@@ -88,7 +88,6 @@ export function updateRoute (routeId, data) {
 
 // sortorder only if webapp
 export function addVerticeToRoute (routeId, vertice, sortorder) {
-
     const _vertice = Iterable.isIterable(vertice) ?
         vertice : Vertice.createMapper(vertice, sortorder);
 
