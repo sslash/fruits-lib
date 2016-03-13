@@ -132,6 +132,10 @@ export function fetchSpicesForVertice (venueId, sortorder) {
     }
 }
 
+export function updateVerticeTags (vertice) {
+    return { type: actions.VERTICE_UPDATE_TAGS, payload: { id: vertice.id, tags: vertice.tags } };
+}
+
 export function updateVertice (updateData, verticeId, routeId) {
 
     return {

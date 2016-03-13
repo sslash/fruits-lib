@@ -116,6 +116,14 @@ export default class Route extends RouteRecord {
         });
     };
 
+    static addVerticeTag (routeState, vertice) {
+        return Route.doUpdate(routeState, vertice, (verts, index) => {
+            return verts.update(index, (vert) => {
+                return vert.set('tags', List(vertice.tags));
+            });
+        });
+    };
+
     static removeVerticePhoto (routeState, vertice) {
         return Route.doUpdate(routeState, vertice, (verts, index) => {
             return verts.update(index, (vert) => {
