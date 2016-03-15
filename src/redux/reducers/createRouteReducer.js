@@ -220,8 +220,11 @@ export default function reducer (state = initialState, action = {}) {
         case types.CREATE_ROUTE_VERTICE_SPICE_PHOTO_REMOVE:
             return Route.removeVerticePhoto(state, action.meta);
 
-        case types.VERTICE_UPDATE_TAGS:
-            return Route.addVerticeTag(state, action.payload);
+        case types.VERTICE_UPDATE_BUCKETS_SUCCESS:
+            return Route.addVerticeTag(state, {bucket: action.payload, id: action.meta.id});
+
+        case types.VERTICE_DELETE_BUCKETS_SUCCESS:
+            return Route.removeVerticeTag(state, {bucket: action.meta.bucketId, id: action.meta.id});
 
         case types.VERTICE_REORDER:
             const updatedListOfVerticeIds = action.meta.reorderList;

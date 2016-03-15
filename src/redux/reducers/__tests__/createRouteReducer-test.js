@@ -125,9 +125,8 @@ describe('create route reducer', () => {
         expect(afterState.getIn(['route', 'buckets', '0'])).to.equal(createRouteBucketSuccesFxt.id);
     });
 
-    it('should handle VERTICE_UPDATE_TAGS', () => {
+    it('should handle VERTICE_UPDATE_BUCKETS', () => {
         const title = "IT WORKS";
-        const tags = ['foo', 'bar', '1337'];
 
         const beforeState = reducer(undefined, {
             type: types.ADD_VERTICE_TO_ROUTE,
@@ -138,18 +137,41 @@ describe('create route reducer', () => {
             type: types.ADD_VERTICE_TO_ROUTE_SUCCESS,
             payload: verticeFxt
         });
+        const afterTagAddedState = reducer(beforeState, {
+            type: types.VERTICE_UPDATE_BUCKETS_SUCCESS,
+            payload: { name: 'yolo', id: 1337 },
+            meta: { id: 942 }
+        });
+        const verticeTags = afterTagAddedState.getIn(['route', 'vertices', 0, 'buckets']);
+        expect(verticeTags.get(0).name).to.equal('yolo');
+        expect(verticeTags.get(0).id).to.equal(1337);
+        expect(verticeTags.size).to.equal(1);
+    });
 
+    it('should handle VERTICE_DELETE_BUCKETS_SUCCESS', () => {
+        const title = "IT WORKS";
+        const bucket = { name: 'yolo', id: 1337 };
+        const beforeState = reducer(undefined, {
+            type: types.ADD_VERTICE_TO_ROUTE,
+            meta: new Vertice().set('title', title)
+        });
+
+        const afterState = reducer(beforeState, {
+            type: types.ADD_VERTICE_TO_ROUTE_SUCCESS,
+            payload: verticeFxt
+        });
 
         const afterTagAddedState = reducer(beforeState, {
-            type: types.VERTICE_UPDATE_TAGS,
-            payload: { id: 942 , tags }
+            type: types.VERTICE_UPDATE_BUCKETS_SUCCESS,
+            payload: bucket,
+            meta: { id: 942 }
         });
-        const verticeTags = afterTagAddedState.getIn(['route', 'vertices', 0, 'tags']);
-        expect(verticeTags.get(0)).to.equal(tags[0])
-        expect(verticeTags.get(2)).to.equal(tags[2])
-        expect(verticeTags.size).to.equal(tags.length)
-
-
+        const afterTagDeletedState = reducer(afterTagAddedState, {
+            type: types.VERTICE_DELETE_BUCKETS_SUCCESS,
+            meta: { id: 942, bucketId: 1337 }
+        });
+        const verticeTags = afterTagDeletedState.getIn(['route', 'vertices', 0, 'buckets']);
+        expect(verticeTags.size).to.equal(0);
     });
 
 });
