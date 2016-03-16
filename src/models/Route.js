@@ -119,10 +119,20 @@ export default class Route extends RouteRecord {
     static addVerticeTag (routeState, vertice) {
         return Route.doUpdate(routeState, vertice, (verts, index) => {
             return verts.update(index, (vert) => {
-                return vert.set('tags', List(vertice.tags));
+                return vert.update('buckets', buckets => buckets.push(vertice.bucket));
             });
         });
-    };
+    }
+
+    static removeVerticeTag (routeState, vertice) {
+        return Route.doUpdate(routeState, vertice, (verts, index) => {
+            return verts.update(index, (vert) => {
+                return vert.update('buckets', buckets => buckets.delete(
+                    buckets.findIndex(p => p.id === vertice.bucket))
+                );
+            });
+        });
+    }
 
     static removeVerticePhoto (routeState, vertice) {
         return Route.doUpdate(routeState, vertice, (verts, index) => {

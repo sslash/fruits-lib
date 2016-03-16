@@ -131,9 +131,29 @@ export function fetchSpicesForVertice (venueId, sortorder) {
     }
 }
 
-export function updateVerticeTags (vertice) {
-    return { type: actions.VERTICE_UPDATE_TAGS, payload: { id: vertice.id, tags: vertice.tags } };
-}
+export function updateVerticeBucket (routeId, verticeId, bucket) {
+    return {
+        types: [
+            actions.VERTICE_UPDATE_BUCKETS,
+            actions.VERTICE_UPDATE_BUCKETS_SUCCESS,
+            actions.VERTICE_UPDATE_BUCKETS_FAIL
+        ],
+        promise: ({req}) => req.put(`/routes/${routeId}/vertices/${verticeId}/buckets`, {bucket}),
+        meta: {bucket, id: verticeId}
+    };
+};
+
+export function deleteVerticeBucket (routeId, verticeId, bucketId) {
+    return {
+        types: [
+            actions.VERTICE_DELETE_BUCKETS,
+            actions.VERTICE_DELETE_BUCKETS_SUCCESS,
+            actions.VERTICE_DELETE_BUCKETS_FAIL
+        ],
+        promise: ({req}) => req.delete(`/routes/${routeId}/vertices/${verticeId}/buckets/${bucketId}`),
+        meta: {bucketId, id: verticeId}
+    };
+};
 
 export function updateVertice (updateData, verticeId, routeId) {
 
