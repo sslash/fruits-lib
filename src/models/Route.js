@@ -22,7 +22,8 @@ const RouteRecord = Record({
     likes : new List(),
     vertices : new List(),
     upvoteCount: 0,
-    city: ''
+    city: '',
+    city_location: ''
 });
 
 function _findIndexByVertice (vertices, vertice) {
