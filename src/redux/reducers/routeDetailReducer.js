@@ -51,19 +51,19 @@ export default function reducer (state = initialState, action) {
             return state;
 
         case types.FETCH_DIRECTIONS_MATRIX:
-            return state.set('directionsMatrix', fromJS({
+            return state.set('directionsMatrix', Map({
                 fetchingDirections: true,
                 fetchingDirectionsError: false
             }));
 
         case types.FETCH_DIRECTIONS_MATRIX_SUCCESS:
-            return state.set('directionsMatrix', fromJS({
+            return state.set('directionsMatrix', Map({
                 fetchingDirections: false,
                 fetchingDirectionsError: false,
                 directionsResult: action.payload
             }));
         case types.FETCH_DIRECTIONS_MATRIX_FAIL:
-            return state.set('directionsMatrix', fromJS({
+            return state.set('directionsMatrix', Map({
                 fetchingDirections: false,
                 fetchingDirectionsError: true
             }));
@@ -74,7 +74,9 @@ export default function reducer (state = initialState, action) {
             });
 
         case types.ROUTE_DETAIL_BOOTSTRAP:
-            return state.set('route', action.route);
+            return state
+                .set('route', action.route)
+                // .set('directionsMatrix', Map());
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH:
         return state
@@ -83,22 +85,35 @@ export default function reducer (state = initialState, action) {
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS:
             if (action.payload.data && action.payload.data.length) {
-                const newState = state.set('directionsMatrix', fromJS({
-                    fetchingDirections: false,
-                    fetchingDirectionsError: false
-                }))
+                let newDirectionsResult;
 
                 if (isNaN(action.index)) {
-                    return newState.setIn(['directionsMatrix', 'directionsResult'], fromJS(action.payload));
+                    newDirectionsResult = action.payload;
 
                 } else {
-                    return newState.setIn(['directionsMatrix', 'directionsResult', 'data'],
-                        setDirectionResult(state.getIn(['directionsMatrix', 'directionsResult', 'data']), action.payload, action.index));
+                    newDirectionsResult = Object.assign({}, state.getIn(['directionsMatrix', 'directionsResult']));
+
+                    // something has gone wrong. simply return. TODO: logg error
+                    if (!newDirectionsResult.data) {
+                        console.error(`No directionsResult in VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS`);
+                        return state;
+                    }
+
+                    newDirectionsResult.data = newDirectionsResult.data.map((data, index) => {
+                        return index === action.index ?
+                            action.payload.data[0] : data;
+                    });
                 }
 
-            } else {
-                return state;
-            }
+            return state.set('directionsMatrix', Map({
+                fetchingDirections: false,
+                fetchingDirectionsError: false,
+                directionsResult: newDirectionsResult
+            }));
+
+        } else {
+            return state;
+        }
 
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL:
@@ -109,8 +124,4 @@ export default function reducer (state = initialState, action) {
         default:
             return state;
     }
-}
-
-function setDirectionResult (oldData, newData, index) {
-    return oldData.set(index, fromJS(newData.data[0]));
 }
