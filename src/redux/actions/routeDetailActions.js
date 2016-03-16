@@ -42,12 +42,9 @@ export function fetchDistanceMatrix (routeId, travelmode) {
     };
 }
 
-export function fetchDistanceMatrixBetweenVenues (firstSpot, secondSpot, travelmode, routeId, index) {
-    const venues = determineGeoType([firstSpot, secondSpot]);
-    const params = {
-        travelmode,
-        venues
-    };
+export function fetchDistanceMatrixBetweenVenues (vertices, travelmode, routeId, index) {
+    const venues = mapVerticesToGeoVenues(vertices);
+
     return {
         types: [
             types.VENUES_DIRECTIONS_MATRIX_FETCH,
@@ -59,19 +56,23 @@ export function fetchDistanceMatrixBetweenVenues (firstSpot, secondSpot, travelm
     };
 }
 
-// pick either google_id or (lat and lng) when fetching travelmode and distance between two venues
-export function determineGeoType(venues) {
-    return venues.map(venue => {
-        const geo = venue.get('geometry') || {};
-        if (venue.get('place_id')) {
-            return {googleId: venue.get('place_id')}
+// pick either google_id or (lat and lng) when
+// fetching travelmode and distance between two venues
+export function mapVerticesToGeoVenues(vertices) {
+    return vertices.map(vertice => {
+        const geo = vertice.getIn(['venue', 'geometry']) || {};
+
+
+        if (vertice.getIn(['venue', 'place_id'])) {
+            return {googleId: vertice.getIn(['venue', 'place_id'])};
+
         } else if (geo.lat && geo.lng) {
             return {lat: geo.lat, lng: geo.lng};
+
         } else {
             throw new Error({message: 'error determineGeoType(), none of the data provided is legit'});
         }
-    }
-);
+    });
 }
 
 // copied from createRoute

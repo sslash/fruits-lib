@@ -3,6 +3,7 @@ import reducer from '../routeDetailReducer';
 import * as types from '../../constants/actionTypes';
 import routeDirectionsResultFixture from './routeDirectionsResultFixture';
 import venueDirectionsResultFixture from './venueDirectionsResultFixture';
+import multiplevenuesFixture from '../../../../test/fixtures/VENUES_DIRECTIONS_MATRIX_FETCH';
 import _isEqual from 'lodash/lang/isEqual';
 
 describe('route detail reducer', () => {
@@ -15,7 +16,7 @@ describe('route detail reducer', () => {
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsError'])).to.equal(true);
     });
 
-    it('should handle VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS', () => {
+    it('should handle VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS with index', () => {
         const beforeState = reducer(undefined, {
             type: types.FETCH_DIRECTIONS_MATRIX_SUCCESS,
             payload: routeDirectionsResultFixture
@@ -33,6 +34,31 @@ describe('route detail reducer', () => {
 
         expect(oldDirections.distance.value).to.not.equal(newDirections.distance.value);
         expect(newLength).to.equal(oldLength);
+
+        expect(afterState.getIn(['directionsMatrix', 'fetchingDirections'])).to.equal(false);
+        expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsError'])).to.equal(false);
+    });
+
+    it('should handle VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS without index', () => {
+        const beforeState = reducer(undefined, {
+            type: types.FETCH_DIRECTIONS_MATRIX_SUCCESS,
+            payload: routeDirectionsResultFixture
+        });
+
+        const afterState = reducer(beforeState, {
+            type: types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS,
+            payload: multiplevenuesFixture
+        });
+
+        // console.log(`SAP! after`, afterState.getIn(['directionsMatrix', 'directionsResult']));
+
+        const oldDirections = beforeState.getIn(['directionsMatrix', 'directionsResult', 'data']).get(0).getIn(['routes', '0', 'legs']).get(0).toJS();
+        const newDirections = afterState.getIn(['directionsMatrix', 'directionsResult', 'data']).get(0).getIn(['routes', '0', 'legs']).get(0).toJS();
+        const oldLength = beforeState.getIn(['directionsMatrix', 'directionsResult', 'data']).size;
+        const newLength = afterState.getIn(['directionsMatrix', 'directionsResult', 'data']).size;
+
+        expect(oldLength).to.equal(10);
+        expect(newLength).to.equal(6);
 
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirections'])).to.equal(false);
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsError'])).to.equal(false);
