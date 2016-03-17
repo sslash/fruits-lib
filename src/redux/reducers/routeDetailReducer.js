@@ -69,9 +69,21 @@ export default function reducer (state = initialState, action) {
             }));
 
         case types.ROUTE_DETAIL_VERTICE_SPICES_FETCH_SUCCESS:
-            return Route.updateVertice(state, {
-                ...action.payload
-            });
+
+            const venueSocials = action.payload;
+            const verts = state
+                .getIn(['route', 'vertices'])
+                .map(vert => {
+                    const venueSocial = venueSocials
+                        .filter(vs => vs.venueId === (vert.getIn(['venue', 'id']) + ''));
+
+                    return venueSocial.length ?
+                        vert.setIn(['venue', 'venueSocial'], venueSocial[0])
+                         :
+                        vert;
+                });
+
+            return state.setIn(['route', 'vertices'], verts);
 
         case types.ROUTE_DETAIL_BOOTSTRAP:
             return state

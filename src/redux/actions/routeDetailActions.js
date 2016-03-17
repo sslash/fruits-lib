@@ -76,7 +76,8 @@ export function mapVerticesToGeoVenues(vertices) {
 }
 
 // copied from createRoute
-export function fetchSpicesForVertice (venueId, sortorder) {
+export function fetchSpicesForVertice (routeId, venueIds) {
+
     return {
         types: [
             types.ROUTE_DETAIL_VERTICE_SPICES_FETCH,
@@ -84,7 +85,7 @@ export function fetchSpicesForVertice (venueId, sortorder) {
             types.ROUTE_DETAIL_VERTICE_SPICES_FETCH_FAIL
         ],
 
-        promise: ({req}) => pollSpices(req, null, venueId, sortorder, 1),
+        promise: ({req}) => req.get(`/routes/${routeId}/venue-spices-fetch`, {params: {venueIds: venueIds}})
     };
 }
 
