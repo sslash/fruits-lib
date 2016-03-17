@@ -20,7 +20,7 @@ export default function reducer (state = initialState, action) {
         } else {
             state = initialState;
         }
-    };
+    }
 
     switch (action.type) {
         case types.ROUTE_DETAIL_FETCH:
@@ -88,7 +88,7 @@ export default function reducer (state = initialState, action) {
         case types.ROUTE_DETAIL_BOOTSTRAP:
             return state
                 .set('route', action.route)
-                // .set('directionsMatrix', Map());
+                .set('directionsMatrix', Map());
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH:
         return state
