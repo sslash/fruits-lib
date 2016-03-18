@@ -156,7 +156,15 @@ export default function reducer (state = initialState, action) {
             return state.setIn(['route', 'comments'], newComments);
 
         case types.ROUTE_DETAIL_COMMENTS_ADD_FAIL:
+        case types.ROUTE_DETAIL_COMMENTS_DELETE_FAIL:
             return state.set('commentsError', action.error);
+
+
+        case types.ROUTE_DETAIL_COMMENTS_DELETE_SUCCESS:
+            const comnts = state.getIn(['route', 'comments']);
+            const deleteIndex = comnts.findIndex(c => c.get('id') === action.commentId);
+
+            return state.setIn(['route', 'comments'], comnts.delete(deleteIndex));
 
         default:
             return state;

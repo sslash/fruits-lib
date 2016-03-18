@@ -48,6 +48,18 @@ export function addComment (routeId, body) {
     };
 }
 
+export function deleteComment (routeId, commentId) {
+    return {
+        types: [
+            types.ROUTE_DETAIL_COMMENTS_DELETE,
+            types.ROUTE_DETAIL_COMMENTS_DELETE_SUCCESS,
+            types.ROUTE_DETAIL_COMMENTS_DELETE_FAIL
+        ],
+        promise: ({req}) => req['delete'](`/routes/${routeId}/comments/${commentId}`),
+        commentId
+    };
+}
+
 export function changeTravelMode (travelmode) {
     return {type: types.TRAVELMODE_CHANGED, travelmode};
 }
