@@ -1,11 +1,14 @@
 import {expect} from 'chai';
 import reducer from '../routeDetailReducer';
+import {List} from 'immutable';
 import * as types from '../../constants/actionTypes';
 import routeDirectionsResultFixture from './routeDirectionsResultFixture';
 import venueDirectionsResultFixture from './venueDirectionsResultFixture';
 import routeDetailFx from '../../../../test/fixtures/ROUTE_DETAIL_FETCH_SUCCESS_2';
 import spicesFx from '../../../../test/fixtures/ROUTE_DETAIL_VERTICE_SPICES_FETCH_SUCCESS';
 import multiplevenuesFixture from '../../../../test/fixtures/VENUES_DIRECTIONS_MATRIX_FETCH';
+import commentsFxt from '../../../../test/fixtures/ROUTE_DETAIL_COMMENTS_FETCH_SUCCESS';
+import routeFxt from '../../../../test/fixtures/ROUTE_DETAIL_FETCH_SUCCESS';
 import _isEqual from 'lodash/lang/isEqual';
 
 describe('route detail reducer', () => {
@@ -117,7 +120,6 @@ describe('route detail reducer', () => {
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsError'])).to.equal(false);
     });
 
-
     it('should handle ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS', () => {
         const beforeState = reducer(undefined, {
             type: types.ROUTE_DETAIL_FETCH_SUCCESS,
@@ -142,4 +144,126 @@ describe('route detail reducer', () => {
         expect(afterState.getIn(['route', 'vertices', '0', 'venue', 'venueSocial']).
             instagram_venue.data[0].username).to.equal('roger_rolex');
     });
+    
+    describe('comments', () => {
+        it('should handle ROUTE_DETAIL_COMMENTS_FETCH', () => {
+            const afterState = reducer(undefined, {
+                type: types.ROUTE_DETAIL_COMMENTS_FETCH,
+            });
+
+            expect(afterState.get('isFetchingComments')).to.equal(true);
+            expect(afterState.get('commentsError')).to.be.null;
+        });
+
+        it('should handle ROUTE_DETAIL_COMMENTS_FETCH_SUCCESS', () => {
+            const initialState = reducer(undefined, {
+                type: types.ROUTE_DETAIL_FETCH_SUCCESS,
+                payload: routeFxt
+            });
+
+            const beforeState = reducer(initialState, {
+                type: types.ROUTE_DETAIL_COMMENTS_FETCH,
+            });
+
+            const afterState = reducer(beforeState, {
+                type: types.ROUTE_DETAIL_COMMENTS_FETCH_SUCCESS,
+                payload: commentsFxt
+            });
+
+            expect(afterState.get('isFetchingComments')).to.equal(false);
+            expect(afterState.get('commentsError')).to.be.null;
+            const comments = afterState.getIn(['route', 'comments']);
+            expect(comments.size).to.equal(2);
+            expect(List.isList(comments)).to.be.true;
+            expect(afterState.getIn(['route', 'comments', '0', 'username'])).to.equal('alexkanov');
+
+            // verify route is still chill
+            expect(afterState.getIn(['route', 'id'])).to.equal(1780);
+        });
+
+        it('should handle ROUTE_DETAIL_COMMENTS_FETCH_FAIL', () => {
+            const initialState = reducer(undefined, {
+                type: types.ROUTE_DETAIL_FETCH_SUCCESS,
+                payload: routeFxt
+            });
+
+            const beforeState = reducer(initialState, {
+                type: types.ROUTE_DETAIL_COMMENTS_FETCH,
+            });
+
+            const afterState = reducer(beforeState, {
+                type: types.ROUTE_DETAIL_COMMENTS_FETCH_FAIL,
+                error: {
+                    message: 'Failed Ass!!',
+                    data: {}
+                }
+            });
+
+            expect(afterState.get('isFetchingComments')).to.equal(false);
+            expect(afterState.get('commentsError').message).to.equal('Failed Ass!!');
+        });
+
+        it('should handle add comments', () => {
+            const initialState = reducer(undefined, {
+                type: types.ROUTE_DETAIL_FETCH_SUCCESS,
+                payload: routeFxt
+            });
+
+            const beforeState = reducer(initialState, {
+                type: types.ROUTE_DETAIL_COMMENTS_FETCH_SUCCESS,
+                payload: {
+                    _embedded: {
+                        comments: []
+                    }
+                }
+            });
+
+            const payload = {
+                username: 'Luke',
+                image: '/skywalker.jpg',
+                id: 253,
+                user_id: 1337,
+                route_id: 1780,
+                text: 'I am your son.',
+                created: '2016-03-19T08:37:45.531Z'
+            }
+
+            const afterState = reducer(beforeState, {
+                type: types.ROUTE_DETAIL_COMMENTS_ADD_SUCCESS,
+                payload
+            });
+
+            const comments = afterState.getIn(['route', 'comments']);
+
+            expect(comments.size).to.equal(1);
+            expect(List.isList(comments)).to.be.true;
+            expect(afterState.getIn(['route', 'comments', '0', 'image'])).to.equal(payload.image);
+            expect(afterState.getIn(['route', 'comments', '0', 'text'])).to.equal(payload.text);
+        });
+
+        it('should handle add fail', () => {
+            const initialState = reducer(undefined, {
+                type: types.ROUTE_DETAIL_FETCH_SUCCESS,
+                payload: routeFxt
+            });
+
+            const beforeState = reducer(initialState, {
+                type: types.ROUTE_DETAIL_COMMENTS_FETCH_SUCCESS,
+                payload: commentsFxt
+            });
+
+            const afterState = reducer(beforeState, {
+                type: types.ROUTE_DETAIL_COMMENTS_ADD_FAIL,
+                error: {
+                    message: 'Failed to post route'
+                }
+            });
+
+            const comments = afterState.getIn(['route', 'comments']);
+
+            expect(comments.size).to.equal(2);
+            expect(List.isList(comments)).to.be.true;
+            expect(afterState.get('commentsError').message).to.equal('Failed to post route')
+        });
+    })
 });
