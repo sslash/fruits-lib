@@ -76,13 +76,25 @@ export function mapVerticesToGeoVenues(vertices) {
 }
 
 // copied from createRoute
-export function fetchSpicesForVertice (routeId, venueIds) {
-
+export function fetchSpicesForVertice (venueId, sortorder) {
     return {
         types: [
             types.ROUTE_DETAIL_VERTICE_SPICES_FETCH,
             types.ROUTE_DETAIL_VERTICE_SPICES_FETCH_SUCCESS,
             types.ROUTE_DETAIL_VERTICE_SPICES_FETCH_FAIL
+        ],
+
+        promise: ({req}) => pollSpices(req, null, venueId, sortorder, 1),
+    };
+}
+
+export function fetchSpicesForVenuesList (routeId, venueIds) {
+
+    return {
+        types: [
+            types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST,
+            types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS,
+            types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_FAIL
         ],
 
         promise: ({req}) => req.get(`/routes/${routeId}/venue-spices-fetch`, {params: {venueIds: venueIds}})

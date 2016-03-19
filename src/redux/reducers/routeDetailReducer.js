@@ -68,7 +68,13 @@ export default function reducer (state = initialState, action) {
                 fetchingDirectionsError: true
             }));
 
+
         case types.ROUTE_DETAIL_VERTICE_SPICES_FETCH_SUCCESS:
+            return Route.updateVertice(state, {
+                ...action.payload
+            });
+
+        case types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS:
 
             const venueSocials = action.payload;
             const verts = state
