@@ -75,19 +75,9 @@ export default function reducer (state = initialState, action) {
             });
 
         case types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS:
-
-            const venueSocials = action.payload;
             const verts = state
-                .getIn(['route', 'vertices'])
-                .map(vert => {
-                    const venueSocial = venueSocials
-                        .filter(vs => vs.venueId === (vert.getIn(['venue', 'id']) + ''));
-
-                    return venueSocial.length ?
-                        vert.setIn(['venue', 'venueSocial'], venueSocial[0])
-                         :
-                        vert;
-                });
+                .get('route')
+                .updateVenueSocials(action.payload);
 
             return state.setIn(['route', 'vertices'], verts);
 

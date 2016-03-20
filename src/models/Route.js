@@ -77,6 +77,21 @@ export default class Route extends RouteRecord {
         });
     }
 
+    // used in ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS
+    updateVenueSocials(venueSocials) {
+        return this.get('vertices')
+        .map(vert => {
+            // find current venueSocial
+            const venueSocial = venueSocials
+                .filter(vs => vs.venueId === (vert.getIn(['venue', 'id']) + ''));
+
+            return venueSocial.length ?
+                vert.setIn(['venue', 'venueSocial'], venueSocial[0])
+                 :
+                vert;
+        });
+    }
+
     // used in routeDetail/create reducers
     static updateVertice (routeState, vertice) {
 
