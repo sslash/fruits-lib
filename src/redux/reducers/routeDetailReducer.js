@@ -20,7 +20,7 @@ export default function reducer (state = initialState, action) {
         } else {
             state = initialState;
         }
-    };
+    }
 
     switch (action.type) {
         case types.ROUTE_DETAIL_FETCH:
@@ -51,53 +51,85 @@ export default function reducer (state = initialState, action) {
             return state;
 
         case types.FETCH_DIRECTIONS_MATRIX:
-            return state.set('directionsMatrix', fromJS({
+            return state.set('directionsMatrix', Map({
                 fetchingDirections: true,
                 fetchingDirectionsError: false
             }));
 
         case types.FETCH_DIRECTIONS_MATRIX_SUCCESS:
-            return state.set('directionsMatrix', fromJS({
+            return state.set('directionsMatrix', Map({
                 fetchingDirections: false,
+                fetchingDirectionsError: false,
                 directionsResult: action.payload
             }));
         case types.FETCH_DIRECTIONS_MATRIX_FAIL:
-            return state.set('directionsMatrix', fromJS({
+            return state.set('directionsMatrix', Map({
                 fetchingDirections: false,
                 fetchingDirectionsError: true
             }));
+
 
         case types.ROUTE_DETAIL_VERTICE_SPICES_FETCH_SUCCESS:
             return Route.updateVertice(state, {
                 ...action.payload
             });
 
+        case types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS:
+            const verts = state
+                .get('route')
+                .updateVenueSocials(action.payload);
+
+            return state.setIn(['route', 'vertices'], verts);
+
         case types.ROUTE_DETAIL_BOOTSTRAP:
-            return state.set('route', action.route);
+            return state
+                .set('route', action.route)
+                .set('directionsMatrix', Map());
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH:
-        return state.setIn(['directionsMatrix', 'fetchingDirections'], true).setIn(['directionsMatrix', 'fetchingDirectionsError'], false);
+        return state
+            .setIn(['directionsMatrix', 'fetchingDirections'], true)
+            .setIn(['directionsMatrix', 'fetchingDirectionsError'], false);
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS:
             if (action.payload.data && action.payload.data.length) {
-                return state.set('directionsMatrix', fromJS({
-                    fetchingDirections: false,
-                    fetchingDirectionsError: false,
-                })).setIn(['directionsMatrix', 'directionsResult', 'data'],
-                    updateIndex(action.payload, state.getIn(['directionsMatrix', 'directionsResult', 'data']), action.index));
-            } else {
-                return state;
-            }
+                let newDirectionsResult;
+
+                if (isNaN(action.index)) {
+                    newDirectionsResult = action.payload;
+
+                } else {
+                    newDirectionsResult = Object.assign({}, state.getIn(['directionsMatrix', 'directionsResult']));
+
+                    // something has gone wrong. simply return. TODO: logg error
+                    if (!newDirectionsResult.data) {
+                        console.error(`No directionsResult in VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS`);
+                        return state;
+                    }
+
+                    newDirectionsResult.data = newDirectionsResult.data.map((data, index) => {
+                        return index === action.index ?
+                            action.payload.data[0] : data;
+                    });
+                }
+
+            return state.set('directionsMatrix', Map({
+                fetchingDirections: false,
+                fetchingDirectionsError: false,
+                directionsResult: newDirectionsResult
+            }));
+
+        } else {
+            return state;
+        }
 
 
         case types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL:
-            return state.setIn(['directionsMatrix', 'fetchingDirections'], false).setIn(['directionsMatrix', 'fetchingDirectionsError'], true);
+            return state
+                .setIn(['directionsMatrix', 'fetchingDirections'], false)
+                .setIn(['directionsMatrix', 'fetchingDirectionsError'], true);
 
         default:
             return state;
     }
-}
-
-function updateIndex (newData, oldData, index) {
-    return oldData.set(index, fromJS(newData.data[0]));
 }
