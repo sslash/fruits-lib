@@ -78,7 +78,7 @@ export default class Route extends RouteRecord {
     }
 
     // used in ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS
-    updateVenueSocials(venueSocials) {
+    updateVenueSocials(venueSocials = []) {
         return this.get('vertices')
         .map(vert => {
             // find current venueSocial
