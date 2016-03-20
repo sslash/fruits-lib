@@ -129,35 +129,40 @@ export default class Venue extends VenueRecord {
             // used for storing on Vertice
             photos = [`${imgBase.get('prefix')}500x500${imgBase.get('suffix')}`];
         }
+
+        const address = venue.getIn(['venue', 'location', 'formattedAddress']).join(', ');
+        const _venue = venue.get('venue');
+
         return {
             photo: thumb,
-            name: venue.getIn(['venue', 'name']),
-            description: venue.getIn(['venue', 'name']),
-            rating: venue.getIn(['venue', 'rating']),
+            name: _venue.get('name'),
+            description: `${_venue.get('name')}, ${address}`,
+            rating: _venue.get('rating'),
             ratingBase: '10',
             geometry: Venue.mapSpicesGeo(
-                venue.getIn(['venue', 'location', 'lat']),
-                venue.getIn(['venue', 'location', 'lng'])
+                _venue.getIn(['location', 'lat']),
+                _venue.getIn(['location', 'lng'])
             ),
-            address: venue.getIn(['venue', 'location', 'formattedAddress']).join(', '),
-            city: venue.getIn(['venue', 'location', 'city']),
+            address,
+            city: _venue.getIn(['location', 'city']),
             photos,
-            foursquareId: venue.getIn(['venue', 'id'])
+            foursquareId: _venue.get('id')
         };
     }
 
     static yelpToVenue (venue) {
+        const address = venue.getIn(['location', 'display_address']).join(', ');
         return {
             photo: venue.get('image_url'),
             name: venue.get('name'),
-            description: venue.get('name'),
+            description: `${venue.get('name')}, ${address}`,
             rating: venue.get('rating'),
             ratingBase: '5',
             geometry: Venue.mapSpicesGeo(
                 venue.getIn(['location', 'coordinate', 'latitude']),
                 venue.getIn(['location', 'coordinate', 'longitude'])
             ),
-            address: venue.getIn(['location', 'display_address']).join(', '),
+            address,
             city: venue.getIn(['location', 'city']),
             yelpId: venue.get('id')
         };
