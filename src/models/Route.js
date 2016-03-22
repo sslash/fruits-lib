@@ -24,7 +24,9 @@ const RouteRecord = Record({
     upvoteCount: 0,
     city: '',
     cityLocation: '',
-    isPrivate: false
+    isPrivate: false,
+    isDraft: false,
+    isDeleted: false //used when a user deletes the route, and before the user refresh the site
 });
 
 function _findIndexByVertice (vertices, vertice) {

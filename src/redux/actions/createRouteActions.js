@@ -22,7 +22,16 @@ export function setTitle (text) {
 export function toggleBucket (bucket) {
     return { type: actions.CREATE_ROUTE_TOGGLE_BUCKET, bucket };
 }
-
+export function makeDraft (value, routeId) {
+    return {
+        types: [
+            actions.ROUTES_CREATE_TOGGLE_DRAFT,
+            actions.ROUTES_CREATE_TOGGLE_DRAFT_SUCCESS,
+            actions.ROUTES_CREATE_TOGGLE_DRAFT_FAIL
+        ],
+        promise: ({req}) => req.post(`/routes/${routeId}/make-draft`, {value}),
+    };
+}
 export function addCustomBucket (routeId, bucketName) {
     return {
         types: [

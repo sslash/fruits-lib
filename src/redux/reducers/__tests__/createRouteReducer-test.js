@@ -174,4 +174,43 @@ describe('create route reducer', () => {
         expect(verticeTags.size).to.equal(0);
     });
 
+    it('should handle ROUTES_CREATE_TOGGLE_DRAFT', () => {
+        const afterState = reducer(undefined, {
+            type: types.ROUTES_CREATE_TOGGLE_DRAFT,
+            payload: verticeFxt
+        });
+        const draft = afterState.get('draft');
+        expect(draft.get('posting')).to.equal(true);
+        expect(draft.get('error')).to.equal(false);
+
+    });
+
+    it('should handle ROUTES_CREATE_TOGGLE_DRAFT_SUCCESS', () => {
+        const beforeState = reducer(undefined, {
+            type: types.ROUTES_CREATE_TOGGLE_DRAFT,
+            payload: verticeFxt
+        });
+
+        const afterState = reducer(beforeState, {
+            type: types.ROUTES_CREATE_TOGGLE_DRAFT_SUCCESS,
+            payload: verticeFxt
+        });
+        const draft = afterState.get('draft');
+        expect(draft.get('posting')).to.equal(false);
+        expect(draft.get('error')).to.equal(false);
+    });
+
+    it('should handle ROUTES_CREATE_TOGGLE_DRAFT_FAIL', () => {
+        const beforeState = reducer(undefined, {
+            type: types.ROUTES_CREATE_TOGGLE_DRAFT,
+        });
+
+        const afterState = reducer(beforeState, {
+            type: types.ROUTES_CREATE_TOGGLE_DRAFT_FAIL,
+        });
+        const draft = afterState.get('draft');
+        expect(draft.get('posting')).to.equal(false);
+        expect(draft.get('error')).to.equal(true);
+    });
+
 });

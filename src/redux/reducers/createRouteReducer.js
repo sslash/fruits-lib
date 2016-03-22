@@ -1,7 +1,7 @@
 import * as types from '../constants/actionTypes';
 import routeDetailReducer from './routeDetailReducer';
 import Route from '../../models/Route';
-import {Map, List, Iterable} from 'immutable';
+import {Map, List, Iterable, fromJS} from 'immutable';
 
 const initialState = Map({
     route: new Route(),
@@ -23,7 +23,10 @@ const initialState = Map({
     donePressed: false,
     pendingDoneActions: List(),
     renderMapCounter: 0,
-
+    draft: new Map({
+        posting: false,
+        error: false    
+    }),
     fetchingSpices: false
 });
 
@@ -250,6 +253,21 @@ export default function reducer (state = initialState, action = {}) {
         case types.ROUTE_FINISH_SUCCESS:
             return state.set('finito', true);
 
+        case types.ROUTES_CREATE_TOGGLE_DRAFT:
+            return state.set('draft', fromJS({
+                posting: true,
+                error: false
+            }));
+        case types.ROUTES_CREATE_TOGGLE_DRAFT_FAIL:
+            return state.set('draft', fromJS({
+                posting: false,
+                error: true
+            }));
+        case types.ROUTES_CREATE_TOGGLE_DRAFT_SUCCESS:
+            return state.set('draft', fromJS({
+                posting: false,
+                error: false
+            }));
         case types.CREATE_ROUTE_RESET:
             return initialState;
 

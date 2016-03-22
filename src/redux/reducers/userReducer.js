@@ -3,6 +3,7 @@ import Route from '../../models/Route';
 import {Record, Map, List, Iterable} from 'immutable';
 import { LOAD } from 'redux-storage';
 
+let newRoutes;
 
 const UserAuth = Record({
     loggingIn: false,
@@ -24,7 +25,10 @@ const UserAuth = Record({
 
     // could have had a list here, one for each profile.
     // but probabz not necessary.
-    userProfile: null
+    userProfile: null,
+
+    //update route
+    updateRoute: false
 });
 
 const initialState = new UserAuth();
@@ -134,7 +138,47 @@ export default function reducer (state = initialState, action = {}) {
         case types.USER_UPDATE_PROFILE_SUCCESS:
             return state.set('user', Map(action.payload)).set('isSaving', false);
 
+        case types.USER_ROUTE_MAKE_PUBLIC:
+        case types.USER_ROUTE_MAKE_PRIVATE:
+        case types.USER_DELETE_ROUTE:
+            return state.set('updateRoute', true);
+
+        case types.USER_ROUTE_MAKE_PUBLIC_SUCCESS:
+            newRoutes = findRoute(state.routes, action.meta.routeId, 'isPrivate', false);
+            return state.set('updateRoute', false).set('routes', newRoutes);
+
+        case types.USER_ROUTE_MAKE_PRIVATE_SUCCESS:
+            newRoutes = findRoute(state.routes, action.meta.routeId, 'isPrivate', true);
+            return state.set('updateRoute', false).set('routes', newRoutes);
+
+        case types.USER_DELETE_ROUTE_SUCCESS:
+            console.log('sapdap')
+            newRoutes = findRoute(state.routes, action.meta.routeId, 'isDeleted', true);
+            return state.set('updateRoute', false).set('routes', newRoutes);
+
+        case types.USER_ROUTE_MAKE_PUBLIC_FAIL:
+        case types.USER_ROUTE_MAKE_PRIVATE_FAIL:
+        case types.USER_DELETE_ROUTE_FAIL:
+            return state.set('updateRoute', false).set('routes', newRoutes);
+
         default:
             return state;
     }
+}
+
+/**
+* @param (array) routes, list of routes
+* @param (string) routeId, the id of the route to change
+* @param (string) property, can be either isPrivate, isDraft or isDeleted
+* @param (bool) value, can be either true or false
+*/
+
+function findRoute (routes, routeId, property, value) {
+    return routes.map(route => {
+        if (route.id === routeId) {
+            return route.set(property, value);
+        } else {
+            return route;
+        }
+    });
 }

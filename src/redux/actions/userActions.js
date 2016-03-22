@@ -111,3 +111,39 @@ export function bootstrapUser (user) {
         user
     };
 }
+
+export function deleteRoute (routeId) {
+    return {
+        types: [
+            types.USER_DELETE_ROUTE,
+            types.USER_DELETE_ROUTE_SUCCESS,
+            types.USER_DELETE_ROUTE_FAIL
+        ],
+        promise: ({req}) => req.delete(`/routes/${routeId}`),
+        meta: { routeId }
+    }
+}
+
+export function setRouteToPrivate (routeId) {
+    return {
+        types: [
+            types.USER_ROUTE_MAKE_PRIVATE,
+            types.USER_ROUTE_MAKE_PRIVATE_SUCCESS,
+            types.USER_ROUTE_MAKE_PRIVATE_FAIL
+        ],
+        promise: ({req}) => req.post(`/routes/${routeId}/make-private`),
+        meta: { routeId }
+    }
+}
+
+export function setRouteToPublic (routeId) {
+    return {
+        types: [
+            types.USER_ROUTE_MAKE_PUBLIC,
+            types.USER_ROUTE_MAKE_PUBLIC_SUCCESS,
+            types.USER_ROUTE_MAKE_PUBLIC_FAIL
+        ],
+        promise: ({req}) => req.post(`/routes/${routeId}/make-public`),
+        meta: { routeId }
+    }
+}
