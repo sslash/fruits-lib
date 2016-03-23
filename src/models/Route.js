@@ -15,6 +15,9 @@ const RouteRecord = Record({
     created : null,
     defaultRoute: false,
 
+    card: null,
+    cardLabeled: null,
+
     // temporary while we work out sending
     // nested components in fetch
     userId : '',
