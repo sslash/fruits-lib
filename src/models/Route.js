@@ -21,10 +21,12 @@ const RouteRecord = Record({
     buckets : new List(),
     likes : new List(),
     vertices : new List(),
+    active: true,
     upvoteCount: 0,
     city: '',
     cityLocation: '',
-    isPrivate: false
+    isPrivate: false,
+    isDraft: false
 });
 
 function _findIndexByVertice (vertices, vertice) {

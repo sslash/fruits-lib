@@ -173,5 +173,4 @@ describe('create route reducer', () => {
         const verticeTags = afterTagDeletedState.getIn(['route', 'vertices', 0, 'buckets']);
         expect(verticeTags.size).to.equal(0);
     });
-
 });

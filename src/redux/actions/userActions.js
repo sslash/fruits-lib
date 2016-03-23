@@ -111,3 +111,15 @@ export function bootstrapUser (user) {
         user
     };
 }
+
+export function updateUserRoutes (routeId, data) {
+    return {
+        types: [
+            types.UPDATE_USER_ROUTE,
+            types.UPDATE_USER_ROUTE_SUCCESS,
+            types.UPDATE_USER_ROUTE_FAIL
+        ],
+        promise: ({req}) => req.put(`/routes/${routeId}`, data),
+        meta: data
+    };
+}

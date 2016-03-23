@@ -1,7 +1,7 @@
 import * as types from '../constants/actionTypes';
 import routeDetailReducer from './routeDetailReducer';
 import Route from '../../models/Route';
-import {Map, List, Iterable} from 'immutable';
+import {Map, List, Iterable, fromJS} from 'immutable';
 
 const initialState = Map({
     route: new Route(),
@@ -23,7 +23,6 @@ const initialState = Map({
     donePressed: false,
     pendingDoneActions: List(),
     renderMapCounter: 0,
-
     fetchingSpices: false
 });
 
