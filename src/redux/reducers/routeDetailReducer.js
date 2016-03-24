@@ -1,5 +1,5 @@
 import * as types from '../constants/actionTypes';
-import {Map, fromJS, Iterable} from 'immutable';
+import {Map, List, fromJS, Iterable} from 'immutable';
 import Route from '../../models/Route';
 import _isEqual from 'lodash/lang/isEqual';
 
@@ -8,7 +8,9 @@ const initialState = Map({
     route: null,
     directionsMatrix: Map(),
     error: null,
-    travelmode: 'WALKING'
+    travelmode: 'WALKING',
+    isFetchingComments: false,
+    commentsError: null
 });
 
 export default function reducer (state = initialState, action) {
@@ -128,6 +130,41 @@ export default function reducer (state = initialState, action) {
             return state
                 .setIn(['directionsMatrix', 'fetchingDirections'], false)
                 .setIn(['directionsMatrix', 'fetchingDirectionsError'], true);
+
+        case types.ROUTE_DETAIL_COMMENTS_FETCH:
+            return state
+                .set('isFetchingComments', true)
+                .set('commentsError', null);
+
+        case types.ROUTE_DETAIL_COMMENTS_FETCH_FAIL:
+            return state
+                .set('isFetchingComments', false)
+                .set('commentsError', action.error);
+
+        case types.ROUTE_DETAIL_COMMENTS_FETCH_SUCCESS:
+            return state
+                .set('isFetchingComments', false)
+                .setIn(['route', 'comments'],
+                    new List(
+                        action.payload._embedded.comments
+                            .map((comment) => fromJS(comment))
+                    ));
+
+        case types.ROUTE_DETAIL_COMMENTS_ADD_SUCCESS:
+            const comments = state.getIn(['route', 'comments']);
+            const newComments = comments.push(fromJS(action.payload));
+            return state.setIn(['route', 'comments'], newComments);
+
+        case types.ROUTE_DETAIL_COMMENTS_ADD_FAIL:
+        case types.ROUTE_DETAIL_COMMENTS_DELETE_FAIL:
+            return state.set('commentsError', action.error);
+
+
+        case types.ROUTE_DETAIL_COMMENTS_DELETE_SUCCESS:
+            const comnts = state.getIn(['route', 'comments']);
+            const deleteIndex = comnts.findIndex(c => c.get('id') === action.commentId);
+
+            return state.setIn(['route', 'comments'], comnts.delete(deleteIndex));
 
         default:
             return state;

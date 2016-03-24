@@ -29,7 +29,8 @@ const RouteRecord = Record({
     city: '',
     cityLocation: '',
     isPrivate: false,
-    isDraft: false
+    isDraft: false,
+    comments: new List()
 });
 
 function _findIndexByVertice (vertices, vertice) {
@@ -52,6 +53,7 @@ export default class Route extends RouteRecord {
         route.vertices = List(vertices.map(vert => Vertice.mapper(vert)));
         route.user = fromJS(route.user || {});
         route.buckets = new List(route.buckets);
+        route.comments = new List();
         return new Route(route);
     }
 

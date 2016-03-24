@@ -26,6 +26,40 @@ export function fetch (routeId) {
     };
 }
 
+export function fetchComments (routeId) {
+    return {
+        types: [
+            types.ROUTE_DETAIL_COMMENTS_FETCH,
+            types.ROUTE_DETAIL_COMMENTS_FETCH_SUCCESS,
+            types.ROUTE_DETAIL_COMMENTS_FETCH_FAIL
+        ],
+        promise: ({req}) => req.get(`/routes/${routeId}/comments`)
+    };
+}
+
+export function addComment (routeId, body) {
+    return {
+        types: [
+            types.ROUTE_DETAIL_COMMENTS_ADD,
+            types.ROUTE_DETAIL_COMMENTS_ADD_SUCCESS,
+            types.ROUTE_DETAIL_COMMENTS_ADD_FAIL
+        ],
+        promise: ({req}) => req.post(`/routes/${routeId}/comments`, {body})
+    };
+}
+
+export function deleteComment (routeId, commentId) {
+    return {
+        types: [
+            types.ROUTE_DETAIL_COMMENTS_DELETE,
+            types.ROUTE_DETAIL_COMMENTS_DELETE_SUCCESS,
+            types.ROUTE_DETAIL_COMMENTS_DELETE_FAIL
+        ],
+        promise: ({req}) => req['delete'](`/routes/${routeId}/comments/${commentId}`),
+        commentId
+    };
+}
+
 export function changeTravelMode (travelmode) {
     return {type: types.TRAVELMODE_CHANGED, travelmode};
 }
