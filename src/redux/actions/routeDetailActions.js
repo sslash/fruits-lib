@@ -89,6 +89,19 @@ export function fetchSpicesForVertice (routeId, venueIds) {
     };
 }
 
+export function fetchSpicesForVenuesList (routeId, venueIds) {
+
+    return {
+        types: [
+            types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST,
+            types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS,
+            types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_FAIL
+        ],
+
+        promise: ({req}) => req.get(`/routes/${routeId}/venue-spices-fetch`, {params: {venueIds: venueIds}})
+    };
+}
+
 // used in routes-native to put route we get from router
 // over to route detail store
 export function bootstrapRoute (route) {

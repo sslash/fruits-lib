@@ -10,7 +10,7 @@ const initialState = Map({
     error: null,
     travelmode: 'WALKING'
 });
-
+let verts;
 export default function reducer (state = initialState, action) {
 
     // rehydrated state
@@ -68,10 +68,11 @@ export default function reducer (state = initialState, action) {
                 fetchingDirectionsError: true
             }));
 
+
         case types.ROUTE_DETAIL_VERTICE_SPICES_FETCH_SUCCESS:
 
             const venueSocials = action.payload;
-            const verts = state
+            verts = state
                 .getIn(['route', 'vertices'])
                 .map(vert => {
                     const venueSocial = venueSocials
@@ -82,6 +83,13 @@ export default function reducer (state = initialState, action) {
                          :
                         vert;
                 });
+
+            return state.setIn(['route', 'vertices'], verts);
+
+        case types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS:
+            verts = state
+                .get('route')
+                .updateVenueSocials(action.payload);
 
             return state.setIn(['route', 'vertices'], verts);
 

@@ -22,7 +22,9 @@ const RouteRecord = Record({
     likes : new List(),
     vertices : new List(),
     upvoteCount: 0,
-    city: ''
+    city: '',
+    cityLocation: '',
+    isPrivate: false
 });
 
 function _findIndexByVertice (vertices, vertice) {
@@ -72,6 +74,21 @@ export default class Route extends RouteRecord {
                 throw new Error('Venue did not have location');
             }
             return [loc.lat, loc.lng];
+        });
+    }
+
+    // used in ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS
+    updateVenueSocials(venueSocials = []) {
+        return this.get('vertices')
+        .map(vert => {
+            // find current venueSocial
+            const venueSocial = venueSocials
+                .filter(vs => vs.venueId === (vert.getIn(['venue', 'id']) + ''));
+
+            return venueSocial.length ?
+                vert.setIn(['venue', 'venueSocial'], venueSocial[0])
+                 :
+                vert;
         });
     }
 

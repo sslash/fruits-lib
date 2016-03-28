@@ -117,7 +117,8 @@ describe('route detail reducer', () => {
         expect(afterState.getIn(['directionsMatrix', 'fetchingDirectionsError'])).to.equal(false);
     });
 
-    it('should handle ROUTE_DETAIL_VERTICE_SPICES_FETCH_SUCCESS', () => {
+
+    it('should handle ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS', () => {
         const beforeState = reducer(undefined, {
             type: types.ROUTE_DETAIL_FETCH_SUCCESS,
             payload: routeDetailFx
@@ -131,7 +132,7 @@ describe('route detail reducer', () => {
         expect(beforeState.getIn(['route', 'vertices', '0', 'venue', 'venueSocial'])).to.be.null;
 
         const afterState = reducer(beforeState, {
-            type: types.ROUTE_DETAIL_VERTICE_SPICES_FETCH_SUCCESS,
+            type: types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS,
             payload: spicesFx
         });
 
