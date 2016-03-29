@@ -10,3 +10,4 @@ export suggestions from './suggestionsReducer';
 export notificationsReducer from './notificationsReducer';
 export cityReducer from './cityReducer';
 export bookmarksReducer from './bookmarksReducer';
+export createLocalRouteReducer from './createLocalRouteReducer';
