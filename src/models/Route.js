@@ -30,7 +30,9 @@ const RouteRecord = Record({
     cityLocation: '',
     isPrivate: false,
     isDraft: false,
-    comments: new List()
+    comments: new List(),
+
+    bucketRouteId: null
 });
 
 function _findIndexByVertice (vertices, vertice) {
