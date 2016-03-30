@@ -1,4 +1,4 @@
-module.exports = {  
+module.exports = {
     "id":1066,
     "title":"Great Photo spots in Helsinki",
     "_links":{
@@ -18,6 +18,7 @@ module.exports = {
             "href":"/api/v1/routes/1066/buckets"
         }
     },
+    card: 'sapcard.html',
     "placeName":null,
     "bannerImage":null,
     "description":"I have selected some great spots in Helsinki to take pictures. Take this Helsinki tour and take some awesome pictures",

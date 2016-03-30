@@ -11,4 +11,9 @@ describe('Routes', () => {
         const lng = lngLat[0];
         expect(lng).to.equal(60.15495120000001);
     });
+
+    it('Should get title', () => {
+        const newRoute = Route.mapper(routeFixture);
+        expect(newRoute.getTitle()).to.equal(routeFixture.title);
+    });
 });
