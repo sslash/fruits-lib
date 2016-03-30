@@ -1,7 +1,11 @@
 import * as types from '../constants/actionTypes';
 import Route from '../../models/Route';
 import {Record, Map, List, Iterable} from 'immutable';
-import { LOAD } from 'redux-storage';
+// import { LOAD } from 'redux-storage';
+
+// This is not good at all. temporary untill redux-storage
+// error for react-native is fixed
+const LOAD = 'REDUX_STORAGE_LOAD';
 
 const UserAuth = Record({
     loggingIn: false,

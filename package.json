@@ -14,12 +14,14 @@
   },
   "author": "Routes team",
   "dependencies": {
+    "dateformat": "^1.0.12",
     "immutable": "^3.7.6",
     "invariant": "^2.2.0",
     "lodash": "^3.10.1",
     "query-string": "^3.0.0",
     "redux": "^3.0.5",
     "redux-storage": "^1.4.1",
+    "speed-date": "^0.2.1",
     "time-ago": "^0.1.0"
   },
   "devDependencies": {

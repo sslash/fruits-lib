@@ -1,7 +1,6 @@
 import {Record, List, fromJS} from 'immutable';
-import timeago from 'time-ago';
 import Vertice from './Vertice';
-const ta = timeago();
+import dateFormat from 'dateformat';
 
 const RouteRecord = Record({
     // Record will create getter for every property.
@@ -32,7 +31,7 @@ const RouteRecord = Record({
     isDraft: false,
     comments: new List(),
 
-    bucketRouteId: null
+    createLocalRouteId: null
 });
 
 function _findIndexByVertice (vertices, vertice) {
@@ -63,7 +62,7 @@ export default class Route extends RouteRecord {
 
     getTimeAgo () {
         const createdDate = this.get('created');
-        return createdDate ? ta.ago(new Date(createdDate)) : null;
+        return createdDate ? dateFormat(createdDate, 'mmmm dS, yyyy') : null;
     }
 
     static doUpdate (routeState, vertice, updater) {

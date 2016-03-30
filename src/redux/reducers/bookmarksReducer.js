@@ -47,12 +47,14 @@ export default function reducer (state = initialState, action) {
             return state.set('isFetching', true);
 
         case types.BOOKMARKS_FETCH_SUCCESS:
+            const bookmarks = action.payload;
             return state
                 .merge({
                     isFetching: false,
                     fetched: true,
                     fetchedDeep: true,
-                    items: List(action.payload.map(Route.mapper))
+                    items: bookmarks ?
+                        List(bookmarks.map(Route.mapper)) : List()
                 });
 
         case types.BOOKMARKS_FETCH_FAIL:
