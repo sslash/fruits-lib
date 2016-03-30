@@ -1,16 +1,18 @@
 // TODO: finishe me: http://rackt.github.io/redux/docs/advanced/ExampleRedditAPI.html
 import {fromJS, Iterable} from 'immutable';
 import * as types from '../constants/actionTypes';
+import {DEFAULT_BUCKET_NAME} from '../constants/constants';
 
 
-export function requestRoutes (bucketName, bucketId, city, offset) {
+export function requestRoutes (bucketName, bucketId, city, offset, limit) {
 
     const params = {
-        offset
+        offset,
+        limit
     };
 
     // TODO: remove this ugly hack
-    if (bucketId && bucketName !== 'all') { params.category = bucketId; }
+    if (bucketId && bucketName !== DEFAULT_BUCKET_NAME) { params.category = bucketId; }
     if (city) { params.city = city; }
 
     return {
@@ -42,16 +44,11 @@ export function shouldFetchRoutes (routes, bucket, offset) {
 * @param {object} bucket either a bucket (Map),
 * or a bucketName (string)
 */
-export function fetchRoutesIfNeeded (routes, bucket, bucketId, city, offset = 0) {
-
+export function fetchRoutesIfNeeded (bucket, bucketId, city, offset, limit) {
     const bucketName = Iterable.isIterable(bucket) ?
         bucket.get('name') : bucket;
 
-    if (shouldFetchRoutes(routes, bucketName, offset)) {
-        return requestRoutes(bucketName, bucketId, city, offset);
-    } else {
-        return { type: types.NO_OP };
-    }
+    return requestRoutes(bucketName, bucketId, city, offset, limit);
 }
 
 export function clearRoutes (dispatch) {
