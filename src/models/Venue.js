@@ -1,6 +1,5 @@
 import {Record, Map, List} from 'immutable';
 import _isFunc from 'lodash/lang/isFunction';
-import _times from 'lodash/utility/times';
 
 const VenueRecord = Record({
     id: '',
@@ -87,10 +86,10 @@ export default class Venue extends VenueRecord {
                     let greyDollar = '$$$$';
                     let blackDollar = '';
 
-                    _times(tier, () => {
+                    for(let i = 0; i < tier; i++) {
                         blackDollar = blackDollar + '$';
                         greyDollar = greyDollar.slice(0, -1); //add one black dollar, need to remove one grey dollar
-                    });
+                    }
                     return { blackDollar, greyDollar };
                 }
             }

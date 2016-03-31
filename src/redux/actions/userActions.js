@@ -7,7 +7,7 @@ export function init (args = {}) {
     request = args.request;
     facebookManager = args.facebookManager;
     userService = args.userService;
-};
+}
 
 export function login (mail, password) {
     return {
