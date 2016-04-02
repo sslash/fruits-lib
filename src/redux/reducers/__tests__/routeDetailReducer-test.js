@@ -9,7 +9,7 @@ import spicesFx from '../../../../test/fixtures/ROUTE_DETAIL_VERTICE_SPICES_FETC
 import multiplevenuesFixture from '../../../../test/fixtures/VENUES_DIRECTIONS_MATRIX_FETCH';
 import commentsFxt from '../../../../test/fixtures/ROUTE_DETAIL_COMMENTS_FETCH_SUCCESS';
 import routeFxt from '../../../../test/fixtures/ROUTE_DETAIL_FETCH_SUCCESS';
-import _isEqual from 'lodash/lang/isEqual';
+import likeFxt from './likeFxt';
 
 describe('route detail reducer', () => {
 
@@ -144,7 +144,7 @@ describe('route detail reducer', () => {
         expect(afterState.getIn(['route', 'vertices', '0', 'venue', 'venueSocial']).
             instagram_venue.data[0].username).to.equal('roger_rolex');
     });
-    
+
     describe('comments', () => {
         it('should handle ROUTE_DETAIL_COMMENTS_FETCH', () => {
             const afterState = reducer(undefined, {
@@ -265,5 +265,25 @@ describe('route detail reducer', () => {
             expect(List.isList(comments)).to.be.true;
             expect(afterState.get('commentsError').message).to.equal('Failed to post route')
         });
-    })
+    });
+
+    it('should handle UPVOTE_ROUTE_SUCCESS', () => {
+        const initialState = reducer(undefined, {
+            type: types.ROUTE_DETAIL_FETCH_SUCCESS,
+            payload: routeFxt
+        });
+
+        const likes = initialState.getIn(['route', 'likes']);
+        expect(likes[0].username).to.equal('Vildz');
+        expect(likes[0].id).to.equal(232);
+
+        const afterState = reducer(initialState, {
+            type: types.UPVOTE_ROUTE_SUCCESS,
+            payload: {_embedded: likeFxt }
+        });
+        const newLikes = afterState.getIn(['route', 'likes']);
+        expect(likes.length+1).to.equal(newLikes.length);
+        expect(newLikes[newLikes.length-1].username).to.equal('daddyMcSwagga');
+        expect(newLikes[newLikes.length-1].id).to.equal(1337);
+    });
 });
