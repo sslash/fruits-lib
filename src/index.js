@@ -7,3 +7,4 @@ export * as middleware from './redux/middleware';
 export * as services from './services';
 export * as utils from './utils';
 export * as constants from './redux/constants/constants';
+export * as actionTypes from './redux/constants/actionTypes';
