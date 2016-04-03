@@ -1,13 +1,13 @@
 import * as types from '../constants/actionTypes';
 import Route from '../../models/Route';
-import {Record, Map, List, Iterable} from 'immutable';
+import {Record, Map, List, Iterable, fromJS} from 'immutable';
 // import { LOAD } from 'redux-storage';
 
 // This is not good at all. temporary untill redux-storage
 // error for react-native is fixed
 const LOAD = 'REDUX_STORAGE_LOAD';
 
-const UserAuth = Record({
+const initialState = fromJS({
     loggingIn: false,
     shouldRedirect: false,
     user: null,
@@ -30,12 +30,10 @@ const UserAuth = Record({
     userProfile: null,
 });
 
-const initialState = new UserAuth();
-
 export default function reducer (state = initialState, action = {}) {
 
     if (!Iterable.isIterable(state)) {
-        state = initialState.set('user', Map(state.user));
+        state = initialState.set('user', fromJS(state.user));
     }
 
     switch (action.type) {
@@ -91,7 +89,10 @@ export default function reducer (state = initialState, action = {}) {
             user.routes = user.routes.map(Route.mapper);
         }
 
-        return state.merge(user);
+        return state
+            .set('user', fromJS(user.user))
+            .set('routes', user.routes)
+            .set('token', user.token);
 
         case types.USER_TOKEN_STORE_AND_REDIRECT:
         return state.set('shouldRedirect', false);
