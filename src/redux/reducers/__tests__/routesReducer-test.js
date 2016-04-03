@@ -28,23 +28,8 @@ describe('routes reducer', () => {
             }
         });
 
-        console.log(`SAP! middleState`, middleState.getIn([bucketName, 'items']).map((route, i) => {
-            return {
-                id: route.get('id'),
-                index: i,
-                upvoteCount: route.get('upvoteCount')
-            };
-        }).toJSON());
 
         expect(afterState.getIn([bucketName, 'items', '8', 'upvoteCount'])).to.equal(1337);
         expect(afterState.getIn([bucketName, 'items', '9', 'upvoteCount'])).to.equal(2);
-
-        console.log(`SAP! afterState`, afterState.getIn([bucketName, 'items']).map((route, i) => {
-            return {
-                id: route.get('id'),
-                index: i,
-                upvoteCount: route.get('upvoteCount')
-            };
-        }).toJSON());
     });
 });
