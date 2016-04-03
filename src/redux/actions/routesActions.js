@@ -102,5 +102,24 @@ export function queryRoutes (terms, offset, limit, city, sort) {
             return req.get('/routes', { params });
         },
         meta: params
+    }
+}
+
+// called from an action sequece (routeDetail.upvoteRoute).
+// therefore has to return a promise even
+// though it only has to return the previous payload
+export function upvoteRouteInGrid(routeId) {
+    return {
+        types: [
+            types.ROUTES_UPVOTE_UPDATE,
+            types.ROUTES_UPVOTE_UPDATE_SUCCESS,
+            types.ROUTES_UPVOTE_UPDATE_FAIL
+        ],
+        promise: ({result}) => {
+            return Promise.resolve(result.payload);
+        },
+        meta: {
+            routeId
+        }
     };
 }

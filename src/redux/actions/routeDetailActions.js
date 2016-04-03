@@ -1,16 +1,36 @@
 import * as types from '../constants/actionTypes';
 import {pollSpices} from '../../services/pollSpices';
+import * as routesActions from './routesActions';
 
+//
+// export function upvoteRoute (routeId) {
+//     return {
+//         types: [
+//             types.UPVOTE_ROUTE,
+//             types.UPVOTE_ROUTE_SUCCESS,
+//             types.UPVOTE_ROUTE_FAIL
+//         ],
+//         promise: ({req}) => req.post(`/routes/${routeId}/upvote`)
+//     };
+// }
 
 export function upvoteRoute (routeId) {
-    return {
-        types: [
-            types.UPVOTE_ROUTE,
-            types.UPVOTE_ROUTE_SUCCESS,
-            types.UPVOTE_ROUTE_FAIL
-        ],
-        promise: ({req}) => req.post(`/routes/${routeId}/upvote`)
-    };
+
+    // upvote route then update the route in the grid
+    return [
+
+		{
+            types: [
+                types.UPVOTE_ROUTE,
+                types.UPVOTE_ROUTE_SUCCESS,
+                types.UPVOTE_ROUTE_FAIL
+            ],
+            promise: ({req}) => req.post(`/routes/${routeId}/upvote`)
+		},
+
+        // update route in grid
+        routesActions.upvoteRouteInGrid(routeId)
+	];
 }
 
 
