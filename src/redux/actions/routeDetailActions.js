@@ -55,7 +55,10 @@ export function deleteComment (routeId, commentId) {
             types.ROUTE_DETAIL_COMMENTS_DELETE_SUCCESS,
             types.ROUTE_DETAIL_COMMENTS_DELETE_FAIL
         ],
-        promise: ({req}) => req['delete'](`/routes/${routeId}/comments/${commentId}`),
+        promise: ({req}) => {
+            const fn = req['delete'] || req['del'];
+            return fn(`/routes/${routeId}/comments/${commentId}`);
+        },
         commentId
     };
 }
