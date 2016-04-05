@@ -1,5 +1,5 @@
 import * as types from '../constants/actionTypes';
-import {Map, List} from 'immutable';
+import {Map, List, Iterable, fromJS} from 'immutable';
 import City from '../../models/City';
 
 const initialState = Map({
@@ -10,6 +10,10 @@ const initialState = Map({
 });
 
 export default function reducer (state = initialState, action) {
+
+    if (!Iterable.isIterable(state)) {
+        state = initialState.merge(fromJS(state));
+    }
 
     switch (action.type) {
         case types.CITIES_FETCH:
