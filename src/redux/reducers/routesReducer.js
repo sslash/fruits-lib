@@ -26,6 +26,7 @@ function routes (state = initialRoutesState, action) {
             return state.set('didInvalidate', true);
 
         case actions.REQUEST_ROUTES:
+        case actions.ROUTES_QUERY:
             return state.merge({
                 isFetching: true,
                 didInvalidate: false,
@@ -45,7 +46,7 @@ function routes (state = initialRoutesState, action) {
             });
 
         case actions.RECEIVE_ROUTES_FAILED:
-        case actions.ROUTES_QUERY_SUCCESS:
+        case actions.ROUTES_QUERY_FAIL:
             return state.merge({
                 isFetching: false,
                 didInvalidate: false,
@@ -63,17 +64,21 @@ const initialState = Map({
 });
 
 function createKey(action) {
+    const city = action.meta.city || DEFAULT_CITY;
     let terms = action.meta.terms;
     if (Array.isArray(terms)) {
         terms = terms.join(':');
     }
-    return `${action.meta.city || DEFAULT_CITY}:${terms || DEFAULT_TERMS}`;
+
+    terms = terms || DEFAULT_TERMS;
+
+    return `${city}:${terms}`;
 }
 
 export default function reducer (state = initialState, action) {
 
     if (!Iterable.isIterable(state)) {
-        state = initialState.merge(fromJS(state));
+        state = initialState;
     }
 
     switch (action.type) {
