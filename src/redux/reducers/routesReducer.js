@@ -1,5 +1,5 @@
 import * as actions from '../constants/actionTypes';
-import {Map, fromJS, Iterable} from 'immutable';
+import {List, Map, fromJS, Iterable} from 'immutable';
 import Route from '../../models/Route';
 import {DEFAULT_GRID_KEY, DEFAULT_CITY, DEFAULT_TERMS} from '../constants/constants';
 // import routesListFixture from './routesListFixture';
@@ -31,7 +31,12 @@ function routes (state = initialRoutesState, action) {
                 isFetching: true,
                 didInvalidate: false,
                 offset: action.meta.offset,
-                items: state.get('items')
+
+                // if offset is 0, we are not appending to an existing list
+                // e.g not part of infinite scrolling
+                // in this case, reset the list so it doesn't get appended
+                items: action.meta.offset === 0 ?
+                    new List() : state.get('items')
             });
 
         case actions.RECEIVE_ROUTES:
