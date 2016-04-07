@@ -1,6 +1,7 @@
 import {Record, List, fromJS} from 'immutable';
 import Vertice from './Vertice';
 import dateFormat from 'dateformat';
+import getDefaultCardImg from '../fruitslib/getDefaultCardImg';
 
 const RouteRecord = Record({
     // Record will create getter for every property.
@@ -63,6 +64,16 @@ export default class Route extends RouteRecord {
     getTimeAgo () {
         const createdDate = this.get('created');
         return createdDate ? dateFormat(createdDate, 'mmmm dS, yyyy') : null;
+    }
+
+    getProfileImage () {
+        const user = this.get('user');
+        return user.get('profile') ? user.getIn(['profile', 'picture'])
+            : user.get('image');
+    }
+
+    getCardImage () {
+        return this.get('card') || getDefaultCardImg();
     }
 
     static doUpdate (routeState, vertice, updater) {
