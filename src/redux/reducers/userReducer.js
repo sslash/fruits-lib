@@ -140,7 +140,7 @@ export default function reducer (state = initialState, action = {}) {
 
         case types.UPDATE_USER_ROUTE:
             //optimistic update..
-            const newRoutes = updateRoute(state.routes, action.meta);
+            const newRoutes = updateRoute(state.get('routes'), action.meta);
             return state.set('routes', newRoutes);
         default:
         return state;
