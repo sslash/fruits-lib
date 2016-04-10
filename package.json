@@ -15,6 +15,7 @@
   "author": "Routes team",
   "dependencies": {
     "dateformat": "^1.0.12",
+    "humanize-duration": "^3.7.0",
     "immutable": "^3.7.6",
     "invariant": "^2.2.0",
     "lodash": "^3.10.1",

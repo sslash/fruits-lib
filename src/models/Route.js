@@ -2,6 +2,8 @@ import {Record, List, fromJS} from 'immutable';
 import Vertice from './Vertice';
 import dateFormat from 'dateformat';
 import getDefaultCardImg from '../fruitslib/getDefaultCardImg';
+import duration from 'humanize-duration';
+const KM = 1000;
 
 const RouteRecord = Record({
     // Record will create getter for every property.
@@ -32,7 +34,9 @@ const RouteRecord = Record({
     isDraft: false,
     comments: new List(),
     createLocalRouteId: null,
-    bucketRouteId: null
+    bucketRouteId: null,
+    distance: 0,
+    duration: 0
 });
 
 function _findIndexByVertice (vertices, vertice) {
@@ -74,6 +78,14 @@ export default class Route extends RouteRecord {
 
     getCardImage () {
         return this.get('card') || getDefaultCardImg();
+    }
+
+    getKM (nrOfDecimals = 0) {
+        return (this.get('distance') / KM).toFixed(nrOfDecimals);
+    }
+    // see https://github.com/EvanHahn/HumanizeDuration.js for different options
+    getDuration (opts = { spacer: ' ' }) {
+        return duration(this.get('duration'), opts);
     }
 
     static doUpdate (routeState, vertice, updater) {
