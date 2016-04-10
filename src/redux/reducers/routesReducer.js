@@ -122,12 +122,14 @@ export default function reducer (state = initialState, action) {
                     if (bucketName !== 'directionsMatrix') {
 
                         const items = state.getIn([bucketName, 'items']);
-                        const index = items.findIndex(route => route.get('id') === action.meta.routeId);
-                        const updatedItems = items.update(index, (route) => {
-                            return route.set('upvoteCount', likes);
-                        });
+                        if (items) {
+                            const index = items.findIndex(route => route.get('id') === action.meta.routeId);
+                            const updatedItems = items.update(index, (route) => {
+                                return route.set('upvoteCount', likes);
+                            });
 
-                        state = state.setIn([bucketName, 'items'], updatedItems);
+                            state = state.setIn([bucketName, 'items'], updatedItems);
+                        }
                     }
             });
 
