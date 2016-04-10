@@ -117,7 +117,6 @@ export function addVerticeToRoute (routeId, vertice, sortorder) {
 	}
 
 	return promises;
-
 }
 
 export function fetchSpicesForVertice (venueId, sortorder) {

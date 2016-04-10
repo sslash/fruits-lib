@@ -1,5 +1,5 @@
 import * as actions from '../constants/actionTypes';
-import {List, Map, fromJS, Iterable} from 'immutable';
+import {Map, fromJS, Iterable, List} from 'immutable';
 import Route from '../../models/Route';
 import {DEFAULT_GRID_KEY, DEFAULT_CITY, DEFAULT_TERMS} from '../constants/constants';
 // import routesListFixture from './routesListFixture';
@@ -7,7 +7,7 @@ import {DEFAULT_GRID_KEY, DEFAULT_CITY, DEFAULT_TERMS} from '../constants/consta
 const initialRoutesState = Map({
     isFetching: false,
     didInvalidate: false,
-    items: [],
+    items: List(),
     // items: routesListFixture.map(Route.mapper), // <-- for debugging
 
     // directionsMatrix: null,
@@ -63,9 +63,10 @@ function routes (state = initialRoutesState, action) {
     }
 }
 
-
+// keys will be populated here, one for each grid list
 const initialState = Map({
-    key: null
+    key: null,
+    directionsMatrix: null
 });
 
 function createKey(action) {
@@ -110,6 +111,31 @@ export default function reducer (state = initialState, action) {
         case actions.ROUTES_CLEAR:
             return initialState;
 
+        case actions.ROUTES_UPVOTE_UPDATE_SUCCESS:
+            // loop through every bucketName
+            // for each if you find the route with id, update count
+
+            let {likes} = action.payload;
+
+            Object.keys(state.toJSON())
+                .forEach(bucketName => {
+                    if (bucketName !== 'directionsMatrix') {
+
+                        const items = state.getIn([bucketName, 'items']);
+                        const index = items.findIndex(route => route.get('id') === action.meta.routeId);
+                        const updatedItems = items.update(index, (route) => {
+                            return route.set('upvoteCount', likes);
+                        });
+
+                        state = state.setIn([bucketName, 'items'], updatedItems);
+                    }
+            });
+
+            return state;
+
+        // when data comes from the server, we need to make it
+        // an immutable object
+        // TODO dont do it this way!!
         default:
             return state;
     }
