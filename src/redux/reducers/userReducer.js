@@ -84,15 +84,15 @@ export default function reducer (state = initialState, action = {}) {
 
         // load from offline storage
         case LOAD:
-        let user = action.payload.user;
-        if (user && user.routes) {
-            user.routes = user.routes.map(Route.mapper);
-        }
+            let user = action.payload.user;
+            // if (user && user.routes) {
+            //     user.routes = user.routes.map(Route.mapper);
+            // }
 
-        return state
-            .set('user', fromJS(user.user))
-            .set('routes', user.routes)
-            .set('token', user.token);
+            return state.merge(user);
+                // .set('user', (user.user))
+                // .set('routes', user.routes)
+                // .set('token', user.token);
 
         case types.USER_TOKEN_STORE_AND_REDIRECT:
         return state.set('shouldRedirect', false);

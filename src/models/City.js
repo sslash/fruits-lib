@@ -4,7 +4,8 @@ const CityRecord = Record({
     imageSmall: '',
     imageMedium: '',
     imageLarge: '',
-    title: ''
+    title: '',
+    address: ''
 });
 
 export default class City extends CityRecord {

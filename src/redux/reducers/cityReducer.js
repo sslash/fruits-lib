@@ -6,7 +6,7 @@ const initialState = Map({
     isFetching: false,
     cities: new List(),
     isError: false,
-    selected: undefined,
+    selected: '',
     buckets: new List(),
     isFetchingBuckets: false,
     bucketsError: null
