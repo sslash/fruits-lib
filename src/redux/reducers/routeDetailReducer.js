@@ -33,7 +33,7 @@ export default function reducer (state = initialState, action) {
 
         case types.ROUTE_DETAIL_FETCH_SUCCESS:
 
-            return initialState
+            return state
                 .set('route', Route.mapper(action.payload))
                 .set('isFetching', false)
                 .set('error', false);

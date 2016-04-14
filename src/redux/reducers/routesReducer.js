@@ -66,9 +66,16 @@ function routes (state = initialRoutesState, action) {
 // keys will be populated here, one for each grid list
 const initialState = Map({
     key: null,
+    terms: null, // search terms
     directionsMatrix: null
 });
 
+/*
+* Key is used to map a collection of routes.
+* For instance 'Oslo:bike:food': [<routes>]
+*
+* We also need
+*/
 function createKey(action) {
     const city = action.meta.city || DEFAULT_CITY;
     let terms = action.meta.terms;
@@ -104,7 +111,8 @@ export default function reducer (state = initialState, action) {
 
             const key = createKey(action);
             return state.merge({
-                [key]: routes(state.get(key), action)
+                [key]: routes(state.get(key), action),
+                terms: action.meta.terms
             });
 
         // when setting new city categories

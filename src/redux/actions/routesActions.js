@@ -51,9 +51,7 @@ export function fetchRoutesIfNeeded (bucket, bucketId, city, offset, limit) {
     return requestRoutes(bucketName, bucketId, city, offset, limit);
 }
 
-export function clearRoutes (dispatch) {
-    dispatch({ type: types.BUCKETS_CLEAR });
-
+export function clearRoutes () {
     return { type: types.ROUTES_CLEAR };
 }
 
@@ -93,7 +91,11 @@ export function invalidateBucket (bucket) {
 // TODO: nextPage(terms, offset, limit, city);
 export function queryRoutes (terms, offset, limit, city, sort) {
     const params = {
-        terms, offset, limit, city, sort
+        terms: terms || '',
+        offset,
+        limit,
+        city: city || '',
+        sort: sort || ''
     };
     return {
         types: [types.ROUTES_QUERY, types.ROUTES_QUERY_SUCCESS,
