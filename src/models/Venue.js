@@ -1,4 +1,4 @@
-import {Record, Map, List} from 'immutable';
+import {Record, Map, List, fromJS} from 'immutable';
 import _isFunc from 'lodash/lang/isFunction';
 
 const VenueRecord = Record({
@@ -111,6 +111,28 @@ export default class Venue extends VenueRecord {
                 return created.set('place_id', venue.googleId);
             } else {
                 return created;
+            }
+        }
+
+        getComments () {
+            const venueSocial = this.get('venueSocial');
+            const comments = this.getFoursquareComments(venueSocial.foursquare_venue)
+            return comments;
+
+        }
+
+        getFoursquareComments (foursquare = {}) {
+            if (foursquare.tips) {
+                return fromJS(foursquare.tips.map(tip => {
+                    return {
+                        image: Venue.getFoursquareImage(fromJS(tip.photo)).uri,
+                        mail: '',
+                        text: tip.text,
+                        username: tip.username
+                    };
+                }));
+            } else {
+                return new Map();
             }
         }
 

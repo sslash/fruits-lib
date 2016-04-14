@@ -43,4 +43,11 @@ describe('venue', () => {
         expect(Venue.getFoursquareImage(fsImage, true).uri).to.contains('500x500');
     });
 
+    it('should get all comments', () => {
+        const venue = new Venue(VenueFixture);
+        console.log(venue.getComments().get(0))
+        expect(venue.getComments().size).to.equal(30);
+    });
+
+
 });
