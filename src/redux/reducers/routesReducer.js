@@ -77,15 +77,17 @@ const initialState = Map({
 * We also need
 */
 function createKey(action) {
-    const city = action.meta.city || DEFAULT_CITY;
-    let terms = action.meta.terms;
-    if (Array.isArray(terms)) {
-        terms = terms.join(':');
-    }
-
-    terms = terms || DEFAULT_TERMS;
-
-    return `${city}:${terms}`;
+    // const city = action.meta.city || DEFAULT_CITY;
+    // let terms = action.meta.terms;
+    // if (Array.isArray(terms)) {
+    //     terms = terms.join(':');
+    // }
+    //
+    // terms = terms || DEFAULT_TERMS;
+    //
+    // return `${city}:${terms}`;
+    // no need to have special key
+    return `${DEFAULT_CITY}:${DEFAULT_TERMS}`;
 }
 
 export default function reducer (state = initialState, action) {

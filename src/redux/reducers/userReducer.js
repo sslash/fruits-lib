@@ -25,6 +25,7 @@ const initialState = fromJS({
     fethingUserProfile: false,
     fetchUserProfileError: null,
 
+    // Legacy!!
     // could have had a list here, one for each profile.
     // but probabz not necessary.
     userProfile: null,
