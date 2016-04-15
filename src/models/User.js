@@ -5,14 +5,20 @@ const UserRecord = Record({
     username: '',
     mail: '',
     description: '',
-    image: ''
+    image: '',
+    profile: null
 });
 
 
 export default class User extends UserRecord {
     static mapper (data) {
-        console.log(`SAP! data`,    data);
         return new User(data);
+    }
+
+    getProfilePhoto () {
+        return this.get('profile') ?
+            this.getIn(['profile', 'picture']) :
+            this.get('image');
     }
 }
 
