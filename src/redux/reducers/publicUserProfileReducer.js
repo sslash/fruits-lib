@@ -71,6 +71,7 @@ export default function reducer (state = initialState, action) {
             error: action.payload
         });
 
+        //bookmark routes
         case types.BOOKMARKS_FETCH:
         bookmarks = action.payload;
         return state
@@ -89,12 +90,33 @@ export default function reducer (state = initialState, action) {
             List(bookmarks.map(Route.mapper)) : []
         });
 
+        // user route
+        case types.FETCH_USER_ROUTES:
+        return state.merge({
+            isFetchingRoute: true,
+            routes: []
+        });
+
         case types.FETCH_USER_ROUTES_SUCCESS:
         if (!action.payload._embedded) { return state; }
         return state.merge({
-                routes: action.payload._embedded.routes.map(Route.mapper),
-                routesType: ROUTES
-            });
+            routes: action.payload._embedded.routes.map(Route.mapper),
+            routesType: ROUTES
+        });
+
+        // liked route
+        case types.PUBLIC_LIKED_ROUTE_FETCH:
+        return state.merge({
+            isFetchingRoute: true,
+            routes: []
+        });
+
+        case types.PUBLIC_LIKED_ROUTE_SUCCESS:
+        if (!action.payload._embedded) { return state; }
+        return state.merge({
+            routes: action.payload._embedded.routes.map(Route.mapper),
+            routesType: ROUTES_LIKED
+        });
 
         default:
         return state;
