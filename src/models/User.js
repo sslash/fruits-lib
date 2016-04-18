@@ -6,7 +6,8 @@ const UserRecord = Record({
     mail: '',
     description: '',
     image: '',
-    profile: null
+    profile: null,
+    location: {}
 });
 
 

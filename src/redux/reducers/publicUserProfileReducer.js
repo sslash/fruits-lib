@@ -3,18 +3,14 @@ import * as types from '../constants/actionTypes';
 import User from '../../models/User';
 import Route from '../../models/Route';
 
-const ROUTES = 1;
-const ROUTES_LIKED = 2;
-const BOOKMARKED_ROUTES = 3;
-
 const initialState = fromJS({
     user: null, // User
     isFetching: false,
     error: null,
     isLoggedInUser: false,
+    likedRoutes: [],
     routes: [],
-    isFetchingRoute: false,
-    routesType: 1
+    bookmarkedRoutes: []
 });
 
 let bookmarks;
@@ -39,6 +35,13 @@ export default function reducer (state = initialState, action) {
             isFetching: true,
             error: null,
             isLoggedInUser: false
+        });
+        //optimistic update
+        case types.USER_UPDATE_PROFILE_SUCCESS:
+        return state.merge({
+            user: new User(action.payload),
+            isFetching: false,
+            error: null,
         });
 
         case types.PUBLIC_USER_FETCH_SUCCESS:
@@ -71,51 +74,25 @@ export default function reducer (state = initialState, action) {
             error: action.payload
         });
 
-        //bookmark routes
-        case types.BOOKMARKS_FETCH:
-        bookmarks = action.payload;
-        return state
-        .merge({
-            isFetchingRoute: true,
-            routes: []
-        });
 
         case types.BOOKMARKS_FETCH_SUCCESS:
         bookmarks = action.payload;
         return state
         .merge({
-            isFetchingRoute: false,
-            routesType: BOOKMARKED_ROUTES,
-            routes: bookmarks ?
+            bookmarkedRoutes: bookmarks ?
             List(bookmarks.map(Route.mapper)) : []
-        });
-
-        // user route
-        case types.FETCH_USER_ROUTES:
-        return state.merge({
-            isFetchingRoute: true,
-            routes: []
         });
 
         case types.FETCH_USER_ROUTES_SUCCESS:
         if (!action.payload._embedded) { return state; }
         return state.merge({
             routes: action.payload._embedded.routes.map(Route.mapper),
-            routesType: ROUTES
-        });
-
-        // liked route
-        case types.PUBLIC_LIKED_ROUTE_FETCH:
-        return state.merge({
-            isFetchingRoute: true,
-            routes: []
         });
 
         case types.PUBLIC_LIKED_ROUTE_SUCCESS:
         if (!action.payload._embedded) { return state; }
         return state.merge({
-            routes: action.payload._embedded.routes.map(Route.mapper),
-            routesType: ROUTES_LIKED
+            likedRoutes: action.payload._embedded.routes.map(Route.mapper),
         });
 
         default:
