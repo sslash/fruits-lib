@@ -7,7 +7,10 @@ const UserRecord = Record({
     description: '',
     image: '',
     profile: null,
-    location: {}
+    location: {},
+    facebook_profile_url: null,
+    instagram_profile_url: null,
+    url: null
 });
 
 
