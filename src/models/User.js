@@ -8,8 +8,9 @@ const UserRecord = Record({
     image: '',
     profile: null,
     location: null,
-    facebook_profile_url: null,
+    facebook: null,
     instagram_profile_url: null,
+    backgroundImage: null,
     url: ''
 });
 
