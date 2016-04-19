@@ -18,7 +18,8 @@ let bookmarks;
 export default function reducer (state = initialState, action) {
 
     if (!Iterable.isIterable(state)) {
-        state = initialState;
+        state = fromJS(state)
+            .set('user', new User(state.user));
     }
 
     // the whole state tree is just a copy of the userReducer state
