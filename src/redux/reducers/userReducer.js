@@ -1,7 +1,19 @@
 import * as types from '../constants/actionTypes';
 import Route from '../../models/Route';
+import _isArray from 'lodash/lang/isArray';
 import {Record, Map, List, Iterable, fromJS} from 'immutable';
 // import { LOAD } from 'redux-storage';
+
+
+// super simple handler to flatten the array
+// we get from bad requests (400) from the API
+const formatError = (error) => {
+    if (_isArray(error)) {
+        return error[0];
+    } else {
+        return error;
+    }
+}
 
 // This is not good at all. temporary untill redux-storage
 // error for react-native is fixed
@@ -15,6 +27,7 @@ const initialState = fromJS({
     authError: null,
     signupError: null,
     isSaving: false,
+    updateError: null,
 
     // users routes
     // TODO: do a list here instead
@@ -78,7 +91,9 @@ export default function reducer (state = initialState, action = {}) {
             signupError: null
         });
         case types.SIGNUP_FAIL:
-        return state.set('signupError', action.error).set('loggingIn', false);
+        return state
+            .set('signupError', formatError(action.error))
+            .set('loggingIn', false);
 
         case types.LOGOUT:
         return initialState;
@@ -125,19 +140,31 @@ export default function reducer (state = initialState, action = {}) {
         });
 
         case types.USER_BOOTSTRAP:
-        return state.set('user', Map(action.user));
+        return state.set('user', fromJS(action.user));
 
         case types.USER_UPLOAD_PROFILE_PICTURE_SUCCESS:
         return state.setIn(['user', 'image'], action.payload.image);
 
         case types.USER_UPDATE_PROFILE:
-        return state.set('isSaving', true);
+        return state.set('isSaving', true).set('updateError', null);
 
         case types.USER_UPDATE_PROFILE_FAIL:
-        return state.set('isSaving', false);
+        let message;
+        if (action.error) {
+            message = action.error.message || action.payload.errorMessage;
+        } else if (action.payload) {
+            message = action.payload.message;
+        }
+
+        return state
+            .set('isSaving', false)
+            .set('updateError', message);
 
         case types.USER_UPDATE_PROFILE_SUCCESS:
-        return state.set('user', Map(action.payload)).set('isSaving', false);
+            return state
+                .set('user', fromJS(action.payload))
+                .set('updateError', null)
+                .set('isSaving', false);
 
         case types.UPDATE_USER_ROUTE:
             //optimistic update..
