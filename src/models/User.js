@@ -7,10 +7,10 @@ const UserRecord = Record({
     description: '',
     image: '',
     profile: null,
-    location: {},
+    location: null,
     facebook_profile_url: null,
     instagram_profile_url: null,
-    url: null
+    url: ''
 });
 
 
@@ -21,7 +21,7 @@ export default class User extends UserRecord {
 
     getProfilePhoto () {
         return this.get('profile') ?
-            this.getIn(['profile', 'picture']) :
+            this.get('profile').picture :
             this.get('image');
     }
 }
