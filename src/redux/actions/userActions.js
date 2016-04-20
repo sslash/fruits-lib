@@ -65,22 +65,6 @@ export function fetchUserProfile (userId) {
     };
 }
 
-export function fetchUserRoutes (userId) {
-    if (!userId) { throw new Error('User id must be included'); }
-
-    return {
-        types: [types.FETCH_USER_ROUTES, types.FETCH_USER_ROUTES_SUCCESS, types.FETCH_USER_ROUTES_FAIL],
-        promise: ({req}) => req.get(`/routes/users/${userId}`)
-    };
-}
-
-export function addNewRouteToUser (route) {
-
-    return {
-        type: types.USER_ROUTE_ADD,
-        meta: {route}
-    };
-}
 
 export function updateProfile(userId, data) {
     return {
@@ -109,17 +93,5 @@ export function bootstrapUser (user) {
     return {
         type: types.USER_BOOTSTRAP,
         user
-    };
-}
-
-export function updateUserRoutes (routeId, data) {
-    return {
-        types: [
-            types.UPDATE_USER_ROUTE,
-            types.UPDATE_USER_ROUTE_SUCCESS,
-            types.UPDATE_USER_ROUTE_FAIL
-        ],
-        promise: ({req}) => req.put(`/routes/${routeId}`, data),
-        meta: data
     };
 }

@@ -9,10 +9,3 @@ export function fetchPublicUserProfile (params = {}, loggedInUserId) {
         }
     };
 }
-
-export function fetchLikedRoutes (userId) {
-    return {
-        types: [types.PUBLIC_LIKED_ROUTE_FETCH, types.PUBLIC_LIKED_ROUTE_SUCCESS, types.PUBLIC_LIKED_ROUTE_FAIL],
-        promise: ({req}) => req.get(`/routes/users/likedRoute/${userId}`),
-    };
-}
