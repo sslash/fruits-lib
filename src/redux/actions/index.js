@@ -13,6 +13,7 @@ import * as city from './cityActions';
 import * as bookmarks from './bookmarksActions';
 import * as createLocalRoute from './createLocalRouteActions';
 import * as publicUserProfile from './publicUserProfileActions';
+import * as userRoutes from './userRoutesActions';
 
 export const actions = Object.assign({}, {
     user,
@@ -29,5 +30,6 @@ export const actions = Object.assign({}, {
     city,
     bookmarks,
     createLocalRoute,
-    publicUserProfile
+    publicUserProfile,
+    userRoutes
 });

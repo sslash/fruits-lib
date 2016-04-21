@@ -28,12 +28,6 @@ const initialState = fromJS({
     signupError: null,
     isSaving: false,
     updateError: null,
-
-    // users routes
-    // TODO: do a list here instead
-    routes: [],
-    fetchRoutesError: null,
-
     // user profile
     fethingUserProfile: false,
     fetchUserProfileError: null,
@@ -113,17 +107,7 @@ export default function reducer (state = initialState, action = {}) {
         case types.USER_TOKEN_STORE_AND_REDIRECT:
         return state.set('shouldRedirect', false);
 
-        case types.FETCH_USER_ROUTES_SUCCESS:
-        if (!action.payload._embedded) { return state; }
-        return state.set('routes', action.payload._embedded.routes.map(Route.mapper));
 
-        case types.FETCH_USER_ROUTES_FAIL:
-        return state.set('fetchRoutesError', action.error);
-
-        case types.USER_ROUTE_ADD:
-        return state.update('routes', r => {
-            return [...r, action.meta.route];
-        });
 
         case types.FETCH_USER_PROFILE:
         return state.set('fethingUserProfile', true);
@@ -165,37 +149,7 @@ export default function reducer (state = initialState, action = {}) {
                 .set('user', fromJS(action.payload))
                 .set('updateError', null)
                 .set('isSaving', false);
-
-        case types.UPDATE_USER_ROUTE:
-            //optimistic update..
-            const newRoutes = updateRoute(state.get('routes'), action.meta);
-            return state.set('routes', newRoutes);
         default:
         return state;
     }
-}
-
-/**
-* @param (array) routes, list of routes
-* @param (object) updatedRoute, contains the route id and some properties. An exmaple of the object
-* can be {id: 1337, isActive: false, isDraft: true}
-*/
-
-function updateRoute (routes, updatedRoute) {
-    return routes.map(route => {
-        if (route.id === updatedRoute.id) {
-            return updateKeyValue(route, updatedRoute);
-        } else {
-            return route;
-        }
-    });
-}
-
-function updateKeyValue (route, updatedRoute) {
-    let newRoute = route;
-    const keys = Object.keys(updatedRoute);
-    keys.forEach(key => {
-        newRoute = newRoute.set(key, updatedRoute[key])
-    });
-    return newRoute;
 }

@@ -8,12 +8,7 @@ const initialState = fromJS({
     isFetching: false,
     error: null,
     isLoggedInUser: false,
-    likedRoutes: [],
-    routes: [],
-    bookmarkedRoutes: []
 });
-
-let bookmarks;
 
 export default function reducer (state = initialState, action) {
 
@@ -37,13 +32,7 @@ export default function reducer (state = initialState, action) {
             error: null,
             isLoggedInUser: false
         });
-        //optimistic update
-        case types.USER_UPDATE_PROFILE_SUCCESS:
-        return state.merge({
-            user: new User(action.payload),
-            isFetching: false,
-            error: null,
-        });
+
 
         case types.PUBLIC_USER_FETCH_SUCCESS:
 
@@ -73,27 +62,6 @@ export default function reducer (state = initialState, action) {
             isFetching: false,
             isLoggedInUser: false,
             error: action.payload
-        });
-
-
-        case types.BOOKMARKS_FETCH_SUCCESS:
-        bookmarks = action.payload;
-        return state
-        .merge({
-            bookmarkedRoutes: bookmarks ?
-            List(bookmarks.map(Route.mapper)) : []
-        });
-
-        case types.FETCH_USER_ROUTES_SUCCESS:
-        if (!action.payload._embedded) { return state; }
-        return state.merge({
-            routes: action.payload._embedded.routes.map(Route.mapper),
-        });
-
-        case types.PUBLIC_LIKED_ROUTE_SUCCESS:
-        if (!action.payload._embedded) { return state; }
-        return state.merge({
-            likedRoutes: action.payload._embedded.routes.map(Route.mapper),
         });
 
         default:
