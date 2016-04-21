@@ -64,7 +64,7 @@ export default function reducer (state = initialState, action) {
 
 function updateRoute (routes, updatedRoute) {
     return routes.map(route => {
-        if (route.id === updatedRoute.id) {
+        if (route.get('id') === updatedRoute.id) {
             return updateKeyValue(route, updatedRoute);
         } else {
             return route;
