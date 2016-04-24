@@ -36,7 +36,8 @@ const RouteRecord = Record({
     createLocalRouteId: null,
     bucketRouteId: null,
     distance: 0,
-    duration: 0
+    duration: 0,
+    rating: 0
 });
 
 function _findIndexByVertice (vertices, vertice) {
