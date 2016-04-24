@@ -89,13 +89,14 @@ export function invalidateBucket (bucket) {
 /* USE THIS IN EVERY ROUTE SEARCH FROM NOW */
 // reducer key will be: city:terms
 // TODO: nextPage(terms, offset, limit, city);
-export function queryRoutes (terms, offset, limit, city, sort) {
+export function queryRoutes (terms, offset, limit, city, sort, others) {
     const params = {
         terms: terms || '',
         offset,
         limit,
         city: city || '',
-        sort: sort || ''
+        sort: sort || '',
+        ...others
     };
     return {
         types: [types.ROUTES_QUERY, types.ROUTES_QUERY_SUCCESS,
