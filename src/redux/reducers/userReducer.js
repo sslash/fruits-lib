@@ -130,6 +130,8 @@ export default function reducer (state = initialState, action = {}) {
 
         case types.USER_UPDATE_PROFILE:
         return state.set('isSaving', true).set('updateError', null);
+        case types.USER_CLEAR_ERROR:
+        return state.set('updateError', null);
 
         case types.USER_UPDATE_PROFILE_FAIL:
         let message;
