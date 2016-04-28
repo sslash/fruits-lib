@@ -19,6 +19,12 @@ export function login (mail, password) {
     };
 }
 
+export function clearUserError () {
+    return {
+        type: types.USER_CLEAR_ERROR
+    };
+}
+
 export function storeLoginToken (token, user) {
 
     // set token so we can use it on every request
