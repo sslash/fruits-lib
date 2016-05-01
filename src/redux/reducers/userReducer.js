@@ -83,6 +83,7 @@ export default function reducer (state = initialState, action = {}) {
             token: action.payload.token,
             signupError: null
         });
+
         case types.SIGNUP_FAIL:
         return state
             .set('signupError', formatError(action.error))
@@ -94,19 +95,10 @@ export default function reducer (state = initialState, action = {}) {
         // load from offline storage
         case LOAD:
             let user = action.payload.user;
-            // if (user && user.routes) {
-            //     user.routes = user.routes.map(Route.mapper);
-            // }
-
             return state.merge(user);
-                // .set('user', (user.user))
-                // .set('routes', user.routes)
-                // .set('token', user.token);
 
         case types.USER_TOKEN_STORE_AND_REDIRECT:
         return state.set('shouldRedirect', false);
-
-
 
         case types.FETCH_USER_PROFILE:
         return state.set('fethingUserProfile', true);
