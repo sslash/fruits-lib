@@ -43,12 +43,13 @@ export function facebookLogin (data) {
     };
 }
 
-export function signup (mail, password) {
+export function signup (mail, password, username) {
     return {
         types: [types.SIGNUP, types.SIGNUP_SUCCESS, types.SIGNUP_FAIL],
         promise: ({req}) => req.post('/users', {
             mail,
-            password
+            password,
+            username
         })
     };
 }
