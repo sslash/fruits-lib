@@ -25,14 +25,14 @@ export default function reducer (state = initialState, action) {
     switch (action.type) {
         case types.BOOKMARKS_POST:
             const items = state.get('items')
-                .push(Map({id: action.bookmark.routeId}));
+                .push(action.route);
 
             return state
                 .set('items', items)
 
                 // reset so we have to fetch routes again
                 // when we enter user profile
-                .set('fetchedDeep', false);
+                // .set('fetchedDeep', false);
 
         case types.BOOKMARKS_POST_SUCCESS:
             return state;
@@ -80,7 +80,7 @@ export default function reducer (state = initialState, action) {
 
         case types.BOOKMARKS_DELETE:
             return state
-                .set('items', removeBookmark(state, action.bookmark.routeId));
+                .set('items', removeBookmark(state, action.route.get('id')));
 
         default:
             return state;

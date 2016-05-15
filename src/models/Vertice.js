@@ -55,7 +55,7 @@ export default class Vertice extends VerticeRecord {
     }
 
     static mapper (vertice) {
-        return new VerticeRecord(vertice)
+        return new Vertice(vertice)
             .set('photos', new List(vertice.photos))
             .set('venue', Venue.mapper(vertice.venue))
             .set('buckets', new List(vertice.buckets))
@@ -65,7 +65,7 @@ export default class Vertice extends VerticeRecord {
 
         const venue = new Venue(data);
         return new Vertice({
-            venue: venue,
+            venue,
             title: data.name,
             city: data.city,
             photos: data.photos ? List(data.photos.filter(photo => !!photo)) : List(),

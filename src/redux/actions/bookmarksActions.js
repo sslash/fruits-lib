@@ -24,26 +24,28 @@ export function getBookmarkedRoutesIds (userId) {
         promise: ({req}) => req.get(`/users/${userId}/bookmarks?ids=true`)
     };
 }
-export function postBookmark (userId, bookmark) {
+export function postBookmark (userId, route) {
     return {
         types: [
             actions.BOOKMARKS_POST,
             actions.BOOKMARKS_POST_SUCCESS,
             actions.BOOKMARKS_POST_FAIL
         ],
-        promise: ({req}) => req.post(`/users/${userId}/bookmarks`, bookmark),
-        bookmark
+        promise: ({req}) => req.post(`/users/${userId}/bookmarks`,
+            {routeId: route.get('id')}),
+        route
     };
 }
 
-export function deleteBookmark (userId, bookmark) {
+export function deleteBookmark (userId, route) {
     return {
         types: [
             actions.BOOKMARKS_DELETE,
             actions.BOOKMARKS_DELETE_SUCCESS,
             actions.BOOKMARKS_DELETE_FAIL
         ],
-        promise: ({req}) => req.post(`/users/${userId}/bookmarks/delete`, bookmark),
-        bookmark
+        promise: ({req}) => req.post(`/users/${userId}/bookmarks/delete`,
+            {routeId: route.get('id')}),
+        route
     };
 }
