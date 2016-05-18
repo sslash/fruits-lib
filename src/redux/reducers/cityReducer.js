@@ -44,6 +44,11 @@ export default function reducer (state = initialState, action) {
                 .set('isFetchingBuckets', false)
                 .set('bucketsError', action.error);
 
+        case types.LOAD:
+            return state
+                .set('selected', null);
+
+
         default:
             return state;
     }

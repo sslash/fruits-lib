@@ -13,11 +13,7 @@ const formatError = (error) => {
     } else {
         return error;
     }
-}
-
-// This is not good at all. temporary untill redux-storage
-// error for react-native is fixed
-const LOAD = 'REDUX_STORAGE_LOAD';
+};
 
 const initialState = fromJS({
     loggingIn: false,
@@ -93,8 +89,11 @@ export default function reducer (state = initialState, action = {}) {
         return initialState;
 
         // load from offline storage
-        case LOAD:
-            let user = action.payload.user;
+        case types.LOAD:
+            let {user} = action.payload;
+            // if (user && user.routes) {
+            //     user.routes = user.routes.map(Route.mapper);
+            // }
             return state.merge(user);
 
         case types.USER_TOKEN_STORE_AND_REDIRECT:
