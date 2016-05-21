@@ -49,7 +49,6 @@ describe('Search reducer', () => {
         });
         expect(newState.get('isSearchCityActive')).to.equal(false);
         expect(newState.get('isSearchRoutesActive')).to.equal(false);
-        expect(newState.get('showSearchBar')).to.equal(true);
     });
 
     it('should handle SEARCHING_ROUTES', () => {

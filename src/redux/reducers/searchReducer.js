@@ -35,11 +35,16 @@ export default function reducer (state = initialState, action) {
             case actions.SEARCH_IS_INACTIVE:
             return state.merge({
                 isSearchCityActive: false,
-                isSearchRoutesActive: false,
-                showSearchBar: true
+                isSearchRoutesActive: false
             });
         case actions.SEARCHING_ROUTES:
             return state.set('routesSearchString', action.searchString);
+
+        case actions.SEARCH_HIDE:
+            return state.set('showSearchBar', false);
+
+        case actions.SEARCH_SHOW:
+            return state.set('showSearchBar', true);
 
         case actions.SEARCHING_CITIES:
             return state.set('citiesSearchString', action.searchString);

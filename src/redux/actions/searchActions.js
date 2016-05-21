@@ -1,5 +1,5 @@
 import * as types from '../constants/actionTypes';
-import { POPULAR } from '../constants/constants';
+
 export function setCitySearchActive () {
     return {
         type: types.SEARCH_CITY_ACTIVE
@@ -12,9 +12,15 @@ export function setRoutesSearchActive () {
     };
 }
 
+export function hideSearchBar () {
+    return {
+        type: types.SEARCH_HIDE
+    };
+}
+
 export function showSearchBar () {
     return {
-        type: types.SEARCH_IS_ACTIVE
+        type: types.SEARCH_SHOW
     };
 }
 
