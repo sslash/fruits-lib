@@ -1,7 +1,7 @@
 // TODO: finishe me: http://rackt.github.io/redux/docs/advanced/ExampleRedditAPI.html
-import {fromJS, Iterable} from 'immutable';
+import { fromJS, Iterable } from 'immutable';
 import * as types from '../constants/actionTypes';
-import {DEFAULT_BUCKET_NAME} from '../constants/constants';
+import { DEFAULT_BUCKET_NAME, DEFAULT_GRID_KEY, POPULAR } from '../constants/constants';
 
 
 export function requestRoutes (bucketName, bucketId, city, offset, limit) {
@@ -42,7 +42,7 @@ export function shouldFetchRoutes (routes, bucket, offset) {
 
 /**
 * @param {object} bucket either a bucket (Map),
-* or a bucketName (string)
+* or a bucketName (string)     
 */
 export function fetchRoutesIfNeeded (bucket, bucketId, city, offset, limit) {
     const bucketName = Iterable.isIterable(bucket) ?
@@ -125,4 +125,27 @@ export function upvoteRouteInGrid(routeId) {
             routeId
         }
     };
+}
+
+function getCurrentRoutes (routes) {
+    const key = routes.get('key') || DEFAULT_GRID_KEY;
+    return routes.get(key);
+}
+
+// TODO Routes webapp should also use this
+// wrapper for doing a routes search
+
+export function queryRoutesNative ({selectedCity = '', stateRoutes, searchTerm = '', sortName = POPULAR, resetOffset = false}) {
+    const currentRoutes = getCurrentRoutes(stateRoutes);
+    const limit = currentRoutes ? currentRoutes.get('limit') : 40;
+    let offset;
+
+    // when we search, we reset the current offset back to 0
+    if (resetOffset) {
+        offset = 0;
+    } else {
+        offset = currentRoutes ? (currentRoutes.get('offset') + 1) : 0;
+    }
+
+    return queryRoutes(searchTerm, offset, limit, selectedCity, sortName);
 }

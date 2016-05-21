@@ -1,6 +1,6 @@
 import * as actions from '../constants/actionTypes';
 import { fromJS } from 'immutable';
-import * as consts from '../constants/constants';
+import { LATEST, POPULAR } from '../constants/constants';
 import invariant from 'invariant';
 
 const initialState = fromJS({
@@ -9,7 +9,7 @@ const initialState = fromJS({
     showSearchBar: true,
     routesSearchString: '',
     citiesSearchString: '',
-    sort: consts.LATEST
+    sort: LATEST
 });
 
 export default function reducer (state = initialState, action) {
@@ -44,10 +44,9 @@ export default function reducer (state = initialState, action) {
         case actions.SEARCHING_CITIES:
             return state.set('citiesSearchString', action.searchString);
         case actions.SEARCH_SORT_VALUE_CHANGED:
-            console.log('sapdap?', (action.sortValue !== consts.LATEST || action.sortValue !== consts.POPULAR))
-            invariant((action.sortValue === consts.LATEST || action.sortValue === consts.POPULAR),
-                     `sortValue needs to be either 1 or 2 not ${action.sortValue}`)
-            return state.set('sort', action.sortValue);
+            invariant((action.sort === LATEST || action.sort === POPULAR),
+                     `sortValue needs to be either popular or latest not ${action.sort}`)
+            return state.set('sort', action.sort);
 
 
         default:

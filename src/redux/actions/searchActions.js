@@ -1,5 +1,5 @@
 import * as types from '../constants/actionTypes';
-
+import { POPULAR } from '../constants/constants';
 export function setCitySearchActive () {
     return {
         type: types.SEARCH_CITY_ACTIVE
@@ -38,9 +38,10 @@ export function citiesSearchString (searchString) {
     };
 }
 
-export function sortValueChanged (sortValue) {
+
+export function sortValueChanged (sort) {
     return {
         type: types.SEARCH_SORT_VALUE_CHANGED,
-        sortValue
+        sort
     };
 }

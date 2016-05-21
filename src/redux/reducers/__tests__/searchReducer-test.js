@@ -75,11 +75,11 @@ describe('Search reducer', () => {
     });
 
     it('should handle SEARCH_SORT_VALUE_CHANGED error parameter', () => {
-        const sortValue = 'daddyMcSwagga';
+        const sort = 'daddyMcSwagga';
         const reducerPointer = () => (
             reducer(undefined, {
                 type: types.SEARCH_SORT_VALUE_CHANGED,
-                sortValue
+                sort
             })
         );
         expect(reducerPointer).to.throw(Error);
@@ -87,12 +87,13 @@ describe('Search reducer', () => {
 
 
     it('should handle SEARCH_SORT_VALUE_CHANGED', () => {
-        const sortValue = 1;
+        const sort = 'popular';
+
         const nextState = reducer(undefined, {
             type: types.SEARCH_SORT_VALUE_CHANGED,
-            sortValue
+            sort
         });
-        expect(nextState.get('sort')).to.equal(sortValue);
+        expect(nextState.get('sort')).to.equal(sort);
     });
 
 

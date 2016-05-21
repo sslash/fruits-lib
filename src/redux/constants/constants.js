@@ -5,6 +5,7 @@ export const DEFAULT_CITY = 'DEFAULT_CITY';
 export const DEFAULT_TERMS = 'DEFAULT_TERMS';
 
 
+// TODO WEB TO USE THIS contz
 // Consts for toggle bar.
-export const LATEST = 1;
-export const POPULAR = 2;
+export const LATEST = 'latest';
+export const POPULAR = 'popular';
