@@ -126,20 +126,19 @@ describe('city reducer', () => {
     describe('post', () => {
 
         it('should handle BOOKMARKS_POST', () => {
-            const bookmark = { routeId: 1337 };
+            const bookmark = Map({ routeId: 1337 });
             const afterState = reducer(undefined, {
                 type: types.BOOKMARKS_POST,
-                bookmark
+                route: bookmark
             });
-
             expect(List.isList(afterState.get('items'))).to.be.true;
             expect(afterState.get('items').size).to.equal(1);
             expect(afterState.get('fetchedDeep')).to.equal(false);
-            expect(afterState.get('items').get(0).get('id')).to.equal(1337);
+            expect(afterState.get('items').get(0).get('routeId')).to.equal(1337);
         });
 
         it('should handle BOOKMARKS_POST after deep bookmarks exist', () => {
-            const bookmark = { routeId: 1337 };
+            const bookmark = Map({ routeId: 1337 });
 
             const beforeState = reducer(undefined, {
                 type: types.BOOKMARKS_FETCH_SUCCESS,
@@ -148,24 +147,23 @@ describe('city reducer', () => {
 
             const afterState = reducer(beforeState, {
                 type: types.BOOKMARKS_POST,
-                bookmark
+                route: bookmark
             });
-
             expect(List.isList(afterState.get('items'))).to.be.true;
             expect(afterState.get('items').size).to.equal(2);
-            expect(afterState.get('items').last().get('id')).to.equal(1337);
+            expect(afterState.get('items').last().get('routeId')).to.equal(1337);
         });
 
         it('should handle BOOKMARKS_POST_FAIL', () => {
-            const bookmark = { routeId: 1337 };
+            const bookmark = Map({ routeId: 1337 });
             const beforeState = reducer(undefined, {
                 type: types.BOOKMARKS_POST,
-                bookmark
+                route: bookmark
             });
 
             const afterState = reducer(beforeState, {
                 type: types.BOOKMARKS_POST_FAIL,
-                bookmark,
+                bookmark: bookmark.toJS(),
                 error: {message: 'Something went wrong!'}
             });
 
@@ -178,16 +176,16 @@ describe('city reducer', () => {
     describe('delete', () => {
 
         it('should handle BOOKMARKS_DELETE', () => {
-            const bookmark = { routeId: 1337 };
+            const bookmark = Map({ id: 1337 });
 
             const beforeState = reducer(undefined, {
                 type: types.BOOKMARKS_POST,
-                bookmark
+                route: bookmark
             });
 
             const afterState = reducer(beforeState, {
                 type: types.BOOKMARKS_DELETE,
-                bookmark
+                route: bookmark
             });
 
             expect(List.isList(afterState.get('items'))).to.be.true;

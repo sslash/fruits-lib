@@ -14,6 +14,7 @@ import * as bookmarks from './bookmarksActions';
 import * as createLocalRoute from './createLocalRouteActions';
 import * as publicUserProfile from './publicUserProfileActions';
 import * as userRoutes from './userRoutesActions';
+import * as search from './searchActions';
 
 export const actions = Object.assign({}, {
     user,
@@ -31,5 +32,6 @@ export const actions = Object.assign({}, {
     bookmarks,
     createLocalRoute,
     publicUserProfile,
-    userRoutes
+    userRoutes,
+    search
 });

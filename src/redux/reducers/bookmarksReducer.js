@@ -12,6 +12,7 @@ const initialState = Map({
 
 
 function removeBookmark (state, routeId) {
+    console.log(state, 'dette er ')
     const items = state.get('items');
     return items
         .delete(items.findIndex(item => item.get('id') === routeId));
@@ -38,6 +39,7 @@ export default function reducer (state = initialState, action) {
             return state;
 
         case types.BOOKMARKS_POST_FAIL:
+        console.log(action, 'dette er da')
 
             return state
                 .set('items', removeBookmark(state, action.bookmark.routeId))

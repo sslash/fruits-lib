@@ -13,3 +13,4 @@ export bookmarksReducer from './bookmarksReducer';
 export createLocalRouteReducer from './createLocalRouteReducer';
 export publicUserProfileReducer from './publicUserProfileReducer'
 export userRoutesReducer from './userRoutesReducer';
+export searchReducer from './searchReducer';
