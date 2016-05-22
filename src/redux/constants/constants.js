@@ -9,3 +9,6 @@ export const DEFAULT_TERMS = 'DEFAULT_TERMS';
 // Consts for toggle bar.
 export const LATEST = 'latest';
 export const POPULAR = 'popular';
+
+// has seen things
+export const HAS_SEEN_FIRST_BOOKMARK = 'HAS_SEEN_FIRST_BOOKMARK';
