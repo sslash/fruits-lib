@@ -9,7 +9,7 @@ const initialState = fromJS({
     showSearchBar: true,
     routesSearchString: '',
     citiesSearchString: '',
-    sort: LATEST
+    sort: POPULAR
 });
 
 export default function reducer (state = initialState, action) {

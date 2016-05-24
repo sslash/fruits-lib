@@ -19,6 +19,7 @@ export function hideSearchBar () {
 }
 
 export function showSearchBar () {
+    console.log('hva skjer her?')
     return {
         type: types.SEARCH_SHOW
     };
