@@ -19,7 +19,6 @@ export function hideSearchBar () {
 }
 
 export function showSearchBar () {
-    console.log('hva skjer her?')
     return {
         type: types.SEARCH_SHOW
     };
@@ -35,6 +34,12 @@ export function routesSearchString (searchString) {
     return {
         type: types.SEARCHING_ROUTES,
         searchString
+    };
+}
+
+export function clearSearch () {
+    return {
+        type: types.SEARCH_CLEAR
     };
 }
 

@@ -52,6 +52,13 @@ export default function reducer (state = initialState, action) {
             invariant((action.sort === LATEST || action.sort === POPULAR),
                      `sortValue needs to be either popular or latest not ${action.sort}`)
             return state.set('sort', action.sort);
+        case actions.SEARCH_CLEAR:
+            return state.merge({
+                routesSearchString: '',
+                citiesSearchString: '',
+                isSearchCityActive: false,
+                isSearchRoutesActive: false
+            });
 
 
         default:
