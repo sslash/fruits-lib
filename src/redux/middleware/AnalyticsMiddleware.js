@@ -1,10 +1,7 @@
 import * as types from '../constants/actionTypes';
 
-const whiteList = [
-    types.FACEBOOK_LOGIN_SUCCESS,
-    types.SIGNUP_SUCCESS,
-    types.LOGIN_SUCCESS
-];
+// those action types that are listed here will be tracked
+const whiteList = [];
 
 export default class AnalyticsMiddleware {
 
