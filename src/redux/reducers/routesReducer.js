@@ -134,11 +134,13 @@ export default function reducer (state = initialState, action) {
                         const items = state.getIn([bucketName, 'items']);
                         if (items) {
                             const index = items.findIndex(route => route.get('id') === action.meta.routeId);
-                            const updatedItems = items.update(index, (route) => {
-                                return route.set('upvoteCount', likes);
-                            });
 
-                            state = state.setIn([bucketName, 'items'], updatedItems);
+                            if (index > -1) {
+                                const updatedItems = items.update(index, (route) => {
+                                    return route.set('upvoteCount', likes);
+                                });
+                                state = state.setIn([bucketName, 'items'], updatedItems);
+                            }
                         }
                     }
             });
