@@ -35,7 +35,7 @@ export default function reducer (state = initialState, action) {
             });
 
         case types.FETCH_USER_ROUTES_FAIL:
-            return state.set('fetchRoutesError', action.error).set(isFetching, false);
+            return state.set('fetchRoutesError', action.error).set('isFetching', false);
 
         case types.PUBLIC_LIKED_ROUTE_SUCCESS:
             if (!action.payload._embedded) { return state; }
