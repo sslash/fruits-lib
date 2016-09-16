@@ -114,7 +114,7 @@ export default class Route extends RouteRecord {
         return this.get('vertices')
         .map(vert => {
             // find current venueSocial
-            const venueSocial = venueSocials
+            const venueSocial = (venueSocials || [])
                 .filter(vs => vs.venueId === (vert.getIn(['venue', 'id']) + ''));
 
             return venueSocial.length ?
