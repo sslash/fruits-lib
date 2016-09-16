@@ -9,6 +9,8 @@ const VenueRecord = Record({
     spices: Map(),
     website: null,
 
+    source: '', // yelp, foursquare, ta, google
+
     // external references
     place_id: null, // google
     googleId: null, // google id (backend)
