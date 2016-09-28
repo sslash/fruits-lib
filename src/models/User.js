@@ -15,7 +15,7 @@ const UserRecord = Record({
 });
 
 
-export default class User extends UserRecord {
+class User extends UserRecord {
     static mapper (data) {
         return new User(data);
     }

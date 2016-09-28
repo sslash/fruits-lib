@@ -33,7 +33,7 @@ export default function reducer (state = initialState, action) {
 
                 // reset so we have to fetch routes again
                 // when we enter user profile
-                // .set('fetchedDeep', false);
+                .set('fetchedDeep', false);
 
         case types.BOOKMARKS_POST_SUCCESS:
             return state;
@@ -46,7 +46,9 @@ export default function reducer (state = initialState, action) {
                 .set('error', action.error);
 
         case types.BOOKMARKS_FETCH:
-            return state.set('isFetching', true);
+            return state
+                .set('isFetching', true)
+                .set('fetched', false);
 
         case types.BOOKMARKS_FETCH_SUCCESS:
             const bookmarks = action.payload;
