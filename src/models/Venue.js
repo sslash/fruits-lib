@@ -9,6 +9,9 @@ const VenueRecord = Record({
     spices: Map(),
     website: null,
 
+    // from google
+    openingHours: null,
+
     source: '', // yelp, foursquare, ta, google
 
     // external references
@@ -69,11 +72,13 @@ export default class Venue extends VenueRecord {
         }
 
         getOpeningsHours () {
-            const venueSocial = this.get('venueSocial');
-            if (venueSocial && venueSocial.google_venue && venueSocial.google_venue.opening_hours) {
+            const openingHours = (this.get('venueSocial') && this.get('venueSocial').google_venue) ? 
+                this.get('venueSocial').google_venue.opening_hours : this.get('openingHours');
+
+            if (openingHours) {
                 let currentDay = new Date().getDay();
                 currentDay = currentDay === 0 ? 6 : currentDay - 1  //getDay() returns 0 if sunday, but it's indexed in position 6 in googles array;
-                return venueSocial.google_venue.opening_hours.weekday_text[currentDay];
+                return openingHours.weekday_text[currentDay];
             } else {
                 return null;
             }
@@ -84,18 +89,22 @@ export default class Venue extends VenueRecord {
             if (venueSocial && venueSocial.foursquare_venue && venueSocial.foursquare_venue.meta) {
                 const { price } = this.get('venueSocial').foursquare_venue.meta;
                 if (price) {
-                    const tier = price.tier || 0;
-                    let greyDollar = '$$$$';
-                    let blackDollar = '';
-
-                    for(let i = 0; i < tier; i++) {
-                        blackDollar = blackDollar + '$';
-                        greyDollar = greyDollar.slice(0, -1); //add one black dollar, need to remove one grey dollar
-                    }
-                    return { blackDollar, greyDollar };
+                    return Venue.formatPrice(price.tier);
                 }
             }
             return null;
+        }
+
+        static formatPrice(tier) {
+            tier = tier || 0;
+            let greyDollar = '$$$$';
+            let blackDollar = '';
+
+            for(let i = 0; i < tier; i++) {
+                blackDollar = blackDollar + '$';
+                greyDollar = greyDollar.slice(0, -1); //add one black dollar, need to remove one grey dollar
+            }
+            return { blackDollar, greyDollar };
         }
         static getInstagramImage (instagramImage) {
             return {uri: instagramImage.getIn(['images', 'low_resolution', 'url'])};
@@ -157,6 +166,9 @@ export default class Venue extends VenueRecord {
                     lng: _isFunc(lng) ? lng() : lng
                 });
             }
+
+            // let Venue pick up the openingHours field
+            venue.openingHours = venue.opening_hours;
 
             if (venue.formatted_address) {
                 venue.address = venue.formatted_address;
