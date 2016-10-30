@@ -25,6 +25,13 @@ export function clearUserError () {
     };
 }
 
+export function storeInstaAuthToken (instaAuthToken) {
+    return {
+        type: types.INSTA_TOKEN_STORE,
+        instaAuthToken
+    }
+}
+
 export function storeLoginToken (token, user) {
 
     // set token so we can use it on every request

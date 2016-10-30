@@ -32,6 +32,9 @@ const initialState = fromJS({
     // could have had a list here, one for each profile.
     // but probabz not necessary.
     userProfile: null,
+
+    // instagram stuff
+    instaAuthToken: null
 });
 
 export default function reducer (state = initialState, action = {}) {
@@ -49,13 +52,13 @@ export default function reducer (state = initialState, action = {}) {
 
         case types.LOGIN_SUCCESS:
         case types.FACEBOOK_LOGIN_SUCCESS:
-        return state.merge({
-            loggingIn: false,
-            shouldRedirect: true,
-            user: action.payload.user,
-            token: action.payload.token,
-            authError: null
-        });
+            return state.merge({
+                loggingIn: false,
+                shouldRedirect: true,
+                user: action.payload.user,
+                token: action.payload.token,
+                authError: null
+            });
 
         case types.LOGIN_FAIL:
         case types.FACEBOOK_LOGIN_FAIL:
@@ -112,6 +115,9 @@ export default function reducer (state = initialState, action = {}) {
             'fethingUserProfile': false,
             fetchUserProfileError: action.payload
         });
+
+        case types.INSTA_TOKEN_STORE:
+            return state.set('instaAuthToken', action.instaAuthToken);
 
         case types.USER_BOOTSTRAP:
         return state.set('user', fromJS(action.user));

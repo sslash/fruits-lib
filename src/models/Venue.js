@@ -26,7 +26,8 @@ const VenueRecord = Record({
     // new school
     images: List(),
     reviews: List(),
-    ratings: List()
+    ratings: List(),
+    buckets: List()
 });
 
 export default class Venue extends VenueRecord {
@@ -106,6 +107,7 @@ export default class Venue extends VenueRecord {
             }
             return { blackDollar, greyDollar };
         }
+
         static getInstagramImage (instagramImage) {
             return {uri: instagramImage.getIn(['images', 'low_resolution', 'url'])};
         }
@@ -117,7 +119,16 @@ export default class Venue extends VenueRecord {
         }
 
         static mapper (venue) {
-            const created = new Venue(venue);
+            let created = new Venue(venue);
+
+            // mapping from graphql venueCollection
+            if (venue.lat && venue.lng) {
+                created = created.set('geometry', fromJS({
+                    lat: venue.lat,
+                    lng: venue.lng
+                }));
+            }
+
             if (venue.googleId) {
                 return created.set('place_id', venue.googleId);
             } else {
@@ -129,7 +140,6 @@ export default class Venue extends VenueRecord {
             const venueSocial = this.get('venueSocial');
             const comments = this.getFoursquareComments(venueSocial.foursquare_venue)
             return comments;
-
         }
 
         getFoursquareComments (foursquare = {}) {
