@@ -1,5 +1,6 @@
 import {Record, List, fromJS} from 'immutable';
 import Vertice from './Vertice';
+import User from './User';
 import dateFormat from 'dateformat';
 import getDefaultCardImg from '../fruitslib/getDefaultCardImg';
 import duration from 'humanize-duration';
@@ -13,7 +14,7 @@ const RouteRecord = Record({
     placeName : '',
     bannerImage : '',
     description : '',
-    user : {},
+    user : new User(),
     created : null,
     defaultRoute: false,
 
@@ -110,11 +111,12 @@ export default class Route extends RouteRecord {
     }
 
     // used in ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_SUCCESS
-    updateVenueSocials(venueSocials = []) {
+    updateVenueSocials(venueSocials) {
         return this.get('vertices')
         .map(vert => {
             // find current venueSocial
             const venueSocial = (venueSocials || [])
+                .filter(vs => !!vs)
                 .filter(vs => vs.venueId === (vert.getIn(['venue', 'id']) + ''));
 
             return venueSocial.length ?
