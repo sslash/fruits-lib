@@ -127,6 +127,10 @@ export default class Venue extends VenueRecord {
                     lat: venue.lat,
                     lng: venue.lng
                 }));
+
+            // yes. we need to map like this if we have venue.geometry
+            } else if (venue.geometry) {
+                created = created.set('geometry', fromJS(venue.geometry));
             }
 
             if (venue.googleId) {
