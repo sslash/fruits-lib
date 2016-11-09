@@ -14,7 +14,6 @@ describe('Routes', () => {
 
     it('Should get title', () => {
         const newRoute = Route.mapper(routeFixture);
-        console.log(`SAP! `, newRoute.getTimeAgo());
         expect(newRoute.getTitle()).to.equal(routeFixture.title);
         expect(newRoute.getTimeAgo()).to.be.defined;
     });

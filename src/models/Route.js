@@ -106,7 +106,7 @@ export default class Route extends RouteRecord {
             if (!loc) {
                 throw new Error('Venue did not have location');
             }
-            return [loc.lat, loc.lng];
+            return [loc.get('lat'), loc.get('lng')];
         });
     }
 

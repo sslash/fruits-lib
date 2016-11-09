@@ -123,8 +123,8 @@ export function mapVerticesToGeoVenues(vertices) {
         if (vertice.getIn(['venue', 'place_id'])) {
             return {googleId: vertice.getIn(['venue', 'place_id'])};
 
-        } else if (geo.lat && geo.lng) {
-            return {lat: geo.lat, lng: geo.lng};
+        } else if (geo.get('lat') && geo.get('lng')) {
+            return {lat: geo.get('lat'), lng: geo.get('lng')};
 
         } else {
             throw new Error({message: 'error determineGeoType(), none of the data provided is legit'});

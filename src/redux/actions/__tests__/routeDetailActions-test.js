@@ -44,6 +44,7 @@ describe('Detail actions', () => {
                 })
             ]);
             const googleIds = detailActions.mapVerticesToGeoVenues(places);
+            console.log('sappern ', googleIds.get(0));
             expect(googleIds.get(0)).to.deep.equal({lat: 1337, lng: 1337});
             expect(googleIds.get(1)).to.deep.equal({lat: 1338, lng: 1338});
         });
