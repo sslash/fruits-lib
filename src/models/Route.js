@@ -4,6 +4,8 @@ import User from './User';
 import dateFormat from 'dateformat';
 import getDefaultCardImg from '../fruitslib/getDefaultCardImg';
 import duration from 'humanize-duration';
+import get from 'lodash/object/get';
+
 const KM = 1000;
 
 const RouteRecord = Record({
@@ -57,8 +59,8 @@ function _findIndexByVertice (vertices, vertice) {
 export default class Route extends RouteRecord {
 
     static mapper (route) {
-        const vertices = route._embedded ? route._embedded.vertices : (route.vertices || List());
-        route.vertices = List(vertices.map(vert => Vertice.mapper(vert)));
+        const vertices = get(route, 'vertices', get(route, '_embedded.vertices', []));
+        route.vertices = new List(vertices.map(vert => Vertice.mapper(vert)));
         route.user = fromJS(route.user || {});
         route.buckets = new List(route.buckets);
         route.comments = new List();
