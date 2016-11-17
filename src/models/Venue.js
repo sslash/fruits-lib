@@ -119,7 +119,8 @@ export default class Venue extends VenueRecord {
         }
 
         static mapper (venue) {
-            let created = new Venue(venue);
+            let created = new Venue(venue)
+                .set('buckets', new List(venue.buckets));
 
             // mapping from graphql venueCollection
             if (venue.lat && venue.lng) {
