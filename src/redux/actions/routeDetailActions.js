@@ -1,6 +1,8 @@
+import { Iterable } from 'immutable';
 import * as types from '../constants/actionTypes';
-import {pollSpices} from '../../services/pollSpices';
+import { pollSpices } from '../../services/pollSpices';
 import * as routesActions from './routesActions';
+import Route from '../../models/Route';
 
 //
 // export function upvoteRoute (routeId) {
@@ -14,27 +16,27 @@ import * as routesActions from './routesActions';
 //     };
 // }
 
-export function upvoteRoute (routeId) {
+export function upvoteRoute(routeId) {
 
     // upvote route then update the route in the grid
     return [
 
-		{
+        {
             types: [
                 types.UPVOTE_ROUTE,
                 types.UPVOTE_ROUTE_SUCCESS,
                 types.UPVOTE_ROUTE_FAIL
             ],
             promise: ({req}) => req.post(`/routes/${routeId}/upvote`)
-		},
+        },
 
         // update route in grid
         routesActions.upvoteRouteInGrid(routeId)
-	];
+    ];
 }
 
 
-export function fetch (routeId) {
+export function fetch(routeId) {
     return {
         types: [
             types.ROUTE_DETAIL_FETCH,
@@ -42,11 +44,11 @@ export function fetch (routeId) {
             types.ROUTE_DETAIL_FETCH_FAIL
         ],
         promise: ({req}) => req.get(`/routes/${routeId}`),
-        meta: {routeId}
+        meta: { routeId }
     };
 }
 
-export function fetchComments (routeId) {
+export function fetchComments(routeId) {
     return {
         types: [
             types.ROUTE_DETAIL_COMMENTS_FETCH,
@@ -57,18 +59,18 @@ export function fetchComments (routeId) {
     };
 }
 
-export function addComment (routeId, body) {
+export function addComment(routeId, body) {
     return {
         types: [
             types.ROUTE_DETAIL_COMMENTS_ADD,
             types.ROUTE_DETAIL_COMMENTS_ADD_SUCCESS,
             types.ROUTE_DETAIL_COMMENTS_ADD_FAIL
         ],
-        promise: ({req}) => req.post(`/routes/${routeId}/comments`, {body})
+        promise: ({req}) => req.post(`/routes/${routeId}/comments`, { body })
     };
 }
 
-export function deleteComment (routeId, commentId) {
+export function deleteComment(routeId, commentId) {
     return {
         types: [
             types.ROUTE_DETAIL_COMMENTS_DELETE,
@@ -83,11 +85,11 @@ export function deleteComment (routeId, commentId) {
     };
 }
 
-export function changeTravelMode (travelmode) {
-    return {type: types.TRAVELMODE_CHANGED, travelmode};
+export function changeTravelMode(travelmode) {
+    return { type: types.TRAVELMODE_CHANGED, travelmode };
 }
 
-export function fetchDistanceMatrix (routeId, travelmode) {
+export function fetchDistanceMatrix(routeId, travelmode) {
     return {
         types: [
             types.FETCH_DIRECTIONS_MATRIX,
@@ -99,7 +101,7 @@ export function fetchDistanceMatrix (routeId, travelmode) {
     };
 }
 
-export function fetchDistanceMatrixBetweenVenues (vertices, travelmode, routeId, index) {
+export function fetchDistanceMatrixBetweenVenues(vertices, travelmode, routeId, index) {
     const venues = mapVerticesToGeoVenues(vertices);
 
     return {
@@ -108,7 +110,7 @@ export function fetchDistanceMatrixBetweenVenues (vertices, travelmode, routeId,
             types.VENUES_DIRECTIONS_MATRIX_FETCH_SUCCESS,
             types.VENUES_DIRECTIONS_MATRIX_FETCH_FAIL
         ],
-        promise: ({req}) => req.post(`/routes/${routeId}/directionsMatrix`, {travelmode, venues}),
+        promise: ({req}) => req.post(`/routes/${routeId}/directionsMatrix`, { travelmode, venues }),
         index
     };
 }
@@ -121,19 +123,19 @@ export function mapVerticesToGeoVenues(vertices) {
 
 
         if (vertice.getIn(['venue', 'place_id'])) {
-            return {googleId: vertice.getIn(['venue', 'place_id'])};
+            return { googleId: vertice.getIn(['venue', 'place_id']) };
 
         } else if (geo.get('lat') && geo.get('lng')) {
-            return {lat: geo.get('lat'), lng: geo.get('lng')};
+            return { lat: geo.get('lat'), lng: geo.get('lng') };
 
         } else {
-            throw new Error({message: 'error determineGeoType(), none of the data provided is legit'});
+            throw new Error({ message: 'error determineGeoType(), none of the data provided is legit' });
         }
     });
 }
 
 // copied from createRoute
-export function fetchSpicesForVertice (venueId, sortorder) {
+export function fetchSpicesForVertice(venueId, sortorder) {
     return {
         types: [
             types.ROUTE_DETAIL_VERTICE_SPICES_FETCH,
@@ -145,7 +147,7 @@ export function fetchSpicesForVertice (venueId, sortorder) {
     };
 }
 
-export function fetchSpicesForVenuesList (routeId, venueIds) {
+export function fetchSpicesForVenuesList(routeId, venueIds) {
 
     return {
         types: [
@@ -154,12 +156,17 @@ export function fetchSpicesForVenuesList (routeId, venueIds) {
             types.ROUTE_DETAIL_SPICES_FOR_VENUES_LIST_FAIL
         ],
 
-        promise: ({req}) => req.get(`/routes/${routeId}/venue-spices-fetch`, {params: {venueIds: venueIds}})
+        promise: ({req}) => req.get(`/routes/${routeId}/venue-spices-fetch`, { params: { venueIds: venueIds } })
     };
 }
 
 // used in routes-native to put route we get from router
 // over to route detail store
-export function bootstrapRoute (route) {
-    return {type: types.ROUTE_DETAIL_BOOTSTRAP, route};
+export function bootstrapRoute(route) {
+    const mappedRoute = Iterable.isIterable(route) ? route : Route.mapper(route);
+    
+    return {
+        type: types.ROUTE_DETAIL_BOOTSTRAP,
+        route: mappedRoute
+    };
 }

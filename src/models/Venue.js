@@ -118,9 +118,9 @@ export default class Venue extends VenueRecord {
             return wantBig ? {uri:`${prefix}500x500${suffix}`} : {uri:`${prefix}306x306${suffix}`};
         }
 
-        static mapper (venue) {
+        static mapper (venue = {}) {
             let created = new Venue(venue)
-                .set('buckets', new List(venue.buckets));
+                .set('buckets', new List(venue.buckets || []));
 
             // mapping from graphql venueCollection
             if (venue.lat && venue.lng) {

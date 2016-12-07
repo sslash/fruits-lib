@@ -5,7 +5,7 @@ import _isEqual from 'lodash/lang/isEqual';
 
 const initialState = Map({
     isFetching: false,
-    route: null,
+    route: new Route(),
     directionsMatrix: Map(),
     error: null,
     travelmode: 'WALKING',
