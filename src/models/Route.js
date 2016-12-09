@@ -58,7 +58,7 @@ function _findIndexByVertice (vertices, vertice) {
 
 export default class Route extends RouteRecord {
 
-    static mapper (route) {
+    static mapper (route = {}) {
         const vertices = get(route, 'vertices', get(route, '_embedded.vertices', []));
         route.vertices = new List(vertices.map(vert => Vertice.mapper(vert)));
         route.user = fromJS(route.user || {});

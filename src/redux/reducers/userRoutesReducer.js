@@ -1,4 +1,5 @@
 import { Map, fromJS, List, Iterable } from 'immutable';
+import _get from 'lodash/object/get';
 import * as types from '../constants/actionTypes';
 import Route from '../../models/Route';
 
@@ -27,7 +28,7 @@ export default function reducer (state = initialState, action) {
             });
 
         case types.FETCH_USER_ROUTES_SUCCESS:
-            if (!action.payload._embedded) { return state; }
+            if (!_get(action, 'payload._embedded')) { return state; }
             return state.merge({
                 routes: action.payload._embedded.routes.map(Route.mapper),
                 isFetching: false,
@@ -38,7 +39,7 @@ export default function reducer (state = initialState, action) {
             return state.set('fetchRoutesError', action.error).set('isFetching', false);
 
         case types.PUBLIC_LIKED_ROUTE_SUCCESS:
-            if (!action.payload._embedded) { return state; }
+            if (!_get(action, 'payload._embedded')) { return state; }
                 return state.merge({
                     isFetching: false,
                     fetchRoutesError: false,
