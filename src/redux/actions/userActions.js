@@ -103,6 +103,18 @@ export function uploadProfilePicture (fileOrPath) {
     };
 }
 
+export function forgotPassword (mail) {
+
+    return {
+        types: [
+            types.USER_FORGOT_PASSWORD,
+            types.USER_FORGOT_PASSWORD_SUCCESS,
+            types.USER_FORGOT_PASSWORD_FAIL
+        ],
+        promise: ({ req }) => req.post('/users/forgotPassword', { mail })
+    };
+}
+
 export function bootstrapUser (user) {
     return {
         type: types.USER_BOOTSTRAP,
