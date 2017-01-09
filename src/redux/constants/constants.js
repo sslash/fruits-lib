@@ -12,3 +12,5 @@ export const POPULAR = 'popular';
 
 // has seen things
 export const HAS_SEEN_FIRST_BOOKMARK = 'HAS_SEEN_FIRST_BOOKMARK';
+export const HAS_SEEN_FIRST_SAVE_SPOT = 'HAS_SEEN_FIRST_SAVE_SPOT';
+export const HAS_SEEN_FIRST_LIKE_ROUTE = 'HAS_SEEN_FIRST_LIKE_ROUTE';

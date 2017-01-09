@@ -29,11 +29,11 @@ export default class AnalyticsMiddleware {
 
     addPeopleProps(action) {
         if (peoplePropsWhiteList.indexOf(action.type) >= 0) {
-            if (this.tracking.identify) {
-                const { user: { mail } } = action.payload;
+            if (this.tracking.trackUser) {
+                const { user: { mail, username } } = action.payload;
                 if (mail) {
-                    this.tracking.identify(mail);
-                    this.tracking.set('$email', mail);
+                    const platform = action.type === types.SIGNUP_SUCCESS ? 'email' : 'facebook';
+                    this.tracking.trackUser(username, mail, platform);
                 } else {
                     console.log('Error, no mail provided on user obj ', action.payload.user);
                 }
