@@ -6,7 +6,8 @@
     "test": "mocha --compilers js:babel-register --reporter spec src/**/*-test.js",
     "test:watch": "npm test -- --watch",
     "build": "WEBPACK_ENV=build webpack",
-    "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch"
+    "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
+    "watch:cpy": "wml start"
   },
   "repository": {
     "type": "git",
