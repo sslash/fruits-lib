@@ -1,5 +1,5 @@
 import * as types from '../constants/actionTypes';
-import {Map, List, Iterable, fromJS} from 'immutable';
+import { Map, List, Iterable, fromJS } from 'immutable';
 import City from '../../models/City';
 
 const initialState = Map({
@@ -12,7 +12,7 @@ const initialState = Map({
     bucketsError: null
 });
 
-export default function reducer (state = initialState, action) {
+export default function reducer(state = initialState, action) {
 
     if (!Iterable.isIterable(state)) {
         state = initialState.merge(fromJS(state));
@@ -43,6 +43,8 @@ export default function reducer (state = initialState, action) {
             return state
                 .set('isFetchingBuckets', false)
                 .set('bucketsError', action.error);
+        case types.CITIES_CLEAR:
+            return state.set('cities', new List());
 
         case types.LOAD:
             return state

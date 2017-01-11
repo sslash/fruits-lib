@@ -21,3 +21,7 @@
 * best practice:
     * alle servicer skal være klasser
     * servicer skal injectes til action gjennom en init() metode
+
+* Kopiere filer til Native / frontend mappe
+    * Installer [wml](https://github.com/wix/wml) og bruk kommandoen `npm run watch:cpy`
+
