@@ -32,28 +32,34 @@ export default function reducer (state = initialState, action) {
             isLoggedInUser: false
         });
 
-
         case types.PUBLIC_USER_FETCH_SUCCESS:
 
-        if (action.payload.users) {
-            const user = new User(User.mapper(action.payload._embedded.users[0]));
-            const meta = action.meta || {};
+            if (action.payload.users) {
+                const user = new User(User.mapper(action.payload._embedded.users[0]));
+                const meta = action.meta || {};
 
-            return state.merge({
-                user,
-                isFetching: false,
-                error: null,
-                isLoggedInUser: meta.loggedInUserId ===
-                user.get('id')
-            });
-        } else {
-            return state.merge({
-                user: null,
-                isFetching: false,
-                isLoggedInUser: false,
-                error: {message: 'Failed to fetch user, empty result'}
-            });
-        }
+                return state.merge({
+                    user,
+                    isFetching: false,
+                    error: null,
+                    isLoggedInUser: action.loggedInUserId ===
+                    user.get('id')
+                });
+            } else if (action.payload) {
+                return state.merge({
+                    user: new User(User.mapper(action.payload)),
+                    isFetching: false,
+                    isLoggedInUser: false,
+                    error: {message: 'Failed to fetch user, empty result'}
+                });
+            } else {
+                return state.merge({
+                    user: null,
+                    isFetching: false,
+                    isLoggedInUser: false,
+                    error: {message: 'Failed to fetch user, empty result'}
+                });
+            }
 
         case types.PUBLIC_USER_FETCH_FAIL:
         return state.merge({
