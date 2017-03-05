@@ -61,7 +61,6 @@ describe('user reducer', () => {
         expect(afterState.getIn(['user', 'description'])).to.equal(user.description);
         expect(afterState.get('isFetching')).to.be.false;
         expect(afterState.get('error')).to.be.null;
-        expect(afterState.get('isLoggedInUser')).to.be.true
     });
 
     it('should handle PUBLIC_USER_FETCH_SUCCESS with loggedInUser that is not the user', () => {
