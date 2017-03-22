@@ -34,7 +34,7 @@ export default function reducer (state = initialState, action) {
 
         case types.PUBLIC_USER_FETCH_SUCCESS:
 
-            if (action.payload.users) {
+            if (action.payload) {
                 const user = new User(User.mapper(action.payload._embedded.users[0]));
                 const meta = action.meta || {};
 
