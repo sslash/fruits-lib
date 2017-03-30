@@ -1,4 +1,5 @@
 import {fromJS, Iterable, List} from 'immutable';
+import _get from 'lodash/object/get';
 import * as types from '../constants/actionTypes';
 import User from '../../models/User';
 import Route from '../../models/Route';
@@ -34,20 +35,23 @@ export default function reducer (state = initialState, action) {
 
         case types.PUBLIC_USER_FETCH_SUCCESS:
 
-            if (action.payload) {
-                const user = new User(User.mapper(action.payload._embedded.users[0]));
+            const userData = _get(action, 'payload._embedded.users[0]',
+                    _get(action, 'payload', null));
+
+            if (action.payload._embedded) {
+
+                const user = new User(User.mapper(userData));
                 const meta = action.meta || {};
 
                 return state.merge({
                     user,
                     isFetching: false,
                     error: null,
-                    isLoggedInUser: action.loggedInUserId ===
-                    user.get('id')
+                    isLoggedInUser: action.loggedInUserId === user.get('id')
                 });
             } else if (action.payload) {
                 return state.merge({
-                    user: new User(User.mapper(action.payload)),
+                    user: new User(User.mapper(userData)),
                     isFetching: false,
                     isLoggedInUser: false,
                     error: {message: 'Failed to fetch user, empty result'}
